@@ -20,3 +20,6 @@ Origin and coordinates
 - Axes use a north/east/up orientation: +X = north, -X = south; +Y = east, -Y = west; +Z = up, -Z = down.
 - Up/down exits stack rooms vertically: an `up` exit places the target at the same X/Y with Z+1 relative to the source; a `down` exit
   sets the target to Z-1.
+- Separate maps are vertically spaced: each non-origin area is lifted so its lowest room is at least 1 unit above the highest placed
+  room in the previously stacked areas (e.g., Aylorian Academy sits at least 1 unit higher than the tallest room in the Grand City
+  of Aylor).

@@ -28,8 +28,9 @@ const AREA_OFFSETS = {
   [ORIGIN_REFERENCE.areaId]: computeAreaOffset(ORIGIN_REFERENCE.coordinates),
 };
 
-const ROOM_RADIUS = 0.6;
-const WORLD_SCALE = 1.25;
+const ROOM_SIZE = 1;
+const WORLD_SCALE = 2;
+const MIN_MAP_VERTICAL_GAP = 1;
 
 const DIRECTION_OFFSETS = {
   north: { x: 1, y: 0, z: 0 },
@@ -74,6 +75,32 @@ function normalizeRoomPosition(room, areaOffset, solvedCoords) {
     (coordinates.y + (areaOffset?.y ?? 0)) * WORLD_SCALE,
     // Z axis = up/down. Stack up/down rooms along Z.
     ((coordinates.z ?? 0) + (areaOffset?.z ?? 0)) * WORLD_SCALE,
+  );
+}
+
+function computeBoundsFromCoords(solvedCoords) {
+  const values = Object.values(solvedCoords ?? {});
+  if (!values.length) {
+    return { minX: 0, maxX: 0, minY: 0, maxY: 0, minZ: 0, maxZ: 0 };
+  }
+
+  return values.reduce(
+    (acc, coord) => ({
+      minX: Math.min(acc.minX, coord.x),
+      maxX: Math.max(acc.maxX, coord.x),
+      minY: Math.min(acc.minY, coord.y),
+      maxY: Math.max(acc.maxY, coord.y),
+      minZ: Math.min(acc.minZ, coord.z ?? 0),
+      maxZ: Math.max(acc.maxZ, coord.z ?? 0),
+    }),
+    {
+      minX: Number.POSITIVE_INFINITY,
+      maxX: Number.NEGATIVE_INFINITY,
+      minY: Number.POSITIVE_INFINITY,
+      maxY: Number.NEGATIVE_INFINITY,
+      minZ: Number.POSITIVE_INFINITY,
+      maxZ: Number.NEGATIVE_INFINITY,
+    },
   );
 }
 
@@ -130,10 +157,8 @@ function solveRoomCoordinates(areaData, areaId) {
   return coordinates;
 }
 
-function buildWorldRooms(areaData, areaId, areaName) {
-  const areaOffset = AREA_OFFSETS[areaId] ?? { x: 0, y: 0, z: 0 };
+function buildWorldRooms(areaData, areaId, areaName, areaOffset, solvedCoords) {
   const areaColor = hashColor(String(areaId));
-  const solvedCoords = solveRoomCoordinates(areaData, areaId);
   const rooms = areaData.rooms.map((room) => ({
     ...room,
     areaId,
@@ -169,9 +194,8 @@ function buildWorldRooms(areaData, areaId, areaName) {
   return { rooms, lookups };
 }
 
-function buildWorldLinks(areaData, lookups, areaId) {
+function buildWorldLinks(areaData, lookups, areaId, seenPairs = new Set()) {
   const links = [];
-  const seenPairs = new Set();
   const entries = Object.entries(areaData.roomConnections ?? {});
 
   entries.forEach(([roomIndex, connectionList]) => {
@@ -206,6 +230,82 @@ function buildWorldLinks(areaData, lookups, areaId) {
   return links;
 }
 
+function computeAreaOffsets(layouts) {
+  const offsets = { ...AREA_OFFSETS };
+  let highestPlacedZ = Number.NEGATIVE_INFINITY;
+
+  layouts.forEach((layout) => {
+    const existingOffset = offsets[layout.areaId];
+    if (!existingOffset) return;
+    highestPlacedZ = Math.max(highestPlacedZ, layout.bounds.maxZ + (existingOffset.z ?? 0));
+  });
+
+  layouts.forEach((layout) => {
+    if (offsets[layout.areaId]) return;
+    const baseZ = (highestPlacedZ === Number.NEGATIVE_INFINITY ? 0 : highestPlacedZ + MIN_MAP_VERTICAL_GAP);
+    const offsetZ = baseZ - layout.bounds.minZ;
+    offsets[layout.areaId] = { x: 0, y: 0, z: offsetZ };
+    highestPlacedZ = Math.max(highestPlacedZ, layout.bounds.maxZ + offsetZ);
+  });
+
+  return offsets;
+}
+
+function parseAreaIdFromExit(areaExit) {
+  const raw = areaExit?.raw;
+  if (!raw) return null;
+  const match = raw.match(/RoomAreaExitInfo\((\d+)/i);
+  return match ? Number.parseInt(match[1], 10) : null;
+}
+
+function findAreaEntrance(lookup) {
+  if (!lookup) return null;
+  const rooms = Array.from(lookup.byIndex.values());
+  return rooms.find((room) => room.isEntrance) ?? rooms[0] ?? null;
+}
+
+function buildCrossAreaLinks(layouts, lookupsByArea, linkPairs) {
+  const links = [];
+
+  layouts.forEach((layout) => {
+    const fromLookup = lookupsByArea.get(layout.areaId);
+    if (!fromLookup) return;
+
+    Object.entries(layout.parsed.roomConnections ?? {}).forEach(([roomIndex, connectionList]) => {
+      const fromRoom = fromLookup.byIndex.get(Number(roomIndex));
+      if (!fromRoom) return;
+
+      connectionList.forEach((connection) => {
+        const targetAreaId = parseAreaIdFromExit(connection.areaExit);
+        if (!targetAreaId) return;
+        const targetLookup = lookupsByArea.get(targetAreaId);
+        const toRoom = findAreaEntrance(targetLookup);
+        if (!toRoom) return;
+
+        const key = [
+          `${fromRoom.areaId}:${fromRoom.id}`,
+          `${toRoom.areaId}:${toRoom.id}`,
+        ]
+          .sort()
+          .join('->');
+        if (linkPairs.has(key)) return;
+        linkPairs.add(key);
+
+        links.push({
+          from: fromRoom,
+          to: toRoom,
+          linkType: connection.linkType ?? LINK_TYPES.LINK_TO_ANOTHER_AREA,
+          exitType: connection.exitType,
+          areaId: fromRoom.areaId,
+          crossArea: true,
+        });
+      });
+    });
+  });
+
+  return links;
+}
+
 async function loadArea(source) {
   const response = await fetch(source.file);
   if (!response.ok) {
@@ -214,19 +314,30 @@ async function loadArea(source) {
   const parsed = await response.json();
   const areaId = source.areaId ?? deriveAreaIdFromFile(source.file);
   const areaName = source.displayName ?? parsed.metadata?.area_name ?? `Area ${areaId}`;
-  const { rooms, lookups } = buildWorldRooms(parsed, areaId, areaName);
-  const links = buildWorldLinks(parsed, lookups, areaId);
+  const solvedCoords = solveRoomCoordinates(parsed, areaId);
+  const bounds = computeBoundsFromCoords(solvedCoords);
 
-  return { rooms, links, areaId, areaName };
+  return { areaId, areaName, parsed, solvedCoords, bounds };
 }
 
 async function loadWorld() {
-  const results = await Promise.all(MAP_SOURCES.map((source) => loadArea(source)));
+  const layouts = await Promise.all(MAP_SOURCES.map((source) => loadArea(source)));
+  const areaOffsets = computeAreaOffsets(layouts);
   const world = { rooms: [], links: [] };
-  results.forEach((result) => {
-    world.rooms.push(...result.rooms);
-    world.links.push(...result.links);
+  const lookupsByArea = new Map();
+  const linkPairs = new Set();
+
+  layouts.forEach((layout) => {
+    const offset = areaOffsets[layout.areaId] ?? { x: 0, y: 0, z: 0 };
+    const { rooms, lookups } = buildWorldRooms(layout.parsed, layout.areaId, layout.areaName, offset, layout.solvedCoords);
+    const links = buildWorldLinks(layout.parsed, lookups, layout.areaId, linkPairs);
+
+    world.rooms.push(...rooms);
+    world.links.push(...links);
+    lookupsByArea.set(layout.areaId, lookups);
   });
+
+  world.links.push(...buildCrossAreaLinks(layouts, lookupsByArea, linkPairs));
   return world;
 }
 
@@ -235,20 +346,26 @@ function createRoomMesh(room) {
     color: room.pkColor ?? room.color,
     emissive: room.pkColor ? room.pkColor.clone().multiplyScalar(0.35) : undefined,
   });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(ROOM_RADIUS, 18, 14), material);
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(ROOM_SIZE, ROOM_SIZE, ROOM_SIZE), material);
   mesh.position.copy(room.position);
   mesh.userData = { room };
   return mesh;
 }
 
-function createLink(from, to, linkType) {
-  const points = [from.position, to.position];
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
-  const material = new THREE.LineBasicMaterial({
+function createLink(from, to, linkType, { crossArea = false } = {}) {
+  const startToEnd = new THREE.Vector3().subVectors(to.position, from.position);
+  const length = startToEnd.length();
+  const radius = crossArea ? 0.12 : 0.07;
+  const geometry = new THREE.CylinderGeometry(radius, radius, length, 10);
+  const material = new THREE.MeshStandardMaterial({
     color: linkType === LINK_TYPES.LINK_TWOWAY ? '#f97316' : '#f43f5e',
-    linewidth: 1,
+    emissive: crossArea ? new THREE.Color('#f43f5e').multiplyScalar(0.25) : undefined,
   });
-  return new THREE.Line(geometry, material);
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.copy(from.position).addScaledVector(startToEnd, 0.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), startToEnd.clone().normalize());
+  mesh.userData = { from, to, linkType, crossArea };
+  return mesh;
 }
 
 function formatRoom(room) {
@@ -329,7 +446,7 @@ function initScene(world) {
   scene.add(roomGroup);
 
   world.rooms.forEach((room) => roomGroup.add(createRoomMesh(room)));
-  world.links.forEach((link) => linkGroup.add(createLink(link.from, link.to, link.linkType)));
+  world.links.forEach((link) => linkGroup.add(createLink(link.from, link.to, link.linkType, { crossArea: link.crossArea })));
 
   const selectionElement = document.getElementById('selection');
   const raycaster = new THREE.Raycaster();
