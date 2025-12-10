@@ -41,6 +41,7 @@ const AREA_OFFSETS = {
 const ROOM_SIZE = 1;
 const WORLD_SCALE = 2;
 const MIN_MAP_VERTICAL_GAP = 1;
+const ROAD_NAME_PATTERN = /\b(path|paths|pathway|intersection|intersections|crossroad|crossroads|road|roads|rd\.?|avenue|avenues|ave\.?|street|streets|st\.?)\b/i;
 
 const DIRECTION_OFFSETS = {
   north: { x: 1, y: 0, z: 0 },
@@ -591,12 +592,20 @@ async function loadWorld() {
   return { layouts, ...buildWorldFromLayouts(layouts) };
 }
 
+function isRoadLikeRoom(name) {
+  return ROAD_NAME_PATTERN.test(name ?? '');
+}
+
 function createRoomMesh(room) {
+  const roadLike = isRoadLikeRoom(room.name);
   const material = new THREE.MeshStandardMaterial({
-    color: room.pkColor ?? room.color,
-    emissive: room.pkColor ? room.pkColor.clone().multiplyScalar(0.35) : undefined,
+    color: roadLike ? new THREE.Color('#374151') : room.pkColor ?? room.color,
+    emissive: room.pkColor && !roadLike ? room.pkColor.clone().multiplyScalar(0.35) : undefined,
   });
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(ROOM_SIZE, ROOM_SIZE, ROOM_SIZE), material);
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(ROOM_SIZE, ROOM_SIZE, ROOM_SIZE * (roadLike ? 0.25 : 1)),
+    material,
+  );
   mesh.position.copy(room.position);
   mesh.userData = { room };
   return mesh;
