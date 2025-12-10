@@ -1,0 +1,29 @@
+3D Mapper quickstart
+--------------------
+
+Prerequisites
+- Python 3.9+ (stdlib only; no external deps) for regenerating parsed map JSON.
+- A local static file server to load the renderer assets (e.g., `python -m http.server`).
+
+Prepare JSON data
+1) From the repo root, run `python parse_maps.py`. This reads the HTML map sources in `Maps/` and writes fresh JSON to `parsed_maps/`.
+2) If you add new HTML maps, drop them into `Maps/` before running the script so they get picked up automatically.
+3) If you want to verify parsing after edits, re-run `python parse_maps.py` and inspect the console for the generated file list.
+
+Render the world
+1) Start a static server in the repo root, e.g. `python -m http.server 8000`.
+2) Visit `http://localhost:8000/world_renderer.html` in a modern browser.
+3) Use mouse + OrbitControls to pan/zoom/orbit. Hover rooms to view details; exits are colored (orange for two-way, pink for one-way).
+
+Origin and coordinates
+- The world origin is pinned to Aylor room id 2 at logical coordinates (0, 0, 0). All areas are offset relative to that anchor, so
+  Area 18 connections align to it.
+- Axes use a north/east/up orientation: +X = north, -X = south; +Y = east, -Y = west; +Z = up, -Z = down.
+- Up/down exits stack rooms vertically: an `up` exit places the target at the same X/Y with Z+1 relative to the source; a `down` exit
+  sets the target to Z-1. Cross-area anchors (e.g., Aylorian Academy room 136 connects down into Aylor room 2) preserve this
+  relationship.
+- Separate maps are spaced along their connection axes so they stay visually distinct while keeping exits aligned (e.g., Aylorian
+  Academy sits at least 1 unit higher than the tallest room in the Grand City of Aylor even though its down exit lines up to the
+  origin room).
+- Rooms that can only be exited from (no inbound links) are leaned diagonally away from their exits so they don’t overlap with nearby
+  stacks while still preserving the exit direction.
