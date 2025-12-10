@@ -24222,7 +24222,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 11
+      "y": 11,
+      "areaUid": "aylor",
+      "uid": "32692",
+      "terrain": "inside",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24234,7 +24243,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32572",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24246,7 +24264,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 10
+      "y": 10,
+      "areaUid": "aylor",
+      "uid": "32541",
+      "terrain": "temple",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24258,7 +24285,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32569",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24270,7 +24306,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 19,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32674",
+      "terrain": "dark",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24282,7 +24327,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 1,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32686",
+      "terrain": "quicksand",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 1,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24294,7 +24348,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32585",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24306,7 +24369,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 33
+      "y": 33,
+      "areaUid": "aylor",
+      "uid": "32575",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24318,7 +24390,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32508",
+      "terrain": "field2",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24330,7 +24411,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32508",
+      "terrain": "field2",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24354,7 +24444,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32573",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24366,7 +24465,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32474",
+      "terrain": "lottery",
+      "building": null,
+      "info": "bank",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24378,7 +24486,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32461",
+      "terrain": "shop",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24390,7 +24507,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32476",
+      "terrain": "shop",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24402,7 +24528,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32548",
+      "terrain": "field",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24414,7 +24549,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 20
+      "y": 20,
+      "areaUid": "aylor",
+      "uid": "32458",
+      "terrain": "city",
+      "building": null,
+      "info": "questor",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24426,7 +24570,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 32
+      "y": 32,
+      "areaUid": "aylor",
+      "uid": "32577",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24438,7 +24591,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "32550",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24450,7 +24612,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 12
+      "y": 12,
+      "areaUid": "aylor",
+      "uid": "32603",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24462,7 +24633,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32587",
+      "terrain": "shop",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24474,7 +24654,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32672",
+      "terrain": "inside",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24486,7 +24675,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 10
+      "y": 10,
+      "areaUid": "aylor",
+      "uid": "32542",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24498,7 +24696,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 7
+      "y": 7,
+      "areaUid": "aylor",
+      "uid": "32557",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24510,7 +24717,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 7
+      "y": 7,
+      "areaUid": "aylor",
+      "uid": "32557",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24522,7 +24738,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "32545",
+      "terrain": "field3",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24534,7 +24759,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 10
+      "y": 10,
+      "areaUid": "aylor",
+      "uid": "32549",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24546,7 +24780,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 34
+      "y": 34,
+      "areaUid": "aylor",
+      "uid": "32654",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24558,7 +24801,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 35
+      "y": 35,
+      "areaUid": "aylor",
+      "uid": "32654",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24570,7 +24822,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 20,
-      "y": 32
+      "y": 32,
+      "areaUid": "aylor",
+      "uid": "32660",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24582,7 +24843,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 19,
-      "y": 33
+      "y": 33,
+      "areaUid": "aylor",
+      "uid": "32659",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24594,7 +24864,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 33
+      "y": 33,
+      "areaUid": "aylor",
+      "uid": "32656",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24606,7 +24885,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 33
+      "y": 33,
+      "areaUid": "aylor",
+      "uid": "32657",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24618,7 +24906,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 34
+      "y": 34,
+      "areaUid": "aylor",
+      "uid": "32658",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24630,7 +24927,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32608",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe,shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24642,7 +24948,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 12
+      "y": 12,
+      "areaUid": "aylor",
+      "uid": "32696",
+      "terrain": "city",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24654,7 +24969,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32676",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,trainer",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24666,7 +24990,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32675",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,questor",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24678,7 +25011,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 10
+      "y": 10,
+      "areaUid": "aylor",
+      "uid": "32614",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24690,7 +25032,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 7
+      "y": 7,
+      "areaUid": "aylor",
+      "uid": "32562",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24702,7 +25053,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 32
+      "y": 32,
+      "areaUid": "aylor",
+      "uid": "32536",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24714,7 +25074,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 10
+      "y": 10,
+      "areaUid": "aylor",
+      "uid": "32544",
+      "terrain": "field",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24726,7 +25095,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 15
+      "y": 15,
+      "areaUid": "aylor",
+      "uid": "32606",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24738,7 +25116,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32486",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24750,7 +25137,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32488",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24762,7 +25158,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32480",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24774,7 +25179,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32480",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24786,7 +25200,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32480",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24798,7 +25221,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32480",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24810,7 +25242,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32489",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24822,7 +25263,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32616",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24834,7 +25284,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32615",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24846,7 +25305,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32617",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24858,7 +25326,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32559",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24870,7 +25347,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 19,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32434",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24882,7 +25368,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32581",
+      "terrain": "field",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24906,7 +25401,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 10
+      "y": 10,
+      "areaUid": "aylor",
+      "uid": "32543",
+      "terrain": "plain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24918,7 +25422,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32580",
+      "terrain": "field",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24930,7 +25443,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32526",
+      "terrain": "crossroad_se",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24942,7 +25464,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32521",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24954,7 +25485,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32521",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24966,7 +25506,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32523",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24978,7 +25527,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 15
+      "y": 15,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -24990,7 +25548,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25002,7 +25569,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25014,7 +25590,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25026,7 +25611,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25038,7 +25632,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25050,7 +25653,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25062,7 +25674,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25074,7 +25695,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25086,7 +25716,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25098,7 +25737,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25110,7 +25758,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 15
+      "y": 15,
+      "areaUid": "aylor",
+      "uid": "32449",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25122,7 +25779,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 24
+      "y": 24,
+      "areaUid": "aylor",
+      "uid": "32487",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25134,7 +25800,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32462",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25146,7 +25821,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32462",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25158,7 +25842,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32462",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25170,7 +25863,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32462",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25182,7 +25884,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32462",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25194,7 +25905,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32462",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25206,7 +25926,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 24
+      "y": 24,
+      "areaUid": "aylor",
+      "uid": "32483",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25218,7 +25947,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32483",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25230,7 +25968,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 27
+      "y": 27,
+      "areaUid": "aylor",
+      "uid": "32483",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25242,7 +25989,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32483",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25254,7 +26010,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32483",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25266,7 +26031,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32529",
+      "terrain": "crossroad_se",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25278,7 +26052,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32607",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe,shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25290,7 +26073,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32600",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe,shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25302,7 +26094,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32594",
+      "terrain": "castle",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25314,7 +26115,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 11
+      "y": 11,
+      "areaUid": "aylor",
+      "uid": "32611",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25326,7 +26136,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 11
+      "y": 11,
+      "areaUid": "aylor",
+      "uid": "32612",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25338,7 +26157,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 20
+      "y": 20,
+      "areaUid": "aylor",
+      "uid": "32596",
+      "terrain": "castle",
+      "building": null,
+      "info": "trainer,guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25350,7 +26178,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 2,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32689",
+      "terrain": "inside",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25362,7 +26199,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 10
+      "y": 10,
+      "areaUid": "aylor",
+      "uid": "32540",
+      "terrain": "temple",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25374,7 +26220,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 19
+      "y": 19,
+      "areaUid": "aylor",
+      "uid": "32590",
+      "terrain": "castle",
+      "building": null,
+      "info": "trainer,guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25386,7 +26241,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32591",
+      "terrain": "castle",
+      "building": null,
+      "info": "trainer,guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25398,7 +26262,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32593",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,trainer,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25410,7 +26283,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32592",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,trainer,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25422,7 +26304,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 19
+      "y": 19,
+      "areaUid": "aylor",
+      "uid": "32595",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,trainer,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25434,7 +26325,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 20
+      "y": 20,
+      "areaUid": "aylor",
+      "uid": "32589",
+      "terrain": "castle",
+      "building": null,
+      "info": "trainer,guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25446,7 +26346,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32482",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25458,7 +26367,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 3,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32642",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25470,7 +26388,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 4,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32642",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25482,7 +26409,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 4,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32642",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25494,7 +26430,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 3,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32642",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25506,7 +26451,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 1,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32647",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25518,7 +26472,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 2,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32646",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25530,7 +26493,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 4,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32667",
+      "terrain": "shop",
+      "building": null,
+      "info": "bank,safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25542,7 +26514,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 3,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32670",
+      "terrain": "shop",
+      "building": null,
+      "info": "bank,safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25554,7 +26535,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32666",
+      "terrain": "shop",
+      "building": null,
+      "info": "bank,safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25566,7 +26556,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 4,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32669",
+      "terrain": "shop",
+      "building": null,
+      "info": "bank,safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25578,7 +26577,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 4,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "49695",
+      "terrain": "palace_room",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25590,7 +26598,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32599",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25602,7 +26619,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 19
+      "y": 19,
+      "areaUid": "aylor",
+      "uid": "32687",
+      "terrain": "palace_room",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25614,7 +26640,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32688",
+      "terrain": "palace_room",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25626,7 +26661,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32561",
+      "terrain": "temple",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25638,7 +26682,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 11
+      "y": 11,
+      "areaUid": "aylor",
+      "uid": "32604",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe,shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25650,7 +26703,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32465",
+      "terrain": "shop",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25662,7 +26724,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32490",
+      "terrain": "smallroad_ew",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25674,7 +26745,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32490",
+      "terrain": "smallroad_ew",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25686,7 +26766,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32490",
+      "terrain": "smallroad_ew",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25698,7 +26787,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32490",
+      "terrain": "smallroad_ew",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25710,7 +26808,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 12
+      "y": 12,
+      "areaUid": "aylor",
+      "uid": "35679",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25722,7 +26829,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32467",
+      "terrain": "shop",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25734,7 +26850,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32576",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25746,7 +26871,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32442",
+      "terrain": "city",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25758,7 +26892,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32571",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25770,7 +26913,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 11
+      "y": 11,
+      "areaUid": "aylor",
+      "uid": "32610",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25782,7 +26934,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32451",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25794,7 +26955,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32473",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25806,7 +26976,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 1
+      "y": 1,
+      "areaUid": "aylor",
+      "uid": "32568",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25818,7 +26997,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32464",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25830,7 +27018,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "32546",
+      "terrain": "field",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25842,7 +27039,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32500",
+      "terrain": "shore",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25854,7 +27060,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32500",
+      "terrain": "shore",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25866,7 +27081,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32500",
+      "terrain": "shore",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25878,7 +27102,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32500",
+      "terrain": "shore",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25890,7 +27123,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32500",
+      "terrain": "shore",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25902,7 +27144,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32500",
+      "terrain": "shore",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25914,7 +27165,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32472",
+      "terrain": "shop",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25926,7 +27186,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32420",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25938,7 +27207,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 27
+      "y": 27,
+      "areaUid": "aylor",
+      "uid": "32494",
+      "terrain": "beach",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25950,7 +27228,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 27
+      "y": 27,
+      "areaUid": "aylor",
+      "uid": "32494",
+      "terrain": "beach",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25962,7 +27249,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 27
+      "y": 27,
+      "areaUid": "aylor",
+      "uid": "32494",
+      "terrain": "beach",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25974,7 +27270,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 27
+      "y": 27,
+      "areaUid": "aylor",
+      "uid": "32494",
+      "terrain": "beach",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25986,7 +27291,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 27
+      "y": 27,
+      "areaUid": "aylor",
+      "uid": "32494",
+      "terrain": "beach",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -25998,7 +27312,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 27
+      "y": 27,
+      "areaUid": "aylor",
+      "uid": "32494",
+      "terrain": "beach",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26010,7 +27333,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26022,7 +27354,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26034,7 +27375,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26046,7 +27396,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26058,7 +27417,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26070,7 +27438,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26082,7 +27459,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26094,7 +27480,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26106,7 +27501,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 32
+      "y": 32,
+      "areaUid": "aylor",
+      "uid": "32506",
+      "terrain": "waterswim",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26118,7 +27522,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 11
+      "y": 11,
+      "areaUid": "aylor",
+      "uid": "32605",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26130,7 +27543,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 7
+      "y": 7,
+      "areaUid": "aylor",
+      "uid": "32556",
+      "terrain": "temple",
+      "building": null,
+      "info": "bank,safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26142,7 +27564,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32671",
+      "terrain": "city",
+      "building": null,
+      "info": "safe,trainer,questor",
+      "notes": null,
+      "noportal": 1,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26154,7 +27585,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 32
+      "y": 32,
+      "areaUid": "aylor",
+      "uid": "32574",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26166,7 +27606,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32530",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26178,7 +27627,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32530",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26190,7 +27648,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32530",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26202,7 +27669,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 31
+      "y": 31,
+      "areaUid": "aylor",
+      "uid": "32533",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26214,7 +27690,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32431",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26226,7 +27711,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32431",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26238,7 +27732,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32431",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26250,7 +27753,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32431",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26262,7 +27774,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32431",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26274,7 +27795,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32431",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26286,7 +27816,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32421",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26298,7 +27837,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32421",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26310,7 +27858,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32421",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26322,7 +27879,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32421",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26334,7 +27900,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32421",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26346,7 +27921,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 4,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32421",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26358,7 +27942,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32555",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26370,7 +27963,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 4,
-      "y": 21
+      "y": 21,
+      "areaUid": "aylor",
+      "uid": "32680",
+      "terrain": "inside",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26382,7 +27984,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 4,
-      "y": 20
+      "y": 20,
+      "areaUid": "aylor",
+      "uid": "32680",
+      "terrain": "inside",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26394,7 +28005,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 4,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32680",
+      "terrain": "inside",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26406,7 +28026,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 2,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32685",
+      "terrain": "underground",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 1,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26418,7 +28047,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 2,
-      "y": 24
+      "y": 24,
+      "areaUid": "aylor",
+      "uid": "32685",
+      "terrain": "underground",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 1,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26430,7 +28068,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 3,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32685",
+      "terrain": "underground",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 1,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26442,7 +28089,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 2,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32685",
+      "terrain": "underground",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 1,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26454,7 +28110,16 @@
       "pk": true,
       "roomcolor": "",
       "x": 1,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32685",
+      "terrain": "underground",
+      "building": null,
+      "info": "pk",
+      "notes": null,
+      "noportal": 1,
+      "norecall": 1,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26466,7 +28131,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 23
+      "y": 23,
+      "areaUid": "aylor",
+      "uid": "32469",
+      "terrain": "shop",
+      "building": null,
+      "info": "bank,safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26478,7 +28152,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 14,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32609",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe,shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26490,7 +28173,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 12
+      "y": 12,
+      "areaUid": "aylor",
+      "uid": "32601",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26502,7 +28194,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 12
+      "y": 12,
+      "areaUid": "aylor",
+      "uid": "32602",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26514,7 +28215,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32547",
+      "terrain": "field3",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26526,7 +28236,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "45176",
+      "terrain": "inside",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26538,7 +28257,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 11
+      "y": 11,
+      "areaUid": "aylor",
+      "uid": "32539",
+      "terrain": "temple",
+      "building": null,
+      "info": "safe,healer",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26550,7 +28278,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32463",
+      "terrain": "shop",
+      "building": null,
+      "info": "shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26562,7 +28299,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 7
+      "y": 7,
+      "areaUid": "aylor",
+      "uid": "32558",
+      "terrain": "temple",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26574,7 +28320,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32690",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26586,7 +28341,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 16,
-      "y": 10
+      "y": 10,
+      "areaUid": "aylor",
+      "uid": "32613",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26598,7 +28362,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 12
+      "y": 12,
+      "areaUid": "aylor",
+      "uid": "32418",
+      "terrain": "aylorcity",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26610,7 +28383,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 34
+      "y": 34,
+      "areaUid": "aylor",
+      "uid": "32538",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26622,7 +28404,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32441",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26634,7 +28425,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 19
+      "y": 19,
+      "areaUid": "aylor",
+      "uid": "32441",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26646,7 +28446,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32441",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26658,7 +28467,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32441",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26670,7 +28488,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 19
+      "y": 19,
+      "areaUid": "aylor",
+      "uid": "32441",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26682,7 +28509,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 19
+      "y": 19,
+      "areaUid": "aylor",
+      "uid": "32441",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26694,7 +28530,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 18
+      "y": 18,
+      "areaUid": "aylor",
+      "uid": "32441",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26706,7 +28551,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 17
+      "y": 17,
+      "areaUid": "aylor",
+      "uid": "32441",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26718,7 +28572,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 5
+      "y": 5,
+      "areaUid": "aylor",
+      "uid": "49608",
+      "terrain": "flowers2",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26730,7 +28593,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 25
+      "y": 25,
+      "areaUid": "aylor",
+      "uid": "32479",
+      "terrain": "trail_ew",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26742,7 +28614,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 15,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32512",
+      "terrain": "forest",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26754,7 +28635,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32691",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26766,7 +28656,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32570",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26778,7 +28677,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 16
+      "y": 16,
+      "areaUid": "aylor",
+      "uid": "32673",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26790,7 +28698,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 6
+      "y": 6,
+      "areaUid": "aylor",
+      "uid": "45544",
+      "terrain": "flowers1",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26814,7 +28731,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "32551",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26826,7 +28752,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "32551",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26838,7 +28773,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 12,
-      "y": 4
+      "y": 4,
+      "areaUid": "aylor",
+      "uid": "32563",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26850,7 +28794,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 4
+      "y": 4,
+      "areaUid": "aylor",
+      "uid": "32563",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26862,7 +28815,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 4
+      "y": 4,
+      "areaUid": "aylor",
+      "uid": "32563",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26874,7 +28836,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 3
+      "y": 3,
+      "areaUid": "aylor",
+      "uid": "32563",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26886,7 +28857,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 2
+      "y": 2,
+      "areaUid": "aylor",
+      "uid": "32563",
+      "terrain": "city",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26898,7 +28878,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32578",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26910,7 +28899,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32578",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26922,7 +28920,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32584",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26934,7 +28941,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 2,
-      "y": 2
+      "y": 2,
+      "areaUid": "aylor",
+      "uid": "32618",
+      "terrain": "castle",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26946,7 +28962,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 3,
-      "y": 1
+      "y": 1,
+      "areaUid": "aylor",
+      "uid": "32620",
+      "terrain": "castle",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26958,7 +28983,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 2,
-      "y": 7
+      "y": 7,
+      "areaUid": "aylor",
+      "uid": "32632",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26970,7 +29004,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 2,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32632",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26982,7 +29025,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "32631",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -26994,7 +29046,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 2,
-      "y": 6
+      "y": 6,
+      "areaUid": "aylor",
+      "uid": "32633",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27006,7 +29067,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 4,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "32629",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27018,7 +29088,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 3,
-      "y": 9
+      "y": 9,
+      "areaUid": "aylor",
+      "uid": "32630",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27030,7 +29109,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 1,
-      "y": 6
+      "y": 6,
+      "areaUid": "aylor",
+      "uid": "32635",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27042,7 +29130,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 1
+      "y": 1,
+      "areaUid": "aylor",
+      "uid": "32639",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27054,7 +29151,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 2
+      "y": 2,
+      "areaUid": "aylor",
+      "uid": "32636",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27066,7 +29172,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 4
+      "y": 4,
+      "areaUid": "aylor",
+      "uid": "32638",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27078,7 +29193,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 19,
-      "y": 1
+      "y": 1,
+      "areaUid": "aylor",
+      "uid": "32641",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27090,7 +29214,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 2
+      "y": 2,
+      "areaUid": "aylor",
+      "uid": "32640",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27102,7 +29235,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 3
+      "y": 3,
+      "areaUid": "aylor",
+      "uid": "32637",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27114,7 +29256,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 3
+      "y": 3,
+      "areaUid": "aylor",
+      "uid": "32622",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27126,7 +29277,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 3
+      "y": 3,
+      "areaUid": "aylor",
+      "uid": "32622",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27138,7 +29298,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 7,
-      "y": 4
+      "y": 4,
+      "areaUid": "aylor",
+      "uid": "32622",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27150,7 +29319,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 4
+      "y": 4,
+      "areaUid": "aylor",
+      "uid": "32622",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27162,7 +29340,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 1
+      "y": 1,
+      "areaUid": "aylor",
+      "uid": "32628",
+      "terrain": "inside",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27174,7 +29361,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 2
+      "y": 2,
+      "areaUid": "aylor",
+      "uid": "32626",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27186,7 +29382,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 6,
-      "y": 3
+      "y": 3,
+      "areaUid": "aylor",
+      "uid": "32627",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27198,7 +29403,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32662",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27210,7 +29424,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 21
+      "y": 21,
+      "areaUid": "aylor",
+      "uid": "32662",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27222,7 +29445,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 18,
-      "y": 20
+      "y": 20,
+      "areaUid": "aylor",
+      "uid": "32662",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27234,7 +29466,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 19,
-      "y": 19
+      "y": 19,
+      "areaUid": "aylor",
+      "uid": "32665",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27246,7 +29487,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 17,
-      "y": 21
+      "y": 21,
+      "areaUid": "aylor",
+      "uid": "32661",
+      "terrain": "castle",
+      "building": null,
+      "info": "safe,guild",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27258,7 +29508,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 2,
-      "y": 34
+      "y": 34,
+      "areaUid": "aylor",
+      "uid": "32651",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27270,7 +29529,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 2,
-      "y": 35
+      "y": 35,
+      "areaUid": "aylor",
+      "uid": "32649",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27282,7 +29550,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 3,
-      "y": 35
+      "y": 35,
+      "areaUid": "aylor",
+      "uid": "32650",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27294,7 +29571,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 3,
-      "y": 34
+      "y": 34,
+      "areaUid": "aylor",
+      "uid": "32652",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27306,7 +29592,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 1,
-      "y": 35
+      "y": 35,
+      "areaUid": "aylor",
+      "uid": "32648",
+      "terrain": "castle",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27318,7 +29613,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 4,
-      "y": 33
+      "y": 33,
+      "areaUid": "aylor",
+      "uid": "32653",
+      "terrain": "inside",
+      "building": null,
+      "info": "guild",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27330,7 +29634,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32553",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27342,7 +29655,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32586",
+      "terrain": "areaexit",
+      "building": null,
+      "info": "",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27354,7 +29676,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 13,
-      "y": 6
+      "y": 6,
+      "areaUid": "aylor",
+      "uid": "32668",
+      "terrain": "inside",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27378,7 +29709,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 22
+      "y": 22,
+      "areaUid": "aylor",
+      "uid": "32460",
+      "terrain": "hellfountain",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27390,7 +29730,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 10,
-      "y": 8
+      "y": 8,
+      "areaUid": "aylor",
+      "uid": "32554",
+      "terrain": "temple",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27402,7 +29751,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 3,
-      "y": 14
+      "y": 14,
+      "areaUid": "aylor",
+      "uid": "32427",
+      "terrain": "road_eastwest",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27414,7 +29772,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 8,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32582",
+      "terrain": "field",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27426,7 +29793,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27438,7 +29814,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 15
+      "y": 15,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27450,7 +29835,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 21
+      "y": 21,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27462,7 +29856,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 24
+      "y": 24,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27474,7 +29877,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 26
+      "y": 26,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27486,7 +29898,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 27
+      "y": 27,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27498,7 +29919,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 29
+      "y": 29,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27510,7 +29940,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27522,7 +29961,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 33
+      "y": 33,
+      "areaUid": "aylor",
+      "uid": "32419",
+      "terrain": "city",
+      "building": null,
+      "info": "safe",
+      "notes": null,
+      "noportal": 0,
+      "norecall": 0,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27534,7 +29982,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 11,
-      "y": 28
+      "y": 28,
+      "areaUid": "aylor",
+      "uid": "32520",
+      "terrain": "road_crossroads",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27546,7 +30003,16 @@
       "pk": false,
       "roomcolor": "",
       "x": 5,
-      "y": 13
+      "y": 13,
+      "areaUid": "aylor",
+      "uid": "32598",
+      "terrain": "shop",
+      "building": null,
+      "info": "safe,shop",
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     },
     {
       "aggroType": 0,
@@ -27558,8 +30024,24 @@
       "pk": false,
       "roomcolor": "",
       "x": 9,
-      "y": 30
+      "y": 30,
+      "areaUid": "aylor",
+      "uid": "32583",
+      "terrain": "field",
+      "building": null,
+      "info": null,
+      "notes": null,
+      "noportal": null,
+      "norecall": null,
+      "ignoreExitsMismatch": 0
     }
   ],
-  "sourceFile": "area18.html"
+  "sourceFile": "area18.html",
+  "areaMetadata": {
+    "uid": "aylor",
+    "name": "The Grand City of Aylor",
+    "color": "",
+    "flags": "quiet",
+    "texture": "stones.png"
+  }
 }
