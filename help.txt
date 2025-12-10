@@ -16,10 +16,12 @@ Render the world
 3) Use mouse + OrbitControls to pan/zoom/orbit. Hover rooms to view details; exits are colored (orange for two-way, pink for one-way).
 
 Origin and coordinates
-- The world origin is pinned to Aylor room id 2 at map coordinates (11, 12, 0). All areas are offset relative to that anchor.
+- The world origin is pinned to Aylor room id 2 at logical coordinates (0, 0, 0). All areas are offset relative to that anchor, so
+  Area 18 connections align to it.
 - Axes use a north/east/up orientation: +X = north, -X = south; +Y = east, -Y = west; +Z = up, -Z = down.
 - Up/down exits stack rooms vertically: an `up` exit places the target at the same X/Y with Z+1 relative to the source; a `down` exit
-  sets the target to Z-1.
+  sets the target to Z-1. Cross-area anchors (e.g., Aylorian Academy room 136 connects down into Aylor room 2) preserve this
+  relationship.
 - Separate maps are vertically spaced: each non-origin area is lifted so its lowest room is at least 1 unit above the highest placed
   room in the previously stacked areas (e.g., Aylorian Academy sits at least 1 unit higher than the tallest room in the Grand City
   of Aylor).

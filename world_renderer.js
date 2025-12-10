@@ -13,8 +13,18 @@ const LINK_TYPES = {
 const ORIGIN_REFERENCE = {
   areaId: 18,
   roomId: 2,
-  coordinates: { x: 11, y: 12, z: 0 },
+  coordinates: { x: 0, y: 0, z: 0 },
 };
+
+const CROSS_AREA_ANCHORS = [
+  {
+    areaId: 258,
+    roomId: 136,
+    direction: 'down',
+    targetAreaId: 18,
+    targetRoomId: 2,
+  },
+];
 
 function computeAreaOffset(anchorCoordinates) {
   return {
@@ -232,6 +242,46 @@ function buildWorldLinks(areaData, lookups, areaId, seenPairs = new Set()) {
 
 function computeAreaOffsets(layouts) {
   const offsets = { ...AREA_OFFSETS };
+  const layoutsByArea = new Map(layouts.map((layout) => [layout.areaId, layout]));
+
+  function resolveAnchorOffsets() {
+    let placed = false;
+
+    CROSS_AREA_ANCHORS.forEach((anchor) => {
+      if (offsets[anchor.areaId]) return;
+      const targetOffset = offsets[anchor.targetAreaId];
+      if (!targetOffset) return;
+
+      const layout = layoutsByArea.get(anchor.areaId);
+      const targetLayout = layoutsByArea.get(anchor.targetAreaId);
+      if (!layout || !targetLayout) return;
+
+      const sourceIndex = layout.roomIndexById.get(anchor.roomId);
+      const targetIndex = targetLayout.roomIndexById.get(anchor.targetRoomId);
+      if (sourceIndex == null || targetIndex == null) return;
+
+      const sourceCoords = layout.solvedCoords[sourceIndex];
+      const targetCoords = targetLayout.solvedCoords[targetIndex];
+      if (!sourceCoords || !targetCoords) return;
+
+      const delta = DIRECTION_OFFSETS[anchor.direction?.toLowerCase?.() ?? ''] ?? { x: 0, y: 0, z: 0 };
+
+      offsets[anchor.areaId] = {
+        x: targetCoords.x + (targetOffset?.x ?? 0) - delta.x - sourceCoords.x,
+        y: targetCoords.y + (targetOffset?.y ?? 0) - delta.y - sourceCoords.y,
+        z: (targetCoords.z ?? 0) + (targetOffset?.z ?? 0) - delta.z - (sourceCoords.z ?? 0),
+      };
+
+      placed = true;
+    });
+
+    return placed;
+  }
+
+  while (resolveAnchorOffsets()) {
+    // Keep resolving anchors until no new offsets can be derived.
+  }
+
   let highestPlacedZ = Number.NEGATIVE_INFINITY;
 
   layouts.forEach((layout) => {
@@ -242,7 +292,7 @@ function computeAreaOffsets(layouts) {
 
   layouts.forEach((layout) => {
     if (offsets[layout.areaId]) return;
-    const baseZ = (highestPlacedZ === Number.NEGATIVE_INFINITY ? 0 : highestPlacedZ + MIN_MAP_VERTICAL_GAP);
+    const baseZ = highestPlacedZ === Number.NEGATIVE_INFINITY ? 0 : highestPlacedZ + MIN_MAP_VERTICAL_GAP;
     const offsetZ = baseZ - layout.bounds.minZ;
     offsets[layout.areaId] = { x: 0, y: 0, z: offsetZ };
     highestPlacedZ = Math.max(highestPlacedZ, layout.bounds.maxZ + offsetZ);
@@ -316,8 +366,9 @@ async function loadArea(source) {
   const areaName = source.displayName ?? parsed.metadata?.area_name ?? `Area ${areaId}`;
   const solvedCoords = solveRoomCoordinates(parsed, areaId);
   const bounds = computeBoundsFromCoords(solvedCoords);
+  const roomIndexById = new Map(parsed.rooms.map((room) => [room.id, room.index]));
 
-  return { areaId, areaName, parsed, solvedCoords, bounds };
+  return { areaId, areaName, parsed, solvedCoords, bounds, roomIndexById };
 }
 
 async function loadWorld() {
