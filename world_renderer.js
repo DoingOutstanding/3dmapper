@@ -101,8 +101,8 @@ function normalizeRoomPosition(room, areaOffset, solvedCoords) {
   return new THREE.Vector3(
     // X axis = north/south (positive north).
     (coordinates.x + (areaOffset?.x ?? 0)) * WORLD_SCALE,
-    // Y axis = east/west (positive east).
-    (coordinates.y + (areaOffset?.y ?? 0)) * WORLD_SCALE,
+    // Y axis = east/west (positive east). Flip to correct mirroring.
+    -(coordinates.y + (areaOffset?.y ?? 0)) * WORLD_SCALE,
     // Z axis = up/down. Stack up/down rooms along Z.
     ((coordinates.z ?? 0) + (areaOffset?.z ?? 0)) * WORLD_SCALE,
   );
@@ -881,6 +881,7 @@ function initScene(world, { onRoomSelected } = {}) {
   const surfaceGroup = new THREE.Group();
   const roomGroup = new THREE.Group();
   const linkGroup = new THREE.Group();
+  const selectableMeshes = [];
   scene.add(surfaceGroup);
   scene.add(linkGroup);
   scene.add(roomGroup);
@@ -902,13 +903,21 @@ function initScene(world, { onRoomSelected } = {}) {
     clearGroup(surfaceGroup);
     clearGroup(roomGroup);
     clearGroup(linkGroup);
+    selectableMeshes.splice(0, selectableMeshes.length);
 
     const { surfaceMeshes, coveredRoomIds } = buildSurfaceMeshes(newWorld.rooms);
 
-    surfaceMeshes.forEach((mesh) => surfaceGroup.add(mesh));
+    surfaceMeshes.forEach((mesh) => {
+      surfaceGroup.add(mesh);
+      selectableMeshes.push(mesh);
+    });
     newWorld.rooms
       .filter((room) => !coveredRoomIds.has(`${room.areaId}:${room.id}`))
-      .forEach((room) => roomGroup.add(createRoomMesh(room)));
+      .forEach((room) => {
+        const mesh = createRoomMesh(room);
+        roomGroup.add(mesh);
+        selectableMeshes.push(mesh);
+      });
     newWorld.links.forEach((link) =>
       linkGroup.add(createLink(link.from, link.to, link.linkType, { crossArea: link.crossArea })),
     );
@@ -946,7 +955,7 @@ function initScene(world, { onRoomSelected } = {}) {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
-    const hits = raycaster.intersectObjects(roomGroup.children);
+    const hits = raycaster.intersectObjects(selectableMeshes);
     const hit = hits[0]?.object ?? null;
     setHovered(hit);
   }
