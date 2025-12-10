@@ -116,6 +116,17 @@ function computeBoundsFromCoords(solvedCoords) {
 
 function solveRoomCoordinates(areaData, areaId) {
   const coordinates = {};
+  const inboundCounts = new Map();
+
+  Object.entries(areaData.roomConnections ?? {}).forEach(([roomIndex, connectionList]) => {
+    const fromIndex = Number(roomIndex);
+    connectionList?.forEach((conn) => {
+      if (conn.to == null) return;
+      const targetIndex = Number(conn.to);
+      inboundCounts.set(targetIndex, (inboundCounts.get(targetIndex) ?? 0) + 1);
+    });
+  });
+
   const queue = [];
 
   const originRoom =
@@ -135,33 +146,107 @@ function solveRoomCoordinates(areaData, areaId) {
 
   const connections = areaData.roomConnections ?? {};
 
-  while (queue.length) {
-    const current = queue.shift();
-    const currentCoords = coordinates[current];
-    const exits = connections[current] ?? [];
+  let progressed = true;
+  while (progressed) {
+    progressed = false;
 
-    exits.forEach((conn) => {
-      if (conn.to == null) return;
-      const direction = conn.direction?.toLowerCase();
-      const delta = DIRECTION_OFFSETS[direction];
-      if (!delta) return;
+    // Forward propagation (known → unknown targets).
+    queue.splice(0).forEach((current) => {
+      const currentCoords = coordinates[current];
+      const exits = connections[current] ?? [];
 
-      const targetIndex = Number(conn.to);
-      if (coordinates[targetIndex] != null) return;
+      exits.forEach((conn) => {
+        if (conn.to == null) return;
+        const direction = conn.direction?.toLowerCase();
+        const delta = DIRECTION_OFFSETS[direction];
+        if (!delta) return;
 
-      coordinates[targetIndex] = {
-        x: currentCoords.x + delta.x,
-        y: currentCoords.y + delta.y,
-        z: currentCoords.z + delta.z,
-      };
-      queue.push(targetIndex);
+        const targetIndex = Number(conn.to);
+        if (coordinates[targetIndex] != null) return;
+
+        coordinates[targetIndex] = {
+          x: currentCoords.x + delta.x,
+          y: currentCoords.y + delta.y,
+          z: currentCoords.z + delta.z,
+        };
+        queue.push(targetIndex);
+        progressed = true;
+      });
+    });
+
+    // Reverse propagation (known target → unknown source).
+    Object.entries(connections).forEach(([roomIndex, connectionList]) => {
+      const fromIndex = Number(roomIndex);
+      const exits = connectionList ?? [];
+      exits.forEach((conn) => {
+        if (conn.to == null) return;
+        const direction = conn.direction?.toLowerCase();
+        const delta = DIRECTION_OFFSETS[direction];
+        if (!delta) return;
+
+        const targetIndex = Number(conn.to);
+        const targetCoords = coordinates[targetIndex];
+        if (!targetCoords || coordinates[fromIndex] != null) return;
+
+        coordinates[fromIndex] = {
+          x: targetCoords.x - delta.x,
+          y: targetCoords.y - delta.y,
+          z: (targetCoords.z ?? 0) - delta.z,
+        };
+        queue.push(fromIndex);
+        progressed = true;
+      });
     });
   }
 
-  areaData.rooms.forEach((room) => {
-    if (coordinates[room.index] == null) {
-      coordinates[room.index] = { x: 0, y: 0, z: 0 };
+  const usedKeys = new Set();
+  const coordKey = (coord) => `${coord.x},${coord.y},${coord.z}`;
+  const ensureUnique = (coord) => {
+    let attempt = 0;
+    let candidate = { ...coord };
+    while (usedKeys.has(coordKey(candidate))) {
+      const bump = 0.35 * (attempt + 1);
+      candidate = { x: coord.x + bump, y: coord.y + bump, z: coord.z + (attempt % 2 === 0 ? 0 : bump) };
+      attempt += 1;
     }
+    usedKeys.add(coordKey(candidate));
+    return candidate;
+  };
+
+  const unplacedFallback = () => {
+    const shift = usedKeys.size * 0.5;
+    return { x: shift, y: shift, z: 0 };
+  };
+
+  // Apply diagonal offsets for rooms that can only be exited from (no inbound links).
+  const diagonalOffsets = new Map();
+  Object.entries(connections).forEach(([roomIndex, connectionList]) => {
+    const fromIndex = Number(roomIndex);
+    const hasInbound = (inboundCounts.get(fromIndex) ?? 0) > 0;
+    const exits = connectionList ?? [];
+    if (hasInbound || !exits.length) return;
+
+    const firstExit = exits.find((conn) => conn.to != null && DIRECTION_OFFSETS[conn.direction?.toLowerCase?.() ?? '']);
+    if (!firstExit) return;
+
+    const targetIndex = Number(firstExit.to);
+    const targetCoords = coordinates[targetIndex];
+    const delta = DIRECTION_OFFSETS[firstExit.direction?.toLowerCase?.() ?? ''];
+    if (!targetCoords || !delta) return;
+
+    const lean = 0.35;
+    diagonalOffsets.set(fromIndex, {
+      x: targetCoords.x - delta.x + (delta.x === 0 ? lean : delta.x * 0.25),
+      y: targetCoords.y - delta.y + (delta.y === 0 ? lean : delta.y * 0.25),
+      z: (targetCoords.z ?? 0) - delta.z + (delta.z === 0 ? lean : delta.z * 0.25),
+    });
+  });
+
+  areaData.rooms.forEach((room) => {
+    const diagonal = diagonalOffsets.get(room.index);
+    const existing = coordinates[room.index];
+    const coord = diagonal ?? existing ?? unplacedFallback();
+    coordinates[room.index] = ensureUnique(coord);
   });
 
   return coordinates;

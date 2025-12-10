@@ -25,3 +25,5 @@ Origin and coordinates
 - Separate maps are spaced along their connection axes so they stay visually distinct while keeping exits aligned (e.g., Aylorian
   Academy sits at least 1 unit higher than the tallest room in the Grand City of Aylor even though its down exit lines up to the
   origin room).
+- Rooms that can only be exited from (no inbound links) are leaned diagonally away from their exits so they don’t overlap with nearby
+  stacks while still preserving the exit direction.
