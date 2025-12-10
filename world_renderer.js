@@ -851,7 +851,7 @@ function updateSelection(element, room) {
 
 function initScene(world, { onRoomSelected } = {}) {
   const canvas = document.getElementById('world');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -994,7 +994,7 @@ function initScene(world, { onRoomSelected } = {}) {
     const height = startOffset.z;
     const startAngle = Math.atan2(startOffset.y, startOffset.x);
 
-    const durationMs = 3500;
+    const durationMs = 7000;
     const fps = 15;
     const frames = Math.max(1, Math.round((durationMs / 1000) * fps));
 
@@ -1020,39 +1020,38 @@ function initScene(world, { onRoomSelected } = {}) {
       renderer.render(scene, camera);
     };
 
-    for (let i = 0; i < frames; i += 1) {
-      const angle = startAngle + (Math.PI * 2 * (i / frames));
-      renderAngle(angle);
-      gif.addFrame(renderer.domElement, { copy: true, delay: 1000 / fps });
-      await new Promise((resolve) => requestAnimationFrame(resolve));
+    try {
+      for (let i = 0; i < frames; i += 1) {
+        const angle = startAngle + (Math.PI * 2 * (i / frames));
+        renderAngle(angle);
+        gif.addFrame(renderer.domElement, { copy: true, delay: 1000 / fps });
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+      }
+
+      await new Promise((resolve, reject) => {
+        gif.on('finished', (blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'world-rotation.gif';
+          link.click();
+          URL.revokeObjectURL(url);
+          resolve();
+        });
+
+        gif.on('error', (error) => {
+          reject(error);
+        });
+
+        gif.render();
+      });
+    } finally {
+      controls.enabled = true;
+      camera.position.copy(originalPosition);
+      controls.target.copy(originalTarget);
+      controls.update();
+      renderer.render(scene, camera);
     }
-
-    return new Promise((resolve, reject) => {
-      gif.on('finished', (blob) => {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'world-rotation.gif';
-        link.click();
-        URL.revokeObjectURL(url);
-        controls.enabled = true;
-        camera.position.copy(originalPosition);
-        controls.target.copy(originalTarget);
-        controls.update();
-        renderer.render(scene, camera);
-        resolve();
-      });
-
-      gif.on('error', (error) => {
-        controls.enabled = true;
-        camera.position.copy(originalPosition);
-        controls.target.copy(originalTarget);
-        controls.update();
-        reject(error);
-      });
-
-      gif.render();
-    });
   }
 
   function selectRoom(predicate) {
