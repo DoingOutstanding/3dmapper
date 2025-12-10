@@ -1,0 +1,1795 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>The Grand City of Aylor @ The Gaardian Map Archives</title>
+        <style>
+            
+        </style>
+	<script type="text/javascript" src="wz_jsgraphics.js"></script>
+    </head>
+    <link rel="stylesheet" href="maps.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <!-- 
+    COPYRIGHT INFORMATION.
+    
+    The Mid'Gaardian Publishing Group encourages a community of sharing, 
+    so the Gaardian Map Archives code is copyleft, with some restrictions: 
+    you are free to reproduce, adapt to your own purposes, or otherwise 
+    distribute the source code behind the Gaardian Map Archives as long as 
+    any resulting copies or adapted versions are also bounded by the same 
+    copyleft licensing scheme. 
+    
+    As a common courtesy to your fellow mappers, you are required to give 
+    credit to any maps themselves (as opposed to the source code) 
+    that you did not create.
+    
+    This license in its entirety can be seen at http://maps.gaardian.com
+    -->
+    <body id="" onload="">
+        <div class="top-strip" id="top-strip">
+            <div class="header"><a class="main-site" href="http://gaardian.com">The Gaardian</a> <a href="http://maps.gaardian.com">Map Archives</a>
+    <div class="areaname">@ The Grand City of Aylor [<a id="moreinfo" href="javascript:void(0);">more info</a>]</div>
+            </div>
+        </div>
+<div id="areainfo" class="areainfo" style="display: none; z-index: 100;">[<strong>repop message</strong>] There are few things in this world as breathtaking as the Aylorian skyline at dawn.<br>
+    [<strong>created by</strong>] Aardwolf<br>
+    [<strong>level range</strong>] 1-201    	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<strong>room count</strong>] <span id="room_count_span">0</span> displayed on map; 273 explorable<br>
+        [<strong>wiki page</strong>] Open <a href="http://www.aardwolf.com/wiki/index.php/Area/TheGrandCityOfAylor">The Grand City of Aylor</a> on the Aardwolf Wiki
+</div>
+        <div class="areainfo" style="border-left: none;"><br /><strong>How to use this map:</strong><br>This map is interactive. Click on links (<img style="vertical-align: middle" src="link.png">) to show the connections between rooms. Hover over locks (<img style="vertical-align: middle" src="lock.png">) to view key details.<br>Press Ctrl-F (or Cmd-F) to use your browser to jump directly to any room on the map.</div>
+        <div class="searchbox">Find room: <input id="roomnamebox" type="text" size="15" onKeyPress="checkForEnter(event);"> <button onclick="submitSearchRoomsRequest(); return false;">Show me!</button><br>
+            <span id="searchboxresults" class="searchbox-results"></span></div>
+<div id="map-container" class="map-container">
+<script type="text/javascript">
+// From http://jennifermadden.com/javascript/stringEnterKeyDetector.html
+function checkForEnter(e){ //e is event object passed from function invocation
+    var characterCode; // literal character code will be stored in this variable
+
+    if (e && e.which) { //if which property of event object is supported (NN4)
+        e = e;
+        characterCode = e.which; //character code is contained in NN4's which property
+    }
+    else {
+        e = event;
+        characterCode = e.keyCode; //character code is contained in IE's keyCode property
+    }
+
+    if(characterCode == 13){ //if generated character code is equal to ascii 13 (if enter key)
+        submitSearchRoomsRequest();
+    }
+    return false;
+}
+
+function Room(roomid, roomname, xpos, ypos, isEntrance, aggroType, graffiti, pk, roomcolor, exitsArray) {
+    this.roomid = roomid;
+    this.roomname = roomname;
+    this.xpos = xpos;
+    this.ypos = ypos;
+    this.isEntrance = isEntrance;
+    this.aggroType = aggroType;
+    this.graffiti = graffiti;
+    this.pk = pk;
+    this.roomcolor = roomcolor;
+    this.exitsArray = exitsArray;
+}
+function RoomExit(room1, room2, linktype, exittype, exitaction, random, areaexit, doorinfo, forceBrokenExit) {
+    this.room1 = room1;
+    this.room2 = room2;
+    this.linktype = linktype;
+    this.exittype = exittype;
+    this.exitaction = exitaction;
+    this.random = random;
+    this.areaexit = areaexit; // instance of RoomAreaExitInfo
+    this.doorinfo = doorinfo;
+    /* whether to render the exit as broken - currently only valid for up/down exits
+     * ideally, this wouldn't be necessary, but there are too many tricky cases 
+     * not covered by the slope-room detection algorithm */
+    this.forceBrokenExit = forceBrokenExit;
+}
+function RoomAreaExitInfo(areaid, areaname) {
+    this.areaid = areaid;
+    this.areaname = areaname;
+}
+function DoorInfo(doorname, doortype, keyname, keydesc, keyroom) {
+    this.doorname = doorname;
+    this.doortype = doortype;
+    this.keyname = keyname;
+    this.keydesc = keydesc;
+    this.keyroom = keyroom;
+}
+function MapLabel(xpos, ypos, width, text, color, type) {
+    this.xpos = xpos;
+    this.ypos = ypos;
+    this.width = width;
+    this.labeltext = text;
+    this.labelcolor = color;
+    this.labeltype = type;
+}
+
+var LINK_ONEWAY = 0;
+var LINK_TWOWAY = 1;
+var LINK_DISCONNECTED = 2;
+var LINK_TO_ANOTHER_AREA = 3;
+
+var MAX_SLOPE = 6;
+
+var CONTAINER_HEIGHT = 255; // should map to #map-container's top pos
+var CONTAINER_PAD_LEFT = 0; // how much to shift #map-container to the right; by default, this is none
+var CONTAINER_PAD_RIGHT = 0; // how much to expand the #map-container and #top-strip; by default, this is none
+var CONTAINER_PAD_DOWN = 0; // how much to push the #map-container down; by default, this is none
+
+// section labels are bold, centered and 14pt
+var LABEL_TYPE_SECTION_CENTER = 1;
+var LABEL_TYPE_SECTION_TOP = 2;
+var LABEL_TYPE_SECTION_BOTTOM = 3;
+
+// jumbo-sized labels (bold, italicized, centered, 24pt)
+var LABEL_TYPE_SECTION_JUMBO_CENTER = 11;
+
+// plain text, left-justified, 10pt
+var LABEL_TYPE_INFORMATIONAL = 21;
+
+var EXIT_NORTH = 0;
+var EXIT_EAST = 1;
+var EXIT_SOUTH = 2;
+var EXIT_WEST = 3;
+var EXIT_UP = 4;
+var EXIT_DOWN = 5;
+
+var DOOR_CLOSED = 1;
+var DOOR_LOCKED = 2;
+
+var CUSTOMEXITFONT = "Verdana";
+var NORMALROOMFONT = "Tahoma";
+
+var rooms = new Array();
+var fill_grid = new Array(); // indicates whether the space in the grid is filled by a room or not
+var labels = new Array();
+
+rooms[1] = new Room(1, "+Aylorian Adventurer's Clinic+", 10, 11, false, 0, false, false, '', null);
+rooms[3] = new Room(3, "A glorious expansive hut", 10, 30, false, 0, false, false, '', null);
+rooms[5] = new Room(5, "A Hallway in the Temple", 10, 10, false, 0, false, false, '', null);
+rooms[8] = new Room(8, "A Large Manor", 12, 30, false, 0, false, false, '', null);
+rooms[12] = new Room(12, "A Meeting of the Villainous", 19, 16, false, 0, false, false, '', null);
+rooms[13] = new Room(13, "A muddy corner of the arena", 1, 26, false, 0, false, true, '', null);
+rooms[16] = new Room(16, "A Shrine to the Black Lotus", 7, 25, false, 0, true, false, '', null);
+rooms[18] = new Room(18, "A small closet", 8, 33, false, 0, false, false, '', null);
+rooms[20] = new Room(20, "A small island", 15, 29, false, 0, false, false, '', null);
+rooms[25] = new Room(25, "A small island", 14, 30, false, 0, false, false, '', null);
+rooms[28] = new Room(28, "A stand off of Starlight Way", 5, 15, false, 0, true, false, '', null);
+rooms[30] = new Room(30, "A Taste of Normality", 8, 30, false, 0, true, false, '', null);
+rooms[32] = new Room(32, "Aardwolf Lottery Headquarters", 15, 23, false, 0, false, false, '', null);
+rooms[35] = new Room(35, "Adventurer's Travel Company", 10, 22, false, 0, false, false, '', null);
+rooms[39] = new Room(39, "Aeleron's Alchemy Supplies", 13, 23, false, 0, false, false, '', null);
+rooms[42] = new Room(42, "Along a Shrub Wall", 7, 8, false, 0, false, false, '', null);
+rooms[45] = new Room(45, "Among the Philosophes", 11, 20, false, 0, true, false, '', null);
+rooms[48] = new Room(48, "An Homage to the Tiger", 6, 32, false, 0, false, false, '', null);
+rooms[50] = new Room(50, "An Intersection in the Temple", 11, 9, false, 0, false, false, '', null);
+rooms[54] = new Room(54, "Aylorian Elemental Designs", 5, 12, false, 0, false, false, '', null);
+rooms[57] = new Room(57, "Aylorian Pets and Companions", 12, 22, false, 0, false, false, '', null);
+rooms[58] = new Room(58, "Barside at the Finishing Blow", 18, 17, false, 0, false, false, '', null);
+rooms[7] = new Room(7, "Before a Black Ebony Door", 9, 10, false, 0, false, false, '', null);
+rooms[62] = new Room(62, "Before the Aylorian Church", 12, 7, false, 0, false, false, '', null);
+rooms[65] = new Room(65, "Before the Aylorian Church", 10, 7, false, 0, false, false, '', null);
+rooms[44] = new Room(44, "Behind the Grassy Knoll", 7, 9, false, 0, true, false, '', null);
+rooms[70] = new Room(70, "Below a Vivid Stained Glass Window", 12, 10, false, 0, false, false, '', null);
+rooms[71] = new Room(71, "Black Cat Tower: A Training Room", 16, 34, false, 0, false, false, '', null);
+rooms[72] = new Room(72, "Black Cat Tower: A Training Room", 16, 35, false, 0, false, false, '', null);
+rooms[75] = new Room(75, "Black Cat Tower: Archmage's Office", 20, 32, false, 0, true, false, '', null);
+rooms[76] = new Room(76, "Black Cat Tower: Council Meeting Room", 19, 33, false, 0, false, false, '', null);
+rooms[74] = new Room(74, "Black Cat Tower: Main Library", 18, 33, false, 0, false, false, '', null);
+rooms[78] = new Room(78, "Black Cat Tower: Summoning Chamber", 17, 33, false, 0, false, false, '', null);
+rooms[77] = new Room(77, "Black Cat Tower: Traveling Chamber", 18, 34, false, 0, false, false, '', null);
+rooms[79] = new Room(79, "Bookworm's Haven", 16, 13, false, 0, false, false, '', null);
+rooms[84] = new Room(84, "BoXern's Boxes", 15, 12, false, 0, false, false, '', null);
+rooms[85] = new Room(85, "Chamber of Cognition", 14, 17, false, 0, true, false, '', null);
+rooms[87] = new Room(87, "Chamber of Contemplation", 14, 16, false, 0, false, false, '', null);
+rooms[88] = new Room(88, "Commander Barcett's Planning Room", 15, 10, false, 0, true, false, '', null);
+rooms[90] = new Room(90, "Confessional", 13, 7, false, 0, true, false, '', null);
+rooms[93] = new Room(93, "Continuing on Whitewind", 11, 32, false, 0, false, false, '', null);
+rooms[69] = new Room(69, "Corner of the Garden Commune", 7, 10, false, 0, false, false, '', null);
+rooms[96] = new Room(96, "Customs Checkpoint", 17, 15, false, 0, false, false, '', null);
+rooms[98] = new Room(98, "Darksoil", 14, 25, false, 0, false, false, '', null);
+rooms[100] = new Room(100, "Darksoil - East", 15, 25, false, 0, false, false, '', null);
+rooms[102] = new Room(102, "Darksoil Path", 13, 25, false, 0, false, false, '', null);
+rooms[106] = new Room(106, "Darksoil Path", 12, 25, false, 0, false, false, '', null);
+rooms[108] = new Room(108, "Darksoil Path", 10, 25, false, 0, false, false, '', null);
+rooms[109] = new Room(109, "Darksoil Path", 9, 25, false, 0, false, false, '', null);
+rooms[103] = new Room(103, "Darksoil Path - Dead End", 16, 25, false, 0, true, false, '', null);
+rooms[112] = new Room(112, "Donation Room - Armor Supply", 10, 13, false, 0, false, false, '', null);
+rooms[113] = new Room(113, "Donation Room - General Supply", 9, 13, false, 0, true, false, '', null);
+rooms[115] = new Room(115, "Donation Room - Weapon Supply", 8, 13, false, 0, true, false, '', null);
+rooms[64] = new Room(64, "East of the Aylorian Church Altar", 12, 8, false, 0, false, false, '', null);
+rooms[116] = new Room(116, "Eastern Entrance - Starlight Way", 19, 14, false, 0, false, false, '', null);
+rooms[118] = new Room(118, "Eastern Yvan Park", 10, 29, false, 0, false, false, '', null);
+rooms[120] = new Room(120, "Entrance to Aylor's arena", 5, 20, false, 0, true, false, '', null);
+rooms[61] = new Room(61, "Entrance to the Garden Commune", 8, 10, false, 0, false, false, '', null);
+rooms[119] = new Room(119, "Entrance to Yvan Park", 9, 29, false, 0, false, false, '', null);
+rooms[127] = new Room(127, "Faeriefog + GreyAsh", 7, 28, false, 0, false, false, '', null);
+rooms[124] = new Room(124, "Faeriefog Lane", 9, 28, false, 0, false, false, '', null);
+rooms[131] = new Room(131, "Faeriefog Lane", 10, 28, false, 0, false, false, '', null);
+rooms[128] = new Room(128, "Faeriefog Lane meets GreyAsh Alley", 8, 28, false, 0, false, false, '', null);
+rooms[134] = new Room(134, "Fairdeal Alley", 6, 15, false, 0, false, false, '', null);
+rooms[136] = new Room(136, "Fairdeal Alley", 6, 16, false, 0, false, false, '', null);
+rooms[137] = new Room(137, "Fairdeal Alley", 6, 17, false, 0, false, false, '', null);
+rooms[138] = new Room(138, "Fairdeal Alley", 6, 18, false, 0, true, false, '', null);
+rooms[140] = new Room(140, "Fairdeal Alley", 7, 18, false, 0, false, false, '', null);
+rooms[141] = new Room(141, "Fairdeal Alley", 8, 18, false, 0, false, false, '', null);
+rooms[143] = new Room(143, "Fairdeal Alley", 13, 18, false, 0, false, false, '', null);
+rooms[144] = new Room(144, "Fairdeal Alley", 14, 18, false, 0, false, false, '', null);
+rooms[146] = new Room(146, "Fairdeal Alley", 16, 18, false, 0, false, false, '', null);
+rooms[147] = new Room(147, "Fairdeal Alley", 16, 17, false, 0, true, false, '', null);
+rooms[148] = new Room(148, "Fairdeal Alley", 16, 16, false, 0, false, false, '', null);
+rooms[149] = new Room(149, "Fairdeal Alley", 16, 15, false, 0, false, false, '', null);
+rooms[99] = new Room(99, "Flamespirit Alley", 14, 24, false, 0, false, false, '', null);
+rooms[37] = new Room(37, "Grandmarket Boulevard", 10, 23, false, 0, false, false, '', null);
+rooms[38] = new Room(38, "Grandmarket Boulevard", 9, 22, false, 0, false, false, '', null);
+rooms[153] = new Room(153, "Grandmarket Boulevard", 8, 23, false, 0, false, false, '', null);
+rooms[41] = new Room(41, "Grandmarket Boulevard", 12, 23, false, 0, false, false, '', null);
+rooms[40] = new Room(40, "Grandmarket Boulevard", 13, 22, false, 0, false, false, '', null);
+rooms[34] = new Room(34, "Grandmarket Boulevard", 14, 23, false, 0, false, false, '', null);
+rooms[154] = new Room(154, "GreyAsh Alley", 8, 24, false, 0, false, false, '', null);
+rooms[157] = new Room(157, "GreyAsh Alley", 8, 26, false, 0, false, false, '', null);
+rooms[133] = new Room(133, "GreyAsh Alley", 8, 27, false, 0, false, false, '', null);
+rooms[129] = new Room(129, "GreyAsh Alley", 7, 29, false, 0, false, false, '', null);
+rooms[159] = new Room(159, "GreyAsh Alley", 7, 30, false, 0, false, false, '', null);
+rooms[160] = new Room(160, "GreyAsh Alley to Silvermist Road", 7, 31, false, 0, false, false, '', null);
+rooms[81] = new Room(81, "Grizrol's Grocery", 17, 13, false, 0, false, false, '', null);
+rooms[162] = new Room(162, "Gueldar's Armory", 7, 13, false, 0, false, false, '', null);
+rooms[86] = new Room(86, "Helper Headquarters", 13, 17, false, 0, true, false, '', null);
+rooms[80] = new Room(80, "Hester's Whoswhatzit", 16, 11, false, 0, false, false, '', null);
+rooms[161] = new Room(161, "Hyntrie's Herbal Offerings", 17, 11, false, 0, false, false, '', null);
+rooms[73] = new Room(73, "In Black Cat Tower", 12, 20, false, 0, false, false, '', null);
+rooms[123] = new Room(123, "In the arena grandstand", 2, 23, false, 0, false, false, '', null);
+rooms[6] = new Room(6, "In the Back of the Aylorian Temple", 11, 10, false, 0, true, false, '', null);
+rooms[175] = new Room(175, "In the Ironwood Tower", 9, 19, false, 0, false, false, '', null);
+rooms[178] = new Room(178, "In the Tower of Faith", 9, 17, false, 0, false, false, '', null);
+rooms[181] = new Room(181, "In the Tower of Life", 12, 16, false, 0, false, false, '', null);
+rooms[183] = new Room(183, "In the Tower of Strength", 10, 16, false, 0, false, false, '', null);
+rooms[185] = new Room(185, "In the Tower of the Mind", 13, 19, false, 0, false, false, '', null);
+rooms[187] = new Room(187, "In the Tower of Whispers", 10, 20, false, 0, true, false, '', null);
+rooms[17] = new Room(17, "Intersection - GreyAsh Alley + Darksoil Path", 8, 25, false, 0, false, false, '', null);
+rooms[177] = new Room(177, "Ironwood Tower: A Training Room", 3, 30, false, 0, false, false, '', null);
+rooms[189] = new Room(189, "Ironwood Tower: A Training Room", 4, 30, false, 0, false, false, '', null);
+rooms[191] = new Room(191, "Ironwood Tower: A Training Room", 4, 31, false, 0, false, false, '', null);
+rooms[190] = new Room(190, "Ironwood Tower: A Training Room", 3, 31, false, 0, false, false, '', null);
+rooms[193] = new Room(193, "Ironwood Tower: Keeper's Office", 1, 29, false, 0, false, false, '', null);
+rooms[192] = new Room(192, "Ironwood Tower: The Hidden Glade", 2, 30, false, 0, false, false, '', null);
+rooms[194] = new Room(194, "IVAR'S -- The Exotica Room", 4, 17, false, 0, false, false, '', null);
+rooms[196] = new Room(196, "IVAR'S -- The Party Room", 3, 17, false, 0, false, false, '', null);
+rooms[139] = new Room(139, "IVAR'S -- The Red Room", 5, 17, false, 0, false, false, '', null);
+rooms[195] = new Room(195, "IVAR'S -- The Star Room", 4, 16, false, 0, false, false, '', null);
+rooms[197] = new Room(197, "Ivar's Hawt Club Scene", 4, 18, false, 0, true, false, '', null);
+rooms[165] = new Room(165, "Ivar's Item Remodeling", 6, 13, false, 0, false, false, '', null);
+rooms[121] = new Room(121, "Ivar's Lounge", 5, 19, false, 0, true, false, '', null);
+rooms[15] = new Room(15, "Ivar's Pub", 5, 18, false, 0, true, false, '', null);
+rooms[91] = new Room(91, "Ivar's Throne Room", 13, 8, false, 0, true, false, '', null);
+rooms[198] = new Room(198, "Ivar's Weapon Forge", 6, 11, false, 0, false, false, '', null);
+rooms[155] = new Room(155, "Jayvon's Jewelers and Fine Gifts", 7, 23, false, 0, false, false, '', null);
+rooms[111] = new Room(111, "Lightsoil Boardwalk", 16, 26, false, 0, false, false, '', null);
+rooms[104] = new Room(104, "Lightsoil Boardwalk", 15, 26, false, 0, false, false, '', null);
+rooms[101] = new Room(101, "Lightsoil Boardwalk", 14, 26, false, 0, false, false, '', null);
+rooms[105] = new Room(105, "Lightsoil Boardwalk", 13, 26, false, 0, false, false, '', null);
+rooms[114] = new Room(114, "Lost and Found", 9, 12, false, 0, true, false, '', null);
+rooms[151] = new Room(151, "Mayvor's Mystic Mastery", 9, 23, false, 0, false, false, '', null);
+rooms[49] = new Room(49, "Memories of a Warcamp", 6, 31, false, 0, false, false, '', null);
+rooms[204] = new Room(204, "Meridian Square", 11, 18, false, 0, true, false, '', null);
+rooms[10] = new Room(10, "N t qui e finis ed", 12, 31, false, 0, false, false, '', null);
+rooms[168] = new Room(168, "Necromn's Gourmet Delivery", 14, 11, false, 0, false, false, '', null);
+rooms[206] = new Room(206, "North of the Grand Plaza", 11, 16, false, 0, true, false, '', null);
+rooms[33] = new Room(33, "Northeastern Grandmarket Boulevard", 15, 22, false, 0, false, false, '', null);
+rooms[209] = new Room(209, "Northern Entrance - The Templar's Road of Andolor", 11, 1, false, 0, true, false, '', null);
+rooms[199] = new Room(199, "Northwestern Grandmarket Boulevard", 7, 22, false, 0, false, false, '', null);
+rooms[68] = new Room(68, "On a path in the Garden", 8, 9, false, 0, false, false, '', null);
+rooms[211] = new Room(211, "On Pristine Lake", 17, 28, false, 0, false, false, '', null);
+rooms[213] = new Room(213, "On Pristine Lake", 16, 28, false, 0, false, false, '', null);
+rooms[21] = new Room(21, "On Pristine Lake", 15, 28, false, 0, false, false, '', null);
+rooms[214] = new Room(214, "On Pristine Lake", 14, 28, false, 0, false, false, '', null);
+rooms[215] = new Room(215, "On Pristine Lake", 13, 28, false, 0, false, false, '', null);
+rooms[217] = new Room(217, "On Pristine Lake", 12, 28, false, 0, false, false, '', null);
+rooms[156] = new Room(156, "One-Eyed Lester's Platemail Armory", 14, 22, false, 0, false, false, '', null);
+rooms[219] = new Room(219, "Phoenix Square", 11, 14, false, 0, true, false, '', null);
+rooms[200] = new Room(200, "Pristine Beach", 16, 27, false, 0, false, false, '', null);
+rooms[212] = new Room(212, "Pristine Beach", 17, 27, false, 0, false, false, '', null);
+rooms[201] = new Room(201, "Pristine Beach", 15, 27, false, 0, false, false, '', null);
+rooms[202] = new Room(202, "Pristine Beach", 14, 27, false, 0, false, false, '', null);
+rooms[203] = new Room(203, "Pristine Beach", 13, 27, false, 0, false, false, '', null);
+rooms[218] = new Room(218, "Pristine Beach", 12, 27, false, 0, false, false, '', null);
+rooms[22] = new Room(22, "Pristine Lake", 16, 29, false, 0, true, false, '', null);
+rooms[223] = new Room(223, "Pristine Lake", 16, 30, false, 0, true, false, '', null);
+rooms[27] = new Room(27, "Pristine Lake", 13, 30, false, 0, true, false, '', null);
+rooms[24] = new Room(24, "Pristine Lake", 14, 29, false, 0, false, false, '', null);
+rooms[216] = new Room(216, "Pristine Lake", 13, 29, false, 0, true, false, '', null);
+rooms[224] = new Room(224, "Pristine Lake", 13, 31, false, 0, true, false, '', null);
+rooms[26] = new Room(26, "Pristine Lake", 14, 31, false, 0, true, false, '', null);
+rooms[225] = new Room(225, "Pristine Lake", 15, 31, false, 0, true, false, '', null);
+rooms[226] = new Room(226, "Pristine Lake", 15, 32, false, 0, true, false, '', null);
+rooms[227] = new Room(227, "Ralverin's Apprentice Shop", 7, 11, false, 0, false, false, '', null);
+rooms[228] = new Room(228, "Ravi Enterprises, LLC (TM)", 9, 7, false, 0, false, false, '', null);
+rooms[92] = new Room(92, "Remort Chamber", 14, 8, false, 0, false, false, '', null);
+rooms[19] = new Room(19, "Replicated Ruins", 8, 32, false, 0, false, false, '', null);
+rooms[31] = new Room(31, "Silvermist Road", 8, 31, false, 0, false, false, '', null);
+rooms[230] = new Room(230, "Silvermist Road", 9, 31, false, 0, false, false, '', null);
+rooms[4] = new Room(4, "Silvermist Road", 10, 31, false, 0, false, false, '', null);
+rooms[94] = new Room(94, "Silvermist Road intersects with Whitewind Avenue", 11, 31, false, 0, false, false, '', null);
+rooms[221] = new Room(221, "Starlight Way - East", 12, 14, false, 0, false, false, '', null);
+rooms[231] = new Room(231, "Starlight Way - East", 13, 14, false, 0, false, false, '', null);
+rooms[232] = new Room(232, "Starlight Way - East", 14, 14, false, 0, false, false, '', null);
+rooms[82] = new Room(82, "Starlight Way - East", 16, 14, false, 0, true, false, '', null);
+rooms[97] = new Room(97, "Starlight Way - East", 17, 14, false, 0, false, false, '', null);
+rooms[117] = new Room(117, "Starlight Way - East", 18, 14, false, 0, false, false, '', null);
+rooms[222] = new Room(222, "Starlight Way - West", 10, 14, false, 0, true, false, '', null);
+rooms[233] = new Room(233, "Starlight Way - West", 9, 14, false, 0, true, false, '', null);
+rooms[164] = new Room(164, "Starlight Way - West", 7, 14, false, 0, false, false, '', null);
+rooms[135] = new Room(135, "Starlight Way - West", 6, 14, false, 0, false, false, '', null);
+rooms[29] = new Room(29, "Starlight Way - West", 5, 14, false, 0, false, false, '', null);
+rooms[234] = new Room(234, "Starlight Way - West", 4, 14, false, 0, false, false, '', null);
+rooms[229] = new Room(229, "Temple of Aylor", 9, 8, false, 0, false, false, '', null);
+rooms[122] = new Room(122, "The arena staging area", 4, 21, false, 0, false, true, '', null);
+rooms[236] = new Room(236, "The arena staging area", 4, 20, false, 0, false, true, '', null);
+rooms[237] = new Room(237, "The arena staging area", 4, 22, false, 0, false, true, '', null);
+rooms[14] = new Room(14, "The Aylor Arena", 2, 25, false, 0, false, true, '', null);
+rooms[172] = new Room(172, "The Aylor Arena", 2, 24, false, 0, false, true, '', null);
+rooms[173] = new Room(173, "The Aylor Arena", 3, 25, false, 0, false, true, '', null);
+rooms[170] = new Room(170, "The Aylor Arena", 2, 26, false, 0, false, true, '', null);
+rooms[171] = new Room(171, "The Aylor Arena", 1, 25, false, 0, false, true, '', null);
+rooms[150] = new Room(150, "The Aylorian Bank of Ivar", 11, 23, false, 0, true, false, '', null);
+rooms[83] = new Room(83, "The Aylorian Eatery", 14, 13, false, 0, false, false, '', null);
+rooms[163] = new Room(163, "The Aylorian Enchantment Clinic", 7, 12, false, 0, false, false, '', null);
+rooms[55] = new Room(55, "The Aylorian Forge", 6, 12, false, 0, false, false, '', null);
+rooms[43] = new Room(43, "The Aylorian Gazebo", 8, 8, false, 0, true, false, '', null);
+rooms[239] = new Room(239, "The Aylorian Morgue", 9, 9, false, 0, false, false, '', null);
+rooms[174] = new Room(174, "The Aylorian Temple of Ivar", 11, 11, false, 0, true, false, '', null);
+rooms[152] = new Room(152, "The Big Scale", 8, 22, false, 0, false, false, '', null);
+rooms[240] = new Room(240, "The Ceremonial Alcove", 11, 7, false, 0, true, false, '', null);
+rooms[60] = new Room(60, "The Finishing Blow", 17, 17, false, 0, false, false, '', null);
+rooms[167] = new Room(167, "The Gno-Go Express", 16, 10, false, 0, false, false, '', null);
+rooms[2] = new Room(2, "The Grand City of Aylor", 11, 12, true, 0, true, false, '', null);
+rooms[243] = new Room(243, "The Grand City of Aylor - Southern Entrance", 11, 34, false, 0, true, false, '', null);
+rooms[205] = new Room(205, "The Grand Plaza", 11, 17, false, 0, true, false, '', null);
+rooms[46] = new Room(46, "The Grand Plaza", 11, 19, false, 0, true, false, '', null);
+rooms[179] = new Room(179, "The Grand Plaza", 10, 17, false, 0, false, false, '', null);
+rooms[142] = new Room(142, "The Grand Plaza", 10, 18, false, 0, false, false, '', null);
+rooms[176] = new Room(176, "The Grand Plaza", 10, 19, false, 0, false, false, '', null);
+rooms[169] = new Room(169, "The Grand Plaza", 12, 19, false, 0, false, false, '', null);
+rooms[145] = new Room(145, "The Grand Plaza", 12, 18, false, 0, false, false, '', null);
+rooms[166] = new Room(166, "The Grand Plaza", 12, 17, false, 0, false, false, '', null);
+rooms[244] = new Room(244, "The Immortal Garden", 11, 5, false, 0, true, false, '', null);
+rooms[107] = new Room(107, "The Intersection of Whitewind and Darksoil", 11, 25, false, 0, false, false, '', null);
+rooms[23] = new Room(23, "The Lone Tree", 15, 30, false, 0, true, false, '', null);
+rooms[246] = new Room(246, "The Lone Treetop", 17, 29, false, 0, false, false, '', null);
+rooms[9] = new Room(9, "The lower branches", 12, 29, false, 0, false, false, '', null);
+rooms[59] = new Room(59, "The Meeting Alcove at the Finishing Blow", 18, 16, false, 0, true, false, '', null);
+rooms[241] = new Room(241, "The Memorial Garden", 11, 6, false, 0, false, false, '', null);
+rooms[242] = new Room(242, "The Old Farts' Home", 12, 12, false, 0, true, false, '', null);
+rooms[52] = new Room(52, "The Pews Beneath a Stained Glass Window", 12, 9, false, 0, false, false, '', null);
+rooms[53] = new Room(53, "The Pews Beneath a Stained Glass Window", 10, 9, false, 0, false, false, '', null);
+rooms[63] = new Room(63, "The Templar's Road of Andolor", 12, 4, false, 0, false, false, '', null);
+rooms[247] = new Room(247, "The Templar's Road of Andolor", 11, 4, false, 0, false, false, '', null);
+rooms[66] = new Room(66, "The Templar's Road of Andolor", 10, 4, false, 0, false, false, '', null);
+rooms[248] = new Room(248, "The Templar's Road of Andolor", 11, 3, false, 0, false, false, '', null);
+rooms[210] = new Room(210, "The Templar's Road of Andolor", 11, 2, false, 0, false, false, '', null);
+rooms[130] = new Room(130, "The Tenth Hell", 6, 28, false, 0, true, false, '', null);
+rooms[249] = new Room(249, "The Tenth Hell", 5, 28, false, 0, true, false, '', null);
+rooms[158] = new Room(158, "The Trophy Room", 7, 26, false, 0, false, false, '', null);
+rooms[208] = new Room(208, "Tinkers' Guild: Second Floor", 2, 2, false, 0, false, false, '', null);
+rooms[250] = new Room(250, "Tinkers' Guild: The Grand Exposition!!!", 3, 1, false, 0, false, false, '', null);
+rooms[251] = new Room(251, "Tower of Faith: A Practice Room", 2, 7, false, 0, false, false, '', null);
+rooms[253] = new Room(253, "Tower of Faith: A Practice Room", 2, 8, false, 0, false, false, '', null);
+rooms[255] = new Room(255, "Tower of Faith: Archdeacon's Office", 5, 9, false, 0, false, false, '', null);
+rooms[252] = new Room(252, "Tower of Faith: Armory", 2, 6, false, 0, false, false, '', null);
+rooms[180] = new Room(180, "Tower of Faith: Grand Chapel", 4, 9, false, 0, false, false, '', null);
+rooms[256] = new Room(256, "Tower of Faith: High Priest's Office", 3, 9, false, 0, false, false, '', null);
+rooms[254] = new Room(254, "Tower of Faith: Sanctum Sanctorum", 1, 6, false, 0, false, false, '', null);
+rooms[257] = new Room(257, "Tower of Life: Disease Lab", 18, 1, false, 0, false, false, '', null);
+rooms[182] = new Room(182, "Tower of Life: Herbalists' Lab", 17, 2, false, 0, true, false, '', null);
+rooms[260] = new Room(260, "Tower of Life: Inanimate Arts Library", 17, 4, false, 0, false, false, '', null);
+rooms[261] = new Room(261, "Tower of Life: Surgeon-General's Office", 19, 1, false, 0, false, false, '', null);
+rooms[258] = new Room(258, "Tower of Life: The Anatomy Lab", 18, 2, false, 0, false, false, '', null);
+rooms[259] = new Room(259, "Tower of Life: The Brewing Lab", 17, 3, false, 0, false, false, '', null);
+rooms[184] = new Room(184, "Tower of Strength: A Practice Room", 7, 3, false, 0, false, false, '', null);
+rooms[262] = new Room(262, "Tower of Strength: A Practice Room", 8, 3, false, 0, false, false, '', null);
+rooms[263] = new Room(263, "Tower of Strength: A Practice Room", 7, 4, false, 0, false, false, '', null);
+rooms[265] = new Room(265, "Tower of Strength: A Practice Room", 8, 4, false, 0, false, false, '', null);
+rooms[266] = new Room(266, "Tower of Strength: Captain-General's Office", 5, 1, false, 0, true, false, '', null);
+rooms[264] = new Room(264, "Tower of Strength: Officer Training", 6, 2, false, 0, false, false, '', null);
+rooms[267] = new Room(267, "Tower of Strength: The Map Room", 6, 3, false, 0, true, false, '', null);
+rooms[268] = new Room(268, "Tower of the Mind: A Training Room", 17, 22, false, 0, false, false, '', null);
+rooms[269] = new Room(269, "Tower of the Mind: A Training Room", 18, 21, false, 0, false, false, '', null);
+rooms[270] = new Room(270, "Tower of the Mind: A Training Room", 18, 20, false, 0, false, false, '', null);
+rooms[271] = new Room(271, "Tower of the Mind: Archpsion's Office", 19, 19, false, 0, false, false, '', null);
+rooms[186] = new Room(186, "Tower of the Mind: Meditation Chamber", 17, 21, false, 0, false, false, '', null);
+rooms[272] = new Room(272, "Tower of Whispers: Assisted Biological Manipulation", 2, 34, false, 0, false, false, '', null);
+rooms[274] = new Room(274, "Tower of Whispers: Lock Compromising", 2, 35, false, 0, false, false, '', null);
+rooms[275] = new Room(275, "Tower of Whispers: Presence Obfuscation", 3, 35, false, 0, false, false, '', null);
+rooms[273] = new Room(273, "Tower of Whispers: Proactive Sentry Relations", 3, 34, false, 0, true, false, '', null);
+rooms[188] = new Room(188, "Tower of Whispers: Purse Liberation", 1, 35, false, 0, false, false, '', null);
+rooms[276] = new Room(276, "Tower of Whispers: The Den of Iniquity", 4, 33, false, 0, false, false, '', null);
+rooms[51] = new Room(51, "Upon the Pulpit", 11, 8, false, 0, true, false, '', null);
+rooms[110] = new Room(110, "Vankoliche Manor", 9, 26, false, 0, false, false, '', null);
+rooms[277] = new Room(277, "Vira's Wish Repository", 13, 6, false, 0, true, false, '', null);
+rooms[89] = new Room(89, "Warfare Observation Center", 14, 10, false, 0, true, false, '', null);
+rooms[36] = new Room(36, "Welcome to Grandmarket Boulevard!", 11, 22, false, 0, true, false, '', null);
+rooms[67] = new Room(67, "West of the Aylorian Church Altar", 10, 8, false, 0, false, false, '', null);
+rooms[235] = new Room(235, "Western Entrance - Starlight Way", 3, 14, false, 0, false, false, '', null);
+rooms[126] = new Room(126, "Western Yvan Park", 8, 29, false, 0, false, false, '', null);
+rooms[220] = new Room(220, "Whitewind Avenue", 11, 13, false, 0, true, false, '', null);
+rooms[207] = new Room(207, "Whitewind Avenue", 11, 15, false, 0, true, false, '', null);
+rooms[47] = new Room(47, "Whitewind Avenue", 11, 21, false, 0, true, false, '', null);
+rooms[238] = new Room(238, "Whitewind Avenue", 11, 24, false, 0, true, false, '', null);
+rooms[245] = new Room(245, "Whitewind Avenue", 11, 26, false, 0, false, false, '', null);
+rooms[278] = new Room(278, "Whitewind Avenue", 11, 27, false, 0, false, false, '', null);
+rooms[279] = new Room(279, "Whitewind Avenue", 11, 29, false, 0, false, false, '', null);
+rooms[11] = new Room(11, "Whitewind Avenue", 11, 30, false, 0, false, false, '', null);
+rooms[95] = new Room(95, "Whitewind Avenue", 11, 33, false, 0, false, false, '', null);
+rooms[132] = new Room(132, "Whitewind Avenue at the corner of Faeriefog Lane", 11, 28, false, 0, false, false, '', null);
+rooms[56] = new Room(56, "Xena's Weapon Parlor", 5, 13, false, 0, false, false, '', null);
+rooms[125] = new Room(125, "Yvan Park", 9, 30, false, 0, false, false, '', null);
+// rooms with no exits
+rooms[280] = new Room(280, "Tinkers' Guild: Entry Hall", 1, 2, false, 0, false, false, '', []);
+rooms[281] = new Room(281, "Tinkers' Guild: The Inventing Room", 2, 1, false, 0, false, false, '', []);
+// exits
+rooms[1].exitsArray = [new RoomExit(rooms[1], rooms[2], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[3].exitsArray = [new RoomExit(rooms[3], rooms[4], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[5].exitsArray = [new RoomExit(rooms[5], rooms[6], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[5], rooms[7], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[8].exitsArray = [new RoomExit(rooms[8], rooms[9], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[8], rooms[10], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[8], rooms[11], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[12].exitsArray = [new RoomExit(rooms[12], rooms[2], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[13].exitsArray = [new RoomExit(rooms[13], rooms[14], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[13], rooms[15], LINK_ONEWAY, 7, "Crawl through", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[16].exitsArray = [new RoomExit(rooms[16], rooms[17], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[18].exitsArray = [new RoomExit(rooms[18], rooms[19], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[20].exitsArray = [new RoomExit(rooms[20], rooms[21], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[20], rooms[22], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[20], rooms[23], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[20], rooms[24], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[25].exitsArray = [new RoomExit(rooms[25], rooms[24], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[25], rooms[23], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[25], rooms[26], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[25], rooms[27], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[28].exitsArray = [new RoomExit(rooms[28], rooms[29], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[28], null, LINK_ONEWAY, 7, "Dance", false, new RoomAreaExitInfo(9, 'Art of Melody'), new DoorInfo("", 0, "", "", null), false)];
+rooms[30].exitsArray = [new RoomExit(rooms[30], rooms[31], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[32].exitsArray = [new RoomExit(rooms[32], rooms[33], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[32], rooms[34], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[35].exitsArray = [new RoomExit(rooms[35], rooms[36], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[35], rooms[37], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[35], rooms[38], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[39].exitsArray = [new RoomExit(rooms[39], rooms[40], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[39], rooms[34], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[39], rooms[41], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[42].exitsArray = [new RoomExit(rooms[42], rooms[42], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[42], rooms[43], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[42], rooms[44], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[42], rooms[42], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[45].exitsArray = [new RoomExit(rooms[45], rooms[46], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[45], rooms[47], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[48].exitsArray = [new RoomExit(rooms[48], rooms[49], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[50].exitsArray = [new RoomExit(rooms[50], rooms[51], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[50], rooms[52], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[50], rooms[6], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[50], rooms[53], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[54].exitsArray = [new RoomExit(rooms[54], rooms[55], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[54], rooms[56], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[57].exitsArray = [new RoomExit(rooms[57], rooms[40], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[57], rooms[41], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[57], rooms[36], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[58].exitsArray = [new RoomExit(rooms[58], rooms[59], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[58], rooms[60], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[7].exitsArray = [new RoomExit(rooms[7], rooms[5], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[7], rooms[61], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[62].exitsArray = [new RoomExit(rooms[62], rooms[63], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[62], rooms[64], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[65].exitsArray = [new RoomExit(rooms[65], rooms[66], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[65], rooms[67], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[44].exitsArray = [new RoomExit(rooms[44], rooms[42], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[44], rooms[68], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[44], rooms[69], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[44], null, LINK_ONEWAY, 7, "Knock door", false, new RoomAreaExitInfo(10, 'The Call of Heroes'), new DoorInfo("", 0, "", "", null), false)];
+rooms[70].exitsArray = [new RoomExit(rooms[70], rooms[6], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[71].exitsArray = [new RoomExit(rooms[71], rooms[72], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[71], rooms[73], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[72].exitsArray = [new RoomExit(rooms[72], rooms[71], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[72], rooms[74], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[75].exitsArray = [new RoomExit(rooms[75], rooms[76], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[76].exitsArray = [new RoomExit(rooms[76], rooms[74], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[76], rooms[75], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[74].exitsArray = [new RoomExit(rooms[74], rooms[76], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[74], rooms[77], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[74], rooms[78], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[74], rooms[72], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[78].exitsArray = [new RoomExit(rooms[78], rooms[74], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[77].exitsArray = [new RoomExit(rooms[77], rooms[74], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[79].exitsArray = [new RoomExit(rooms[79], rooms[80], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[79], rooms[81], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[79], rooms[82], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[79], rooms[83], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[84].exitsArray = [new RoomExit(rooms[84], rooms[80], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[85].exitsArray = [new RoomExit(rooms[85], rooms[86], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[87].exitsArray = [new RoomExit(rooms[87], rooms[86], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[88].exitsArray = [new RoomExit(rooms[88], rooms[89], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[88], rooms[80], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[90].exitsArray = [new RoomExit(rooms[90], rooms[91], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[90], rooms[92], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[93].exitsArray = [new RoomExit(rooms[93], rooms[94], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[93], rooms[95], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[69].exitsArray = [new RoomExit(rooms[69], rooms[44], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[69], rooms[61], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[96].exitsArray = [new RoomExit(rooms[96], rooms[97], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[96], null, LINK_ONEWAY, 7, "Watch game", false, new RoomAreaExitInfo(28, 'The Chessboard'), new DoorInfo("", 0, "", "", null), false)];
+rooms[98].exitsArray = [new RoomExit(rooms[98], rooms[99], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[98], rooms[100], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[98], rooms[101], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[98], rooms[102], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[100].exitsArray = [new RoomExit(rooms[100], rooms[103], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[100], rooms[104], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[100], rooms[98], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[102].exitsArray = [new RoomExit(rooms[102], rooms[98], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[102], rooms[105], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[102], rooms[106], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[106].exitsArray = [new RoomExit(rooms[106], rooms[102], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[106], rooms[107], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[108].exitsArray = [new RoomExit(rooms[108], rooms[107], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[108], rooms[109], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[109].exitsArray = [new RoomExit(rooms[109], rooms[108], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[109], rooms[110], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[109], rooms[17], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[103].exitsArray = [new RoomExit(rooms[103], rooms[111], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[103], rooms[100], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[112].exitsArray = [new RoomExit(rooms[112], rooms[113], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[113].exitsArray = [new RoomExit(rooms[113], rooms[114], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[113], rooms[112], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[113], rooms[115], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[113], rooms[2], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[115].exitsArray = [new RoomExit(rooms[115], rooms[113], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[64].exitsArray = [new RoomExit(rooms[64], rooms[62], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[64], rooms[91], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[64], rooms[51], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[116].exitsArray = [new RoomExit(rooms[116], null, LINK_ONEWAY, 1, "", false, new RoomAreaExitInfo(276, 'The Continent of Mesolar'), new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[116], rooms[117], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[118].exitsArray = [new RoomExit(rooms[118], rooms[119], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[120].exitsArray = [new RoomExit(rooms[120], rooms[121], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[120], rooms[122], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[120], rooms[123], LINK_ONEWAY, 7, "Watch the fights", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[61].exitsArray = [new RoomExit(rooms[61], rooms[68], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[61], rooms[7], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[61], rooms[69], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[119].exitsArray = [new RoomExit(rooms[119], rooms[124], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[119], rooms[118], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[119], rooms[125], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[119], rooms[126], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[127].exitsArray = [new RoomExit(rooms[127], rooms[128], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[127], rooms[129], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[127], rooms[130], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[124].exitsArray = [new RoomExit(rooms[124], rooms[131], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[124], rooms[119], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[124], rooms[128], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[131].exitsArray = [new RoomExit(rooms[131], rooms[132], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[131], rooms[124], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[128].exitsArray = [new RoomExit(rooms[128], rooms[133], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[128], rooms[124], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[128], rooms[127], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[134].exitsArray = [new RoomExit(rooms[134], rooms[135], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[134], rooms[136], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[136].exitsArray = [new RoomExit(rooms[136], rooms[134], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[136], rooms[137], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[137].exitsArray = [new RoomExit(rooms[137], rooms[136], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[137], rooms[138], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[137], rooms[139], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[138].exitsArray = [new RoomExit(rooms[138], rooms[137], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[138], rooms[140], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[138], rooms[15], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[140].exitsArray = [new RoomExit(rooms[140], rooms[141], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[140], rooms[138], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[141].exitsArray = [new RoomExit(rooms[141], rooms[142], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[141], rooms[140], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[143].exitsArray = [new RoomExit(rooms[143], rooms[144], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[143], rooms[145], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[144].exitsArray = [new RoomExit(rooms[144], rooms[146], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[144], rooms[143], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[146].exitsArray = [new RoomExit(rooms[146], rooms[147], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[146], rooms[144], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[147].exitsArray = [new RoomExit(rooms[147], rooms[148], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[147], rooms[60], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[147], rooms[146], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[148].exitsArray = [new RoomExit(rooms[148], rooms[149], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[148], rooms[147], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[149].exitsArray = [new RoomExit(rooms[149], rooms[82], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[149], rooms[148], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[99].exitsArray = [new RoomExit(rooms[99], rooms[34], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[99], rooms[98], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[37].exitsArray = [new RoomExit(rooms[37], rooms[35], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[37], rooms[150], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[37], rooms[151], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[38].exitsArray = [new RoomExit(rooms[38], rooms[35], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[38], rooms[151], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[38], rooms[152], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[153].exitsArray = [new RoomExit(rooms[153], rooms[152], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[153], rooms[151], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[153], rooms[154], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[153], rooms[155], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[41].exitsArray = [new RoomExit(rooms[41], rooms[57], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[41], rooms[39], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[41], rooms[150], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[40].exitsArray = [new RoomExit(rooms[40], rooms[156], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[40], rooms[39], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[40], rooms[57], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[34].exitsArray = [new RoomExit(rooms[34], rooms[156], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[34], rooms[32], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[34], rooms[99], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[34], rooms[39], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[154].exitsArray = [new RoomExit(rooms[154], rooms[153], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[154], rooms[17], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[157].exitsArray = [new RoomExit(rooms[157], rooms[17], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[157], rooms[133], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[157], rooms[158], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[133].exitsArray = [new RoomExit(rooms[133], rooms[157], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[133], rooms[128], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[129].exitsArray = [new RoomExit(rooms[129], rooms[127], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[129], rooms[159], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[159].exitsArray = [new RoomExit(rooms[159], rooms[129], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[159], rooms[160], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[160].exitsArray = [new RoomExit(rooms[160], rooms[159], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[160], rooms[31], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[160], rooms[49], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[160], null, LINK_ONEWAY, 7, "Climb the chain", false, new RoomAreaExitInfo(289, 'The First Ascent'), new DoorInfo("", 0, "", "", null), false)];
+rooms[81].exitsArray = [new RoomExit(rooms[81], rooms[161], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[81], rooms[97], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[81], rooms[79], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[162].exitsArray = [new RoomExit(rooms[162], rooms[163], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[162], rooms[164], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[162], rooms[165], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[86].exitsArray = [new RoomExit(rooms[86], rooms[85], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[86], rooms[166], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[86], rooms[87], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[80].exitsArray = [new RoomExit(rooms[80], rooms[167], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[80], rooms[161], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[80], rooms[79], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[80], rooms[168], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[80], rooms[88], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[80], rooms[84], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[161].exitsArray = [new RoomExit(rooms[161], rooms[81], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[161], rooms[80], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[73].exitsArray = [new RoomExit(rooms[73], rooms[169], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[73], rooms[71], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[123].exitsArray = [new RoomExit(rooms[123], rooms[170], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[123], rooms[171], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[123], rooms[172], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[123], rooms[173], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[6].exitsArray = [new RoomExit(rooms[6], rooms[50], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[6], rooms[70], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[6], rooms[174], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[6], rooms[5], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[175].exitsArray = [new RoomExit(rooms[175], rooms[176], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[175], rooms[177], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[178].exitsArray = [new RoomExit(rooms[178], rooms[179], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[178], rooms[180], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[181].exitsArray = [new RoomExit(rooms[181], rooms[166], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[181], rooms[182], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[183].exitsArray = [new RoomExit(rooms[183], rooms[179], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[183], rooms[184], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[185].exitsArray = [new RoomExit(rooms[185], rooms[169], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[185], rooms[186], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[187].exitsArray = [new RoomExit(rooms[187], rooms[176], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[187], rooms[188], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[17].exitsArray = [new RoomExit(rooms[17], rooms[154], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[17], rooms[109], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[17], rooms[157], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[17], rooms[16], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[177].exitsArray = [new RoomExit(rooms[177], rooms[189], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[177], rooms[190], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[177], rooms[175], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[189].exitsArray = [new RoomExit(rooms[189], rooms[191], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[189], rooms[177], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[191].exitsArray = [new RoomExit(rooms[191], rooms[189], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[191], rooms[190], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[190].exitsArray = [new RoomExit(rooms[190], rooms[177], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[190], rooms[191], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[190], rooms[192], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[193].exitsArray = [new RoomExit(rooms[193], rooms[192], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[192].exitsArray = [new RoomExit(rooms[192], rooms[193], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[192], rooms[190], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[194].exitsArray = [new RoomExit(rooms[194], rooms[195], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[194], rooms[139], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[194], rooms[196], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[196].exitsArray = [new RoomExit(rooms[196], rooms[194], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[139].exitsArray = [new RoomExit(rooms[139], rooms[137], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[139], rooms[194], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[195].exitsArray = [new RoomExit(rooms[195], rooms[194], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[197].exitsArray = [new RoomExit(rooms[197], rooms[15], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[165].exitsArray = [new RoomExit(rooms[165], rooms[55], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[165], rooms[162], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[165], rooms[135], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[165], rooms[56], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[121].exitsArray = [new RoomExit(rooms[121], rooms[15], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[121], rooms[120], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[15].exitsArray = [new RoomExit(rooms[15], rooms[138], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[15], rooms[121], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[15], rooms[197], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[91].exitsArray = [new RoomExit(rooms[91], rooms[90], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[91], rooms[64], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[198].exitsArray = [new RoomExit(rooms[198], rooms[55], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[155].exitsArray = [new RoomExit(rooms[155], rooms[199], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[155], rooms[153], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[111].exitsArray = [new RoomExit(rooms[111], rooms[103], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[111], rooms[200], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[111], rooms[104], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[104].exitsArray = [new RoomExit(rooms[104], rooms[100], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[104], rooms[111], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[104], rooms[201], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[104], rooms[101], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[101].exitsArray = [new RoomExit(rooms[101], rooms[98], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[101], rooms[104], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[101], rooms[202], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[101], rooms[105], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[105].exitsArray = [new RoomExit(rooms[105], rooms[102], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[105], rooms[101], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[105], rooms[203], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[114].exitsArray = [new RoomExit(rooms[114], rooms[113], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[151].exitsArray = [new RoomExit(rooms[151], rooms[38], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[151], rooms[37], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[151], rooms[153], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[49].exitsArray = [new RoomExit(rooms[49], rooms[160], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[49], rooms[48], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[204].exitsArray = [new RoomExit(rooms[204], rooms[205], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[204], rooms[145], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[204], rooms[46], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[204], rooms[142], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[10].exitsArray = [new RoomExit(rooms[10], rooms[8], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[168].exitsArray = [new RoomExit(rooms[168], rooms[80], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[168], rooms[83], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[206].exitsArray = [new RoomExit(rooms[206], rooms[207], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[206], rooms[205], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[206], rooms[208], LINK_ONEWAY, 7, "Bucket", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[33].exitsArray = [new RoomExit(rooms[33], rooms[32], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[33], rooms[156], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[209].exitsArray = [new RoomExit(rooms[209], null, LINK_ONEWAY, 0, "", false, new RoomAreaExitInfo(276, 'The Continent of Mesolar'), new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[209], rooms[210], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[199].exitsArray = [new RoomExit(rooms[199], rooms[152], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[199], rooms[155], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[68].exitsArray = [new RoomExit(rooms[68], rooms[43], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[68], rooms[61], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[68], rooms[44], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[211].exitsArray = [new RoomExit(rooms[211], rooms[212], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[211], rooms[213], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[213].exitsArray = [new RoomExit(rooms[213], rooms[200], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[213], rooms[211], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[213], rooms[22], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[213], rooms[21], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[21].exitsArray = [new RoomExit(rooms[21], rooms[201], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[21], rooms[213], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[21], rooms[20], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[21], rooms[214], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[214].exitsArray = [new RoomExit(rooms[214], rooms[202], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[214], rooms[21], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[214], rooms[24], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[214], rooms[215], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[215].exitsArray = [new RoomExit(rooms[215], rooms[203], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[215], rooms[214], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[215], rooms[216], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[215], rooms[217], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[217].exitsArray = [new RoomExit(rooms[217], rooms[218], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[217], rooms[215], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[156].exitsArray = [new RoomExit(rooms[156], rooms[33], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[156], rooms[34], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[156], rooms[40], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[219].exitsArray = [new RoomExit(rooms[219], rooms[220], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[219], rooms[221], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[219], rooms[207], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[219], rooms[222], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[200].exitsArray = [new RoomExit(rooms[200], rooms[111], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[200], rooms[212], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[200], rooms[213], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[200], rooms[201], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[212].exitsArray = [new RoomExit(rooms[212], rooms[211], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[212], rooms[200], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[201].exitsArray = [new RoomExit(rooms[201], rooms[104], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[201], rooms[200], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[201], rooms[21], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[201], rooms[202], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[202].exitsArray = [new RoomExit(rooms[202], rooms[101], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[202], rooms[201], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[202], rooms[214], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[202], rooms[203], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[203].exitsArray = [new RoomExit(rooms[203], rooms[105], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[203], rooms[202], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[203], rooms[215], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[203], rooms[218], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[218].exitsArray = [new RoomExit(rooms[218], rooms[203], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[218], rooms[217], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[22].exitsArray = [new RoomExit(rooms[22], rooms[213], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[22], rooms[223], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[22], rooms[20], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[223].exitsArray = [new RoomExit(rooms[223], rooms[22], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[223], rooms[23], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[27].exitsArray = [new RoomExit(rooms[27], rooms[216], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[27], rooms[25], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[27], rooms[224], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[24].exitsArray = [new RoomExit(rooms[24], rooms[214], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[24], rooms[20], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[24], rooms[25], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[24], rooms[216], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[216].exitsArray = [new RoomExit(rooms[216], rooms[215], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[216], rooms[24], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[216], rooms[27], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[224].exitsArray = [new RoomExit(rooms[224], rooms[27], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[224], rooms[26], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[26].exitsArray = [new RoomExit(rooms[26], rooms[25], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[26], rooms[225], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[26], rooms[224], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[225].exitsArray = [new RoomExit(rooms[225], rooms[23], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[225], rooms[226], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[225], rooms[26], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[226].exitsArray = [new RoomExit(rooms[226], rooms[225], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[227].exitsArray = [new RoomExit(rooms[227], rooms[55], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[228].exitsArray = [new RoomExit(rooms[228], rooms[229], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[92].exitsArray = [new RoomExit(rooms[92], rooms[90], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[19].exitsArray = [new RoomExit(rooms[19], rooms[31], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[19], rooms[18], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[31].exitsArray = [new RoomExit(rooms[31], rooms[30], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[31], rooms[230], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[31], rooms[19], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[31], rooms[160], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[230].exitsArray = [new RoomExit(rooms[230], rooms[125], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[230], rooms[4], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[230], rooms[31], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[4].exitsArray = [new RoomExit(rooms[4], rooms[3], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[4], rooms[94], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[4], rooms[230], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[94].exitsArray = [new RoomExit(rooms[94], rooms[11], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[94], rooms[93], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[94], rooms[4], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[221].exitsArray = [new RoomExit(rooms[221], rooms[231], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[221], rooms[219], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[231].exitsArray = [new RoomExit(rooms[231], rooms[232], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[231], rooms[221], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[232].exitsArray = [new RoomExit(rooms[232], rooms[83], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[232], rooms[82], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[232], rooms[231], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[82].exitsArray = [new RoomExit(rooms[82], rooms[79], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[82], rooms[97], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[82], rooms[149], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[82], rooms[232], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[97].exitsArray = [new RoomExit(rooms[97], rooms[81], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[97], rooms[117], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[97], rooms[96], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[97], rooms[82], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[117].exitsArray = [new RoomExit(rooms[117], rooms[116], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[117], rooms[97], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[222].exitsArray = [new RoomExit(rooms[222], rooms[219], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[222], rooms[233], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[233].exitsArray = [new RoomExit(rooms[233], rooms[222], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[233], rooms[164], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[164].exitsArray = [new RoomExit(rooms[164], rooms[162], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[164], rooms[233], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[164], rooms[135], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[135].exitsArray = [new RoomExit(rooms[135], rooms[165], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[135], rooms[164], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[135], rooms[134], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[135], rooms[29], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[29].exitsArray = [new RoomExit(rooms[29], rooms[56], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[29], rooms[135], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[29], rooms[28], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[29], rooms[234], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[234].exitsArray = [new RoomExit(rooms[234], rooms[29], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[234], rooms[235], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[229].exitsArray = [new RoomExit(rooms[229], rooms[228], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[229], rooms[67], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[122].exitsArray = [new RoomExit(rooms[122], rooms[236], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[122], rooms[237], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[122], rooms[120], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[122], rooms[14], LINK_ONEWAY, 7, "Jump down", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[236].exitsArray = [new RoomExit(rooms[236], rooms[122], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[237].exitsArray = [new RoomExit(rooms[237], rooms[122], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[14].exitsArray = [new RoomExit(rooms[14], rooms[172], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[14], rooms[173], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[14], rooms[170], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[14], rooms[171], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[14], rooms[13], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[172].exitsArray = [new RoomExit(rooms[172], rooms[14], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[173].exitsArray = [new RoomExit(rooms[173], rooms[14], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[170].exitsArray = [new RoomExit(rooms[170], rooms[14], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[171].exitsArray = [new RoomExit(rooms[171], rooms[14], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[150].exitsArray = [new RoomExit(rooms[150], rooms[36], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[150], rooms[41], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[150], rooms[238], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[150], rooms[37], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[83].exitsArray = [new RoomExit(rooms[83], rooms[168], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[83], rooms[79], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[83], rooms[232], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[163].exitsArray = [new RoomExit(rooms[163], rooms[162], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[163], rooms[55], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[55].exitsArray = [new RoomExit(rooms[55], rooms[198], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[55], rooms[163], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[55], rooms[165], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[55], rooms[54], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[55], rooms[227], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[43].exitsArray = [new RoomExit(rooms[43], rooms[68], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[43], rooms[42], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[239].exitsArray = [new RoomExit(rooms[239], rooms[51], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[174].exitsArray = [new RoomExit(rooms[174], rooms[6], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[174], rooms[2], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[152].exitsArray = [new RoomExit(rooms[152], rooms[38], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[152], rooms[153], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[152], rooms[199], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[240].exitsArray = [new RoomExit(rooms[240], rooms[241], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[240], rooms[51], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[60].exitsArray = [new RoomExit(rooms[60], rooms[58], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[60], rooms[147], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[167].exitsArray = [new RoomExit(rooms[167], rooms[80], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[2].exitsArray = [new RoomExit(rooms[2], rooms[174], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[2], rooms[242], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[2], rooms[220], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[2], null, LINK_ONEWAY, 4, "", false, new RoomAreaExitInfo(258, 'The Aylorian Academy'), new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[2], rooms[113], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[2], null, LINK_ONEWAY, 7, "celebrate", false, new RoomAreaExitInfo(20, 'Aardwolf Birthday Area'), new DoorInfo("", 0, "", "", null), false)];
+rooms[243].exitsArray = [new RoomExit(rooms[243], rooms[95], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[243], null, LINK_ONEWAY, 2, "", false, new RoomAreaExitInfo(276, 'The Continent of Mesolar'), new DoorInfo("", 0, "", "", null), false)];
+rooms[205].exitsArray = [new RoomExit(rooms[205], rooms[206], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[205], rooms[166], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[205], rooms[204], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[205], rooms[179], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[46].exitsArray = [new RoomExit(rooms[46], rooms[204], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[46], rooms[169], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[46], rooms[45], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[46], rooms[176], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[179].exitsArray = [new RoomExit(rooms[179], rooms[183], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[179], rooms[205], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[179], rooms[142], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[179], rooms[178], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[142].exitsArray = [new RoomExit(rooms[142], rooms[179], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[142], rooms[204], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[142], rooms[176], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[142], rooms[141], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[176].exitsArray = [new RoomExit(rooms[176], rooms[142], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[176], rooms[46], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[176], rooms[187], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[176], rooms[175], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[169].exitsArray = [new RoomExit(rooms[169], rooms[145], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[169], rooms[185], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[169], rooms[73], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[169], rooms[46], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[145].exitsArray = [new RoomExit(rooms[145], rooms[166], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[145], rooms[143], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[145], rooms[169], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[145], rooms[204], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[166].exitsArray = [new RoomExit(rooms[166], rooms[181], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[166], rooms[86], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[166], rooms[145], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[166], rooms[205], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[244].exitsArray = [new RoomExit(rooms[244], rooms[241], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[107].exitsArray = [new RoomExit(rooms[107], rooms[238], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[107], rooms[106], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[107], rooms[245], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[107], rooms[108], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[23].exitsArray = [new RoomExit(rooms[23], rooms[20], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[23], rooms[223], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[23], rooms[225], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[23], rooms[25], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[23], rooms[246], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[246].exitsArray = [new RoomExit(rooms[246], rooms[23], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[9].exitsArray = [new RoomExit(rooms[9], rooms[8], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[59].exitsArray = [new RoomExit(rooms[59], rooms[58], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[59], rooms[12], LINK_ONEWAY, 7, "Join organized crime", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[241].exitsArray = [new RoomExit(rooms[241], rooms[244], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[241], rooms[240], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[242].exitsArray = [new RoomExit(rooms[242], null, LINK_ONEWAY, 2, "", false, new RoomAreaExitInfo(217, 'Loqui Clan Area'), new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[242], rooms[2], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[52].exitsArray = [new RoomExit(rooms[52], rooms[50], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[53].exitsArray = [new RoomExit(rooms[53], rooms[50], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[63].exitsArray = [new RoomExit(rooms[63], rooms[62], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[63], rooms[247], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[247].exitsArray = [new RoomExit(rooms[247], rooms[248], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[247], rooms[63], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[247], rooms[66], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[66].exitsArray = [new RoomExit(rooms[66], rooms[247], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[66], rooms[65], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[248].exitsArray = [new RoomExit(rooms[248], rooms[210], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[248], rooms[247], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[210].exitsArray = [new RoomExit(rooms[210], rooms[209], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[210], null, LINK_ONEWAY, 1, "", false, new RoomAreaExitInfo(13, 'Land of Legend'), new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[210], rooms[248], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[130].exitsArray = [new RoomExit(rooms[130], rooms[127], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[130], rooms[249], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[249].exitsArray = [new RoomExit(rooms[249], rooms[130], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[158].exitsArray = [new RoomExit(rooms[158], rooms[157], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[208].exitsArray = [new RoomExit(rooms[208], rooms[250], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[208], rooms[206], LINK_ONEWAY, 7, "Bucket", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[250].exitsArray = [new RoomExit(rooms[250], rooms[208], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[251].exitsArray = [new RoomExit(rooms[251], rooms[252], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[251], rooms[253], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[251], rooms[254], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[251], rooms[180], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[253].exitsArray = [new RoomExit(rooms[253], rooms[251], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[255].exitsArray = [new RoomExit(rooms[255], rooms[180], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[252].exitsArray = [new RoomExit(rooms[252], rooms[251], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[180].exitsArray = [new RoomExit(rooms[180], rooms[255], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[180], rooms[256], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[180], rooms[251], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[180], rooms[178], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[256].exitsArray = [new RoomExit(rooms[256], rooms[180], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[254].exitsArray = [new RoomExit(rooms[254], rooms[251], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[257].exitsArray = [new RoomExit(rooms[257], rooms[258], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[257], rooms[182], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[182].exitsArray = [new RoomExit(rooms[182], rooms[259], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[182], rooms[257], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[182], rooms[181], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[260].exitsArray = [new RoomExit(rooms[260], rooms[259], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[261].exitsArray = [new RoomExit(rooms[261], rooms[258], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[258].exitsArray = [new RoomExit(rooms[258], rooms[257], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[258], rooms[261], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[259].exitsArray = [new RoomExit(rooms[259], rooms[182], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[259], rooms[260], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[184].exitsArray = [new RoomExit(rooms[184], rooms[262], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[184], rooms[263], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[184], rooms[264], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[184], rooms[183], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[262].exitsArray = [new RoomExit(rooms[262], rooms[265], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[262], rooms[184], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[263].exitsArray = [new RoomExit(rooms[263], rooms[184], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[263], rooms[265], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[265].exitsArray = [new RoomExit(rooms[265], rooms[262], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[265], rooms[263], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[266].exitsArray = [new RoomExit(rooms[266], rooms[264], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[264].exitsArray = [new RoomExit(rooms[264], rooms[267], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[264], rooms[266], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[264], rooms[184], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[267].exitsArray = [new RoomExit(rooms[267], rooms[264], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[268].exitsArray = [new RoomExit(rooms[268], rooms[186], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[268], rooms[269], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[269].exitsArray = [new RoomExit(rooms[269], rooms[270], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[269], rooms[268], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[270].exitsArray = [new RoomExit(rooms[270], rooms[269], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[270], rooms[271], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[271].exitsArray = [new RoomExit(rooms[271], rooms[270], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[186].exitsArray = [new RoomExit(rooms[186], rooms[268], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[186], rooms[185], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[272].exitsArray = [new RoomExit(rooms[272], rooms[273], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[272], rooms[188], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[274].exitsArray = [new RoomExit(rooms[274], rooms[275], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[274], rooms[188], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[275].exitsArray = [new RoomExit(rooms[275], rooms[274], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[273].exitsArray = [new RoomExit(rooms[273], rooms[272], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[273], rooms[276], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[188].exitsArray = [new RoomExit(rooms[188], rooms[274], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[188], rooms[272], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[188], rooms[187], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[276].exitsArray = [new RoomExit(rooms[276], rooms[273], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[51].exitsArray = [new RoomExit(rooms[51], rooms[240], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[51], rooms[64], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[51], rooms[50], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[51], rooms[67], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[51], rooms[277], LINK_ONEWAY, 4, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[51], rooms[239], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[110].exitsArray = [new RoomExit(rooms[110], rooms[109], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 1, "", "", null), false)];
+rooms[277].exitsArray = [new RoomExit(rooms[277], rooms[51], LINK_ONEWAY, 5, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[89].exitsArray = [new RoomExit(rooms[89], rooms[88], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[36].exitsArray = [new RoomExit(rooms[36], rooms[47], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[36], rooms[57], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[36], rooms[150], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[36], rooms[35], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[67].exitsArray = [new RoomExit(rooms[67], rooms[65], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[67], rooms[51], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[67], rooms[229], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[235].exitsArray = [new RoomExit(rooms[235], rooms[234], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[235], null, LINK_ONEWAY, 3, "", false, new RoomAreaExitInfo(276, 'The Continent of Mesolar'), new DoorInfo("", 0, "", "", null), false)];
+rooms[126].exitsArray = [new RoomExit(rooms[126], rooms[119], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[220].exitsArray = [new RoomExit(rooms[220], rooms[2], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[220], rooms[219], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[207].exitsArray = [new RoomExit(rooms[207], rooms[219], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[207], rooms[206], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[47].exitsArray = [new RoomExit(rooms[47], rooms[45], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[47], rooms[36], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[238].exitsArray = [new RoomExit(rooms[238], rooms[150], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[238], rooms[107], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[245].exitsArray = [new RoomExit(rooms[245], rooms[107], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[245], rooms[278], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[278].exitsArray = [new RoomExit(rooms[278], rooms[245], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[278], rooms[132], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[279].exitsArray = [new RoomExit(rooms[279], rooms[132], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[279], rooms[11], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[11].exitsArray = [new RoomExit(rooms[11], rooms[279], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[11], rooms[8], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 1, "", "", null), false), new RoomExit(rooms[11], rooms[94], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[95].exitsArray = [new RoomExit(rooms[95], rooms[93], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[95], rooms[243], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[132].exitsArray = [new RoomExit(rooms[132], rooms[278], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[132], rooms[279], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[132], rooms[131], LINK_ONEWAY, 3, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[56].exitsArray = [new RoomExit(rooms[56], rooms[54], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[56], rooms[165], LINK_ONEWAY, 1, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[56], rooms[29], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+rooms[125].exitsArray = [new RoomExit(rooms[125], rooms[119], LINK_ONEWAY, 0, "", false, null, new DoorInfo("", 0, "", "", null), false), new RoomExit(rooms[125], rooms[230], LINK_ONEWAY, 2, "", false, null, new DoorInfo("", 0, "", "", null), false)];
+
+// labels
+</script>
+        </div>
+        <div class="message">Done here? <a href="http://maps.gaardian.com">Check out another map</a>!</div>
+<script type="text/javascript">
+function getOppositeExitType(exittype) {
+    switch (exittype) {
+		case 0:
+			return 2;
+		case 1:
+			return 3;
+		case 2:
+			return 0;
+		case 3:
+			return 1;
+		case 4:
+			return 5;
+		case 5:
+		    return 4;
+	}
+	return exittype;
+}
+
+var room_height = 60, room_width = 100;
+var roomgap_x = 50, roomgap_y = 40;
+var door_width = room_height / 2;
+var arrowheadlength = roomgap_x / 6;
+var brokenexit_x = roomgap_x / 3;
+var brokenexit_y = roomgap_y / 2;
+var gridmaxx = 20, gridmaxy = 35;
+var highlightedRooms = '';
+var highlightedKeyRoom = '';
+var renderedAreaExits = new Array();
+
+
+function init() {
+    var entranceroom = null;
+    var padContainerLeft = false;
+    var padContainerRight = false;
+    var padContainerDown = false;
+    // Calculate all twoway indices and find the entrance room.
+    for (var i = 1, roomsLength = rooms.length; i < roomsLength; i++) {
+        exits = rooms[i].exitsArray;
+        if (exits != null) {
+            for (var j = 0, exitsLength = exits.length; j < exitsLength; j++) {
+                var roomexit = exits[j];
+                var exittype = roomexit.exittype;
+                if (roomexit.areaexit != null) {
+                    // area exits have special renderers
+                    roomexit.linktype = LINK_TO_ANOTHER_AREA;
+                    if (roomexit.room1.xpos == 1 && (roomexit.exittype == EXIT_WEST || roomexit.exittype == EXIT_DOWN)) {
+                        padContainerLeft = true;
+                    } else if (roomexit.room1.xpos == gridmaxx && (roomexit.exittype == EXIT_EAST || roomexit.exittype == EXIT_UP)) {
+                        padContainerRight = true;
+                    }
+                    if (roomexit.room1.ypos == gridmaxy && (roomexit.exittype == EXIT_SOUTH || roomexit.exittype == EXIT_DOWN)) {
+                        padContainerDown = true;
+                    }
+                } else if (exittype > 5) {
+                    // portals or special exits are disconnected
+                    roomexit.linktype = LINK_DISCONNECTED;
+                } else {
+                    var oppositeExittype = getOppositeExitType(exittype);
+                    targetexits = roomexit.room2.exitsArray;
+                    for (var k = 0, targetexitsLength = targetexits.length; k < targetexitsLength; k++) {
+                        if (targetexits[k].areaexit == null && targetexits[k].room2.roomid == roomexit.room1.roomid && targetexits[k].exittype == oppositeExittype) {
+                            roomexit.linktype = LINK_TWOWAY;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (rooms[i].isEntrance) {
+            entranceroom = rooms[i];
+        }
+    }
+    
+    // Pad left for area exits if necessary
+    if (padContainerLeft) {
+        CONTAINER_PAD_LEFT = room_width;
+        var container = document.getElementById("map-container");
+        container.style.left = CONTAINER_PAD_LEFT + "px";
+    }
+    if (padContainerRight) {
+        CONTAINER_PAD_RIGHT = room_width;
+    }
+    if (padContainerDown) {
+        CONTAINER_PAD_DOWN = room_height;
+    }
+    
+	// Ready for drawing now!
+}
+init();
+
+var jg = new jsGraphics("map-container");
+var jg3 = new jsGraphics("map-container");
+// order is important
+var jg4 = new jsGraphics("map-container");
+var jg2 = new jsGraphics("map-container");
+
+function drawLabel(label, jg) {
+    var x = calcLeftPos(label);
+    var y = calcTopPos(label);
+    // we don't need height
+    var width = label.width * room_width + (label.width - 1) * roomgap_x;
+    var alignment = "center";
+    var fontsize = "10pt";
+    var fontfamily = NORMALROOMFONT;
+    var fontweight = Font.PLAIN;
+    var lineheight = null;
+    switch (label.labeltype) {
+        case LABEL_TYPE_SECTION_CENTER: case LABEL_TYPE_SECTION_BOTTOM: case LABEL_TYPE_SECTION_TOP:
+            alignment = "center";
+            fontsize = "14pt";
+            fontweight = Font.BOLD;
+            break;
+        case LABEL_TYPE_SECTION_JUMBO_CENTER:
+            alignment = "center";
+            fontsize = "24pt";
+            fontweight = Font.ITALIC_BOLD;
+            break;
+        case LABEL_TYPE_INFORMATIONAL:
+            alignment = "left";
+            fontsize = "10pt";
+            fontweight = Font.PLAIN;
+            break;
+    }
+    switch (label.labeltype) {
+        case LABEL_TYPE_SECTION_CENTER: case LABEL_TYPE_SECTION_JUMBO_CENTER:
+            lineheight = room_height;
+            break;
+    }
+    jg.setFont(fontfamily, fontsize, fontweight); 
+    jg.setColor(label.labelcolor);
+    jg.drawStringRect(label.labeltext, x, y, width, alignment, lineheight);
+}
+
+function drawRoom(room, jg, borderColor, backgroundColor) {
+    x = calcLeftPos(room);
+    y = calcTopPos(room);
+    if (backgroundColor == null && room.roomcolor != "") {
+        backgroundColor = room.roomcolor;
+    }
+    if (backgroundColor != null) {
+        jg.setStroke(1);
+        jg.setColor(backgroundColor);
+        jg.fillRect(x, y, room_width, room_height);
+    }
+    if (borderColor != null) {
+        jg.setColor(borderColor);
+        jg.setStroke(5);
+    } else {
+        if (room.isEntrance) {
+            jg.setColor("green");
+            jg.setStroke(5);
+        } else if (room.aggroType > 0) {
+            if (room.aggroType == 1) {
+                // moving aggressive (this section of the area contains aggressives)
+                jg.setStroke(2);
+            } else {
+                // stationary aggressive
+                jg.setStroke(4);
+            }
+            jg.setColor("red");
+        } else {
+            jg.setColor("black");
+            jg.setStroke(2);
+        }
+    }
+    jg.drawRect(x, y, room_width, room_height);
+    if (room.pk) {
+        jg.setColor("red");
+        jg.setFont(NORMALROOMFONT,"10px",Font.BOLD);
+        jg.drawStringRect("PK", x + 5, calcBottomPos(room) - 15, 15, "left");
+    }
+    jg.setColor("black");
+    var fontsize = "12px";
+    // todo: make it check the height of the new div and size appropriately
+    if (getFormattedRoomname(room).length >= 39) {
+        fontsize = "10px";
+    }
+    jg.setFont(NORMALROOMFONT,fontsize,Font.PLAIN);
+    jg.drawStringRect(getFormattedRoomname(room), x + 4, y + 5, room_width - 5, "center");
+    
+    // finally, re-render the first disconnected exit if it has been obscured
+    if (backgroundColor != null) {
+        rerenderFirstDisconnectedExit(room, jg);
+    }
+}
+
+function getFormattedRoomname(room) {
+    var roomname = room.roomname;
+    if (room.graffiti) {
+        roomname += " (G)";
+    }
+    return roomname;
+}
+
+function isExitDirectlyConnected(exittype, room1, room2) {
+    if (exittype == EXIT_EAST) {
+        if (room1.xpos > room2.xpos) {
+            return false;
+        }
+        for (var i = room1.xpos + 1; i < room2.xpos && i <= gridmaxx; i++) {
+            if (fill_grid[i][room1.ypos]) {
+                return false;
+            }
+        }
+        return true;
+    } else if (exittype == EXIT_WEST) {
+        if (room2.xpos > room1.xpos) {
+            return false;
+        }
+        for (var i = room2.xpos + 1; i < room1.xpos && i <= gridmaxx; i++) {
+            if (fill_grid[i][room2.ypos]) {
+                return false;
+            }
+        }
+        return true;
+    } else if (exittype == EXIT_SOUTH) {
+        if (room1.ypos > room2.ypos) {
+            return false;
+        }
+        for (var i = room1.ypos + 1; i < room2.ypos && i <= gridmaxy; i++) {
+            if (fill_grid[room1.xpos][i]) {
+                return false;
+            }
+        }
+        return true;
+    } else if (exittype == EXIT_NORTH) {
+        if (room2.ypos > room1.ypos) {
+            return false;
+        }
+        for (var i = room2.ypos + 1; i < room1.ypos && i <= gridmaxy; i++) {
+            if (fill_grid[room2.xpos][i]) {
+                return false;
+            }
+        }
+        return true;
+    } else if (exittype == EXIT_UP) {
+        // room1 can have two up exits - top left up or top right up
+        if (room2.ypos >= room1.ypos) {
+            return false;
+        }
+        // can't be directly on top of each other!
+        if (room1.xpos == room2.xpos) {
+            return false;
+        }
+        var rise = room1.ypos - room2.ypos;
+        var run = room1.xpos - room2.xpos;
+        var m = rise / run;
+        if (Math.abs(m) == 1) { 
+            // for each of these exits, see if a room lies in the path
+            if (room1.xpos < room2.xpos) {
+                // top right up
+                var x = room1.xpos + 1;
+                for (var i = room1.ypos - 1; i > room2.ypos && i >= 1; i--) {
+                    if (fill_grid[x][i]) {
+                        return false;
+                    }
+                    x++;
+                }
+            } else if (room1.xpos > room2.xpos) {
+                // top left up
+                var x = room1.xpos - 1;
+                for (var i = room1.ypos - 1; i > room2.ypos && i >= 1; i--) {
+                    if (fill_grid[x][i]) {
+                        return false;
+                    }
+                    x--;
+                }
+            }
+        } else {
+            // not a straight slope; determine if there are rooms occupied within
+            // 1 gridroom of this line
+            // calculate b in y = mx + b
+            var b = room1.ypos - (m * room1.xpos);
+            // make sure the slope isn't too steep for rooms next to each other
+            if (Math.abs(run) == 1 && Math.abs(m) >= MAX_SLOPE) {
+                return false;
+            }
+            if (room1.xpos < room2.xpos) {
+                // top right up
+                var x = room1.xpos + 1;
+                for (var y = m * x + b; y > room2.ypos && y >= 1; y = m * x + b) {
+                    if (fill_grid[x][Math.ceil(y)]) {
+                        return false;
+                    }
+                    x++;
+                }
+            } else if (room1.xpos > room2.xpos) {
+                // top left up
+                var x = room1.xpos - 1;
+                for (var y = m * x + b; y > room2.ypos && y >= 1; y = m * x + b) {
+                    if (fill_grid[x][Math.ceil(y)]) {
+                        return false;
+                    }
+                    x--;
+                }
+            }
+        }
+        return true;
+    } else if (exittype == EXIT_DOWN) {
+        // room1 can have two up exits - bottom left down or bottom right down
+        if (room1.ypos >= room2.ypos) {
+            return false;
+        }
+        // can't be directly on top of each other!
+        if (room1.xpos == room2.xpos) {
+            return false;
+        }
+        var rise = room1.ypos - room2.ypos;
+        var run = room1.xpos - room2.xpos;
+        var m = rise / run;
+        if (Math.abs(m) == 1) {
+            // for each of these exits, see if a room lies in the path
+            if (room1.xpos < room2.xpos) {
+                // bottom right down
+                var x = room1.xpos + 1;
+                for (var i = room1.ypos + 1; i < room2.ypos && i <= gridmaxy; i++) {
+                    if (fill_grid[x][i]) {
+                        return false;
+                    }
+                    x++;
+                }
+            } else if (room1.xpos > room2.xpos) {
+                // bottom left down
+                var x = room1.xpos - 1;
+                for (var i = room1.ypos + 1; i < room2.ypos && i <= gridmaxy; i++) {
+                    if (fill_grid[x][i]) {
+                        return false;
+                    }
+                    x--;
+                }
+            }
+        } else {
+            // not a straight slope; determine if there are rooms occupied within
+            // 1 gridroom of this line
+            // calculate b in y = mx + b
+            var b = room1.ypos - (m * room1.xpos);
+            // make sure the slope isn't too steep for rooms next to each other
+            if (Math.abs(run) == 1 && Math.abs(m) >= MAX_SLOPE) {
+                return false;
+            }
+            if (room1.xpos < room2.xpos) {
+                // bottom right down
+                var x = room1.xpos + 1;
+                for (var y = m * x + b; y < room2.ypos && y <= gridmaxy; y = m * x + b) {
+                    if (fill_grid[x][Math.ceil(y)]) {
+                        return false;
+                    }
+                    x++;
+                }
+            } else if (room1.xpos > room2.xpos) {
+                // bottom left down
+                var x = room1.xpos - 1;
+                for (var y = m * x + b; y < room2.ypos && y <= gridmaxy; y = m * x + b) {
+                    if (fill_grid[x][Math.ceil(y)]) {
+                        return false;
+                    }
+                    x--;
+                }
+            }
+        }
+        return true;
+    }
+    
+}
+
+function contains(a, obj){
+  for(var i = 0; i < a.length; i++) {
+    if(a[i] === obj){
+      return true;
+    }
+  }
+  return false;
+}
+
+function exitAlreadyRendered(roomexit, xpos, ypos) {
+    var key = xpos + "," + ypos;
+    var areaname = roomexit.areaexit.areaname;
+    var renderedLocations = renderedAreaExits[areaname];
+    if (renderedLocations != null) {
+        if (contains(renderedLocations, key)) {
+            return true;
+        } else {
+            renderedLocations.push(key);
+            renderedAreaExits[areaname] = renderedLocations;
+            return false;
+        }
+    } else {
+        var renderedLocations = new Array();
+        renderedLocations.push(key);
+        renderedAreaExits[areaname] = renderedLocations;
+        return false;
+    }
+}
+
+// Top-left corner of grid is (0,0) -- actually, that should be (1,1) - (0,0) is used to denote an unmapped room
+function drawExit(roomexit, jg) {
+    jg.setStroke(2);
+    var room1 = roomexit.room1;
+    var room2 = roomexit.room2;
+    var exittype = roomexit.exittype;
+    if (roomexit.random) {
+        jg.setColor("red");
+    }
+    // todo: refactor even further - call separate methods to draw exits for north/south, east/west, up/down, disconnected links
+    if (roomexit.linktype == LINK_DISCONNECTED) {
+        // draw the special exit command
+        jg.setColor("blue");
+        jg.setFont(CUSTOMEXITFONT,"10px",Font.PLAIN);
+        var exitaction = roomexit.exitaction;
+        if (roomexit.exittype == 6) {
+            exitaction = "enter " + exitaction;
+        }
+        // calculate the position of this custom exit for this room
+        var index = -1;
+        var exitsArray = room1.exitsArray;
+        for (var i = 0; i < exitsArray.length; i++) {
+            if (exitsArray[i].linktype == LINK_DISCONNECTED) {
+                index++;
+            }
+            if (exitsArray[i] == roomexit) {
+                break;
+            }
+        }
+        var delta = index * 16;
+        if (room1.pk) {
+            jg.drawStringRect(exitaction, calcLeftPos(room1) + 4, calcBottomPos(room1) - 14 + delta, room_width - 5, "right");
+        } else {
+            jg.drawStringRect(exitaction, calcLeftPos(room1) + 4, calcBottomPos(room1) - 14 + delta, room_width + 5, "left");
+        }
+        // draw the link connecting the rooms besides the exit string
+        jg.drawImage('link.png',calcLeftPos(room1) - 16, calcBottomPos(room1) - 14 + delta, 16, 16, 'onclick="highlightRooms(rooms[' + room1.roomid + '], rooms[' + room2.roomid + ']);"');
+    } else if (roomexit.linktype == LINK_TO_ANOTHER_AREA) {
+        jg.setFont(NORMALROOMFONT,"12px",Font.ITALIC);
+        if (exittype == EXIT_EAST) {
+            var x1 = calcRightPos(room1);
+            var y1 = calcMiddleYPos(room1);
+            jg.drawLine(x1, y1, x1 + roomgap_x - 5, y1);
+            if (!exitAlreadyRendered(roomexit, room1.xpos + 1, room1.ypos)) {
+                jg.drawStringRect("To " + roomexit.areaexit.areaname, x1 + roomgap_x, calcTopPos(room1) + room_height / 4, room_width, "center");
+            }
+        } else if (exittype == EXIT_WEST) {
+            var x1 = calcLeftPos(room1);
+            var y1 = calcMiddleYPos(room1);
+            jg.drawLine(x1, y1, x1 - roomgap_x + 5, y1);
+            if (!exitAlreadyRendered(roomexit, room1.xpos - 1, room1.ypos)) {
+                jg.drawStringRect("To " + roomexit.areaexit.areaname, x1 - roomgap_x - room_width, calcTopPos(room1) + room_height / 4, room_width, "center");
+            }
+        } else if (exittype == EXIT_SOUTH) {
+            var x1 = calcMiddleXPos(room1);
+            var y1 = calcBottomPos(room1);
+            jg.drawLine(x1, y1, x1, y1 + roomgap_y - 5);
+            if (!exitAlreadyRendered(roomexit, room1.xpos, room1.ypos + 1)) {
+                jg.drawStringRect("To " + roomexit.areaexit.areaname, calcLeftPos(room1), y1 + roomgap_y, room_width, "center");
+            }
+        } else if (exittype == EXIT_NORTH) {
+            var x1 = calcMiddleXPos(room1);
+            var y1 = calcTopPos(room1);
+            jg.drawLine(x1, y1, x1, y1 - roomgap_y + 5);
+            if (!exitAlreadyRendered(roomexit, room1.xpos, room1.ypos - 1)) {
+                jg.drawStringRect("To " + roomexit.areaexit.areaname, calcLeftPos(room1), y1 - roomgap_y - (room_height * 3 / 4), room_width, "center");
+            }
+        } else if (exittype == EXIT_UP) {
+            // todo: special treatment for up exits where top-right is already filled (check fill_grid)
+            var x1 = calcRightPos(room1);
+            var y1 = calcTopPos(room1);
+            jg.drawLine(x1, y1, x1 + roomgap_x, y1 - roomgap_y + 5);
+            if (!exitAlreadyRendered(roomexit, room1.xpos + 1, room1.ypos - 1)) {
+                jg.drawStringRect("To " + roomexit.areaexit.areaname, x1 + roomgap_x, y1 - roomgap_y - (room_height / 2), room_width, "center");
+            }
+        } else if (exittype == EXIT_DOWN) {
+            // todo: special treatment for down exits where bottom-left is already filled (check fill_grid)
+            var x1 = calcLeftPos(room1);
+            var y1 = calcBottomPos(room1);
+            jg.drawLine(x1, y1, x1 - roomgap_x, y1 + roomgap_y - 5);
+            if (!exitAlreadyRendered(roomexit, room1.xpos - 1, room1.ypos + 1)) {
+                jg.drawStringRect("To " + roomexit.areaexit.areaname, x1 - roomgap_x - room_width, y1 + roomgap_y, room_width, "center");
+            }
+        }
+    } else {
+        var room1x = room1.xpos;
+        var room2x = room2.xpos;
+        var room1y = room1.ypos;
+        var room2y = room2.ypos;
+        if (exittype == EXIT_EAST || exittype == EXIT_WEST) {
+            if (room1 == room2) {
+                // This exit loops back to itself
+                if (exittype == EXIT_WEST) {
+                    var x1 = calcLeftPos(room1);
+                    var y1 = calcMiddleYPos(room1);
+                    var midx = x1 - room_width / 4;
+                    var midy = y1 - room_height / 4;
+                    var xPoints = new Array(x1, midx, midx, x1);
+                    var yPoints = new Array(y1, y1, midy, midy);
+                    jg.drawPolyline(xPoints, yPoints);
+                    // draw a one-way arrow
+                    jg.drawLine(x1 - 1, midy, x1 - arrowheadlength, midy - arrowheadlength / 2);
+                    jg.drawLine(x1 - 1, midy, x1 - arrowheadlength, midy + arrowheadlength / 2);
+                } else if (exittype == EXIT_EAST) {
+                    // todo: test this
+                    var x1 = calcRightPos(room1);
+                    var y1 = calcMiddleYPos(room1);
+                    var midx = x1 + room_width / 4;
+                    var midy = y1 + room_height / 4;
+                    var xPoints = new Array(x1, midx, midx, x1);
+                    var yPoints = new Array(y1, y1, midy, midy);
+                    jg.drawPolyline(xPoints, yPoints);
+                    // draw a one-way arrow
+                    jg.drawLine(x1 + 1, midy, x1 + arrowheadlength, midy - arrowheadlength / 2);
+                    jg.drawLine(x1 + 1, midy, x1 + arrowheadlength, midy + arrowheadlength / 2);
+                }
+            } else if (room1y == room2y && isExitDirectlyConnected(exittype, room1, room2)) {
+                // East-west exit - assume no wraparound exits (e.g. if east exit of east room connects to west exit of west room)
+                // This will be captured by isExitDirectlyConnected
+                
+                // assume east exit for now
+                var x1 = calcRightPos(room1);
+                var y1 = calcMiddleYPos(room1);
+                var x2 = calcLeftPos(room2);
+                var y2 = calcMiddleYPos(room2); // y1 should equal y2
+                // change coordinates if this is a west exit
+                if (room1x > room2x) {
+                    x1 = calcLeftPos(room1);
+                    y1 = calcMiddleYPos(room1);
+                    x2 = calcRightPos(room2);
+                    y2 = calcMiddleYPos(room2);
+                }
+                
+                jg.drawLine(x1, y1, x2, y2);
+                if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                    var midx = x1 + (x2 - x1) / 2;
+                    var topy = y1 - door_width / 2;
+                    jg.drawLine(midx, topy, midx, y1 + door_width / 2);
+                    // todo: clicking on locked doors should highlight room with key and show popup
+                    if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                        jg.drawImage('lock.png', midx + 4, topy - 4, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, midx + 4, topy - 4));
+                    }
+                }
+                // then draw uni-directional arrows, if applicable
+                if (roomexit.linktype == LINK_ONEWAY) {
+                    if (exittype == EXIT_EAST) {
+                        // left to right
+                        jg.drawLine(x2 - 1, y2, x2 - arrowheadlength, y2 - arrowheadlength / 2);
+                        jg.drawLine(x2 - 1, y2, x2 - arrowheadlength, y2 + arrowheadlength / 2);
+                    } else {
+                        // right to left
+                        jg.drawLine(x2 + 1, y2, x2 + arrowheadlength, y2 - arrowheadlength / 2);
+                        jg.drawLine(x2 + 1, y2, x2 + arrowheadlength, y2 + arrowheadlength / 2);
+                    }
+                }
+            } else {
+                if (exittype == EXIT_EAST) {
+                    var x1 = calcRightPos(room1);
+                    var y1 = calcMiddleYPos(room1) - room_height / 4;
+                    var x2 = x1 + brokenexit_x;
+                    var y2 = y1;
+                    jg.drawLine(x1, y1, x2, y2);
+                    if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                        var midx = x1 + (x2 - x1) / 2 - 2;
+                        jg.drawLine(midx, y1 - door_width / 4, midx, y2 + door_width / 4);
+                        if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                            jg.drawImage('lock.png', midx + 4, y1 - 4, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, midx + 4, y1 - 4));
+                        }
+                    }
+                    if (roomexit.linktype == LINK_ONEWAY) {
+                        jg.drawLine(x2 - 1, y2, x2 - arrowheadlength / 2, y2 - arrowheadlength / 2);
+                        jg.drawLine(x2 - 1, y2, x2 - arrowheadlength / 2, y2 + arrowheadlength / 2);
+                    }
+                    jg.drawImage('link.png', x2 + 4, y2 - 8, 16, 16, 'onclick="highlightRooms(rooms[' + room1.roomid + '], rooms[' + room2.roomid + ']);"');
+                } else {
+                    var x1 = calcLeftPos(room1);
+                    var y1 = calcMiddleYPos(room1) + room_height / 4;
+                    var x2 = x1 - brokenexit_x;
+                    var y2 = y1;
+                    jg.drawLine(x1, y1, x2, y2);
+                    if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                        var midx = x2 + (x1 - x2) / 2; // must be positive
+                        jg.drawLine(midx, y1 - door_width / 4, midx, y2 + door_width / 4);
+                        if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                            jg.drawImage('lock.png', midx + 4, y1 - 4, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, midx + 4, y1 - 4));
+                        }
+                    }
+                    if (roomexit.linktype == LINK_ONEWAY) {
+                        jg.drawLine(x2 + 1, y2, x2 + arrowheadlength / 2, y2 - arrowheadlength / 2);
+                        jg.drawLine(x2 + 1, y2, x2 + arrowheadlength / 2, y2 + arrowheadlength / 2);
+                    }
+                    jg.drawImage('link.png', x2 - 16, y2 - 8, 16, 16, 'onclick="highlightRooms(rooms[' + room1.roomid + '], rooms[' + room2.roomid + ']);"');
+                }
+            }
+        } else if (exittype == EXIT_NORTH || exittype == EXIT_SOUTH) {
+            if (room1 == room2) {
+                if (exittype == EXIT_NORTH) {
+                    var x1 = calcMiddleXPos(room1);
+                    var y1 = calcTopPos(room1);
+                    var midx = x1 + room_width / 4;
+                    var midy = y1 - room_height / 4;
+                    var xPoints = new Array(x1, x1, midx, midx);
+                    var yPoints = new Array(y1, midy, midy, y1);
+                    jg.drawPolyline(xPoints, yPoints);
+                    // draw a one-way arrow
+                    jg.drawLine(midx, y1 - 1, midx - arrowheadlength / 2, y1 - arrowheadlength);
+                    jg.drawLine(midx, y1 - 1, midx + arrowheadlength / 2, y1 - arrowheadlength);
+                } else if (exittype == EXIT_SOUTH) {
+                    // todo: test this
+                    var x1 = calcMiddleXPos(room1);
+                    var y1 = calcBottomPos(room1);
+                    var midx = x1 - room_width / 4;
+                    var midy = y1 + room_height / 4;
+                    var xPoints = new Array(x1, x1, midx, midx);
+                    var yPoints = new Array(y1, midy, midy, y1);
+                    jg.drawPolyline(xPoints, yPoints);
+                    // draw a one-way arrow
+                    jg.drawLine(midx, y1 + 1, midx - arrowheadlength / 2, y1 + arrowheadlength);
+                    jg.drawLine(midx, y1 + 1, midx + arrowheadlength / 2, y1 + arrowheadlength);
+                }
+            } else if (room1x == room2x && isExitDirectlyConnected(exittype, room1, room2)) {
+                // North-south exit - assume no wraparound exits (e.g. if south exit of south room connects to north exit of north room)
+                // This will be captured by isExitDirectlyConnected
+                
+                // assume south exit for now
+                var x1 = calcMiddleXPos(room1);
+                var y1 = calcBottomPos(room1);
+                var x2 = calcMiddleXPos(room2);
+                var y2 = calcTopPos(room2);
+                // change coordinates if this is a north exit
+                if (room1y > room2y) {
+                    x1 = calcMiddleXPos(room1);
+                    y1 = calcTopPos(room1);
+                    x2 = calcMiddleXPos(room2);
+                    y2 = calcBottomPos(room2);
+                }
+                // south exit from room1 should go to room2
+                
+                jg.drawLine(x1, y1, x2, y2);
+                if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                    var midy = y1 + (y2 - y1) / 2;
+                    var rightx = x1 + door_width / 2;
+                    jg.drawLine(x1 - door_width / 2, midy, rightx, midy);
+                    if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                        jg.drawImage('lock.png', rightx + 6, midy - 8, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, rightx + 6, midy - 8));
+                    }
+                }
+                if (roomexit.linktype == LINK_ONEWAY) {
+                    if (exittype == EXIT_NORTH) {
+                        // bottom to top
+                        jg.drawLine(x2, y2 + 1, x2 - arrowheadlength / 2, y2 + arrowheadlength);
+                        jg.drawLine(x2, y2 + 1, x2 + arrowheadlength / 2, y2 + arrowheadlength);
+                    } else {
+                        // top to bottom
+                        jg.drawLine(x2, y2 - 1, x2 - arrowheadlength / 2, y2 - arrowheadlength);
+                        jg.drawLine(x2, y2 - 1, x2 + arrowheadlength / 2, y2 - arrowheadlength);
+                    }
+                }
+            } else {
+                if (exittype == EXIT_NORTH) {
+                    var x1 = calcMiddleXPos(room1) - room_width / 4;
+                    var y1 = calcTopPos(room1);
+                    var x2 = x1;
+                    var y2 = y1 - brokenexit_y;
+                    jg.drawLine(x1, y1, x2, y2);
+                    if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                        var midy = y1 - (y1 - y2) / 2; // must be positive
+                        jg.drawLine(x1 - door_width / 4, midy, x1 + door_width / 4, midy);
+                        if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                            jg.drawImage('lock.png', x2 + 10, midy - 8, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, x2 + 10, midy - 8));
+                        }
+                    }
+                    if (roomexit.linktype == LINK_ONEWAY) {
+                        jg.drawLine(x2, y2 + 1, x2 - arrowheadlength / 2, y2 + arrowheadlength / 2);
+                        jg.drawLine(x2, y2 + 1, x2 + arrowheadlength / 2, y2 + arrowheadlength / 2);
+                    }
+                    jg.drawImage('link.png', x1 - 8, y2 - 16, 16, 16, 'onclick="highlightRooms(rooms[' + room1.roomid + '], rooms[' + room2.roomid + ']);"');
+                } else {
+                    var x1 = calcMiddleXPos(room1) + room_width / 4;
+                    var y1 = calcBottomPos(room1);
+                    var x2 = x1;
+                    var y2 = y1 + brokenexit_y;
+                    jg.drawLine(x1, y1, x2, y2);
+                    if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                        var midy = y1 + (y2 - y1) / 2; // must be positive
+                        jg.drawLine(x1 - door_width / 4, midy, x1 + door_width / 4, midy);
+                        if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                            jg.drawImage('lock.png', x2 + 10, midy - 8, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, x2 + 10, midy - 8));
+                        }
+                    }
+                    if (roomexit.linktype == LINK_ONEWAY) {
+                        jg.drawLine(x2, y2 - 1, x2 - arrowheadlength / 2, y2 - arrowheadlength / 2);
+                        jg.drawLine(x2, y2 - 1, x2 + arrowheadlength / 2, y2 - arrowheadlength / 2);
+                    }
+                    jg.drawImage('link.png', x1 - 8, y2, 16, 16, 'onclick="highlightRooms(rooms[' + room1.roomid + '], rooms[' + room2.roomid + ']);"');
+                }
+            }
+        } else if (exittype == EXIT_UP || exittype == EXIT_DOWN) {
+            var rise = room1y - room2y;
+            if (room1 == room2) {
+                // The exit loops back on itself.
+                if (exittype == EXIT_DOWN) {
+                    var x1 = calcLeftPos(room1);
+                    var y1 = calcBottomPos(room1);
+                    var midy1 = y1 + roomgap_y / 2;
+                    
+                    var midx = x1 - room_width / 5;
+                    var midy2 = y1 - room_height / 4;
+                    var xPoints = new Array(x1, midx, midx, x1);
+                    var yPoints = new Array(y1, midy1, midy2, midy2);
+                    jg.drawPolyline(xPoints, yPoints);
+                    // draw a one-way arrow
+                    jg.drawLine(x1 - 1, midy2, x1 - arrowheadlength, midy2 - arrowheadlength / 2);
+                    jg.drawLine(x1 - 1, midy2, x1 - arrowheadlength, midy2 + arrowheadlength / 2);
+                } else if (exittype == EXIT_UP) {
+                    var x1 = calcRightPos(room1);
+                    var y1 = calcTopPos(room1);
+                    var midy1 = y1 - roomgap_y / 2;
+                    
+                    var midx = x1 + room_width / 5;
+                    var midy2 = y1 + room_height / 4;
+                    var xPoints = new Array(x1, midx, midx, x1);
+                    var yPoints = new Array(y1, midy1, midy2, midy2);
+                    jg.drawPolyline(xPoints, yPoints);
+                    // draw a one-way arrow
+                    jg.drawLine(x1 + 1, midy2, x1 + arrowheadlength, midy2 - arrowheadlength / 2);
+                    jg.drawLine(x1 + 1, midy2, x1 + arrowheadlength, midy2 + arrowheadlength / 2);
+                }
+            } else {
+                if (roomexit.forceBrokenExit || rise == 0 || !isExitDirectlyConnected(exittype, room1, room2)) {
+                    if (exittype == EXIT_UP) {
+                        var x1 = calcRightPos(room1);
+                        var y1 = calcTopPos(room1);
+                        var x2 = x1 + roomgap_x / 3;
+                        var y2 = y1 - roomgap_y / 3;
+                        jg.drawLine(x1, y1, x2, y2);
+                        if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                            // todo: use proper door_width lengths
+                            jg.drawLine(x1, y2, x2, y1);
+                            if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                                jg.drawImage('lock.png', x2 + 2, y2 + 8, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, x2 + 2, y2 + 8));
+                            }
+                        }
+                        if (roomexit.linktype == LINK_ONEWAY) {
+                            jg.drawLine(x2 - arrowheadlength, y2, x2, y2);
+                            jg.drawLine(x2, y2 + arrowheadlength, x2, y2);
+                        }
+                        jg.drawImage('link.png', x2, y2 - 12, 16, 16, 'onclick="highlightRooms(rooms[' + room1.roomid + '], rooms[' + room2.roomid + ']);"');
+                    } else {
+                        var x1 = calcLeftPos(room1);
+                        var y1 = calcBottomPos(room1);
+                        var x2 = x1 - roomgap_x / 3;
+                        var y2 = y1 + roomgap_y / 3;
+                        jg.drawLine(x1, y1, x2, y2);
+                        if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                            // todo: use proper door_width lengths
+                            jg.drawLine(x1, y2, x2, y1);
+                            if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                                jg.drawImage('lock.png', x1, y2, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, x1, y2));
+                            }
+                        }
+                        if (roomexit.linktype == LINK_ONEWAY) {
+                            jg.drawLine(x2 + arrowheadlength, y2, x2, y2);
+                            jg.drawLine(x2, y2 - arrowheadlength, x2, y2);
+                        }
+                        jg.drawImage('link.png', x2 - 12, y2, 16, 16, 'onclick="highlightRooms(rooms[' + room1.roomid + '], rooms[' + room2.roomid + ']);"');
+                    }
+                } else {
+                    // Up-down exit (sort by x-axis)
+                    if (room1x > room2x) {
+                        // todo: this is really messed up, but it works
+                        // should really clean it up
+                        var swap = room1;
+                        room1 = room2;
+                        room2 = swap;
+                        // if (exittype == EXIT_UP) {
+                        //     exittype = EXIT_DOWN;
+                        // } else {
+                        //     exittype = EXIT_UP;
+                        // }
+                    }
+                    room1x = room1.xpos;
+                    room2x = room2.xpos;
+                    room1y = room1.ypos;
+                    room2y = room2.ypos;
+                    if (room1y > room2y) {
+                        // going up from room1
+                        var x1 = calcRightPos(room1);
+                        var y1 = calcTopPos(room1);
+                        var x2 = calcLeftPos(room2);
+                        var y2 = calcBottomPos(room2);
+                    
+                        jg.drawLine(x1, y1, x2, y2);
+                        // todo/fixme: this isn't working yet
+                        if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                            var midy = y1 + (y2 - y1) / 2;
+                            var midx = x1 + (x2 - x1) / 2;
+                            jg.drawLine(midx - door_width / 4, midy - door_width / 4, midx + door_width / 4, midy + door_width / 4);
+                            if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                                jg.drawImage('lock.png', midx + door_width / 4 + 2, midy + door_width / 4, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, midx + door_width / 4 + 2, midy + door_width / 4));
+                            }
+                        }
+                        if (roomexit.linktype == LINK_ONEWAY) {
+                            if (exittype == EXIT_UP) {
+                                jg.drawLine(x2 - arrowheadlength, y2, x2, y2);
+                                jg.drawLine(x2, y2 + arrowheadlength, x2, y2);
+                            } else {
+                                // note: not impossible to be a down exit?!
+                                jg.drawLine(x1, y1, x1 + arrowheadlength, y1);
+                                jg.drawLine(x1, y1, x1, y1 - arrowheadlength);
+                            }
+                        
+                        }
+                    } else {
+                        // going down from room1
+                        var x1 = calcRightPos(room1);
+                        var y1 = calcBottomPos(room1);
+                        var x2 = calcLeftPos(room2);
+                        var y2 = calcTopPos(room2);
+                    
+                        jg.drawLine(x1, y1, x2, y2);
+                    
+                        if (roomexit.doorinfo.doortype >= DOOR_CLOSED) {
+                            var midy = y1 + (y2 - y1) / 2;
+                            var midx = x1 + (x2 - x1) / 2;
+                            jg.drawLine(midx - door_width / 4, midy + door_width / 4, midx + door_width / 4, midy - door_width / 4);
+                            if (roomexit.doorinfo.doortype == DOOR_LOCKED) {
+                                jg.drawImage('lock.png', midx + door_width / 2, midy - door_width / 2, 16, 16, generateOnClickHandlerForKey(roomexit.doorinfo, midx + door_width / 2, midy - door_width / 2));
+                            }
+                        }
+                        if (roomexit.linktype == LINK_ONEWAY) {
+                            if (exittype == EXIT_DOWN) {
+                                jg.drawLine(x2 - arrowheadlength, y2, x2, y2);
+                                jg.drawLine(x2, y2 - arrowheadlength, x2, y2);
+                            } else {
+                                // note: impossible to be an up exit?!
+                                jg.drawLine(x1, y1, x1 + arrowheadlength, y1);
+                                jg.drawLine(x1, y1, x1, y1 + arrowheadlength);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    jg.setColor("black");
+}
+
+function generateOnClickHandlerForKey(doorinfo, imgx, imgy) {
+    // doorname, doortype, keyname, keydesc, keyroom
+    var handler = "Tip(&quot;";
+    var roomProvided = doorinfo.keyroom != null;
+    if (doorinfo.doorname != "" && doorinfo.keyname != "") {
+        handler += "<i>" + doorinfo.doorname + "</i> can be opened with <b>" + doorinfo.keyname + "</b>";
+        if (roomProvided) {
+            handler += "<br>found in \\&quot;" + doorinfo.keyroom.roomname + "\\&quot;";
+        }
+        handler += doorinfo.keydesc;
+        if (roomProvided) {
+            handler += "<p>Click to highlight key location.</p>";
+        }
+        handler += "&quot;, ABOVE, true, OFFSETX, -17, PADDING, 8, WIDTH, -400);";
+    } else {
+        handler += "No information is available for this locked door.<br>Try picking the lock or quaffing a passdoor potion. :)&quot;, ABOVE, true, OFFSETX, -17, PADDING, 8);";
+    }
+    var result = 'onmouseover=\"' + handler + '\" onmouseout=\"UnTip();\"';
+    if (roomProvided) {
+        result += ' onclick=\"highlightKeyRoom(rooms[' + doorinfo.keyroom.roomid + '], ' + imgx + ', ' + imgy + ');\"';
+    }
+    return result;
+}
+
+function calcLeftPos(room) {
+    return room.xpos * room_width + (room.xpos - 1) * roomgap_x
+}
+function calcTopPos(room) {
+    return room.ypos * room_height + (room.ypos - 1) * roomgap_y
+}
+function calcRightPos(room) {
+    return calcLeftPos(room) + room_width
+}
+function calcBottomPos(room) {
+    return calcTopPos(room) + room_height
+}
+function calcMiddleXPos(room) {
+    return calcLeftPos(room) + (room_width/2)
+}
+function calcMiddleYPos(room) {
+    return calcTopPos(room) + (room_height/2)
+}
+function updateMap() {
+    jg.paint();
+}
+
+function submitSearchRoomsRequest() {
+    searchRooms(document.getElementById('roomnamebox').value);
+}
+
+function searchRooms(roomname) {
+    jg3.clear();
+    setSearchResultsMessage("");
+    if (roomname != null && roomname != '') {
+        var results = 0;
+        var re = new RegExp(roomname, "i");
+        for (var i = 1; i < rooms.length; i++) {
+            if (rooms[i].roomname.match(re)) {
+                drawRoom(rooms[i], jg3, "cyan", "lightcyan");
+                results++;
+            }
+        }
+        if (results == 0) {
+            setSearchResultsMessage("No matching rooms found.");
+        } else {
+            var message = results + " room" + (results == 1 ? "" : "s") + " highlighted.";
+            setSearchResultsMessage(message);
+        }
+        jg3.paint();
+    }
+}
+
+function setSearchResultsMessage(message) {
+    document.getElementById("searchboxresults").innerHTML = message;
+}
+
+function highlightRooms(room, room2) {
+    jg2.clear();
+    link = room.roomid + '-' + room2.roomid;
+    reversedLink = room2.roomid + '-' + room.roomid;
+    if (highlightedRooms != link && highlightedRooms != reversedLink) {
+        highlightRoom(room);
+        highlightRoom(room2);
+        highlightedRooms = link;
+        // Now show the link between the two rooms
+        jg2.setColor("orange");
+        var mid1x = calcRightPos(room);
+        var mid1y = calcBottomPos(room);
+        var mid2x = calcRightPos(room2);
+        var mid2y = calcBottomPos(room2);
+        jg2.fillOval(mid1x - 16, mid1y - 16, 16, 16);
+        jg2.fillOval(mid2x - 16, mid2y - 16, 16, 16);
+        jg2.setStroke(2);
+        jg2.drawLine(mid1x - 8, mid1y - 8, mid2x - 8, mid2y - 8);
+        jg2.paint();
+    } else {
+        highlightedRooms = '';
+    }
+}
+
+function highlightRoom(room) {
+    drawRoom(room, jg2, "yellow", "lightyellow");
+}
+
+function highlightKeyRoom(room, imgx, imgy) {
+    jg4.clear();
+    if (highlightedKeyRoom != room.roomid) {
+        drawRoom(room, jg4, "purple", "#ffd6fe");
+        highlightedKeyRoom = room.roomid;
+        // draw line between lock and contained location
+        jg4.setColor("#4B0082");
+        var mid1x = calcRightPos(room);
+        var mid1y = calcBottomPos(room);
+        var mid2x = imgx + 16 + 11; // hack x pos to make line vertical for a room on the same x axis
+        var mid2y = imgy + 16 + 8;
+        jg4.fillOval(mid1x - 16, mid1y - 16, 16, 16);
+        jg4.fillOval(mid2x - 12, mid2y - 12, 12, 12);
+        jg4.setStroke(2);
+        jg4.drawLine(mid1x - 8, mid1y - 8, mid2x - 6, mid2y - 6);
+        jg4.paint();
+    } else {
+        highlightedKeyRoom = '';
+    }
+}
+
+// first disconnected exit could be obscured -- re-render whenever the room is rendered
+function rerenderFirstDisconnectedExit(room, jg) {
+    // re-render only the first exit
+    var roomExits = room.exitsArray;
+    for (var i = 0; i < roomExits.length; i++) {
+        if (roomExits[i].linktype == LINK_DISCONNECTED) {
+            drawExit(roomExits[i], jg);
+            break;
+        }
+    }
+}
+
+// Assumes init() has already been called.
+function drawMap() {
+    // Initialize the fill grid with false -> sets fill_grid[x][y] = false
+    for (var i = 1; i <= gridmaxx; i++) {
+        fill_grid[i] = new Array();
+        for (var j = 1; j <= gridmaxy; j++) {
+            fill_grid[i][j] = false;
+        }
+    }
+    
+    // For each of the rooms, mark its corresponding cell as occupied or not.
+    for (var i = 1; i < rooms.length; i++) {
+        var room = rooms[i];
+        // Only mark room as occupied if it is placed on the map!
+        if (room.xpos > 0 && room.ypos > 0) {
+            fill_grid[room.xpos][room.ypos] = true;
+        }
+    }
+    
+    // Draw all of the exits before rooms.
+    for (var i = 1; i < rooms.length; i++) {
+        exits = rooms[i].exitsArray;
+        for (var j = 0; j < exits.length; j++) {
+            drawExit(exits[j], jg);
+        }
+    }
+    
+    // Finally render the rooms (and any obscured exits).
+    for (var i = 1; i < rooms.length; i++) {
+        var room = rooms[i];
+        drawRoom(room, jg);
+    }
+    
+    // Draw all the labels
+    for (var i = 1; i < labels.length; i++) {
+        var label = labels[i];
+        drawLabel(label, jg);
+    }
+    
+    // Pad some space on the bottom and the right.
+    var xdelta = 0;
+    var ydelta = 0;
+    var maxx = (gridmaxx + xdelta + 1) * room_width + (gridmaxx + xdelta) * roomgap_x + CONTAINER_PAD_RIGHT;
+    var maxy = (gridmaxy + ydelta + 1) * room_height + (gridmaxy + ydelta) * roomgap_y + CONTAINER_PAD_DOWN;
+    jg.setColor("white");
+    jg.drawRect(maxx, maxy, 1, 1);
+    
+    updateMap();
+    document.getElementById("top-strip").style.width = (maxx + CONTAINER_PAD_LEFT + CONTAINER_PAD_RIGHT) + "px";
+}
+drawMap();
+
+</script>
+        <script type="text/javascript" src="wz_tooltip/wz_tooltip.js"></script> 
+        <script type="text/javascript" src="wz_tooltip/tip_centerwindow.js"></script>
+        <script type="text/javascript" src="wz_tooltip/tip_balloon.js"></script>
+        <script type="text/javascript" src="jquery-1.3.2.min.js"></script>
+        <script>
+        $(document).ready(function(){
+            $("#moreinfo").click(function () {
+                var topHeight = $("#top-strip").height();
+                var infoOffset = $("#areainfo").offset().top;
+                var mapTop = $("#map-container").offset().top;
+                if ($("#areainfo").is(":hidden")) {
+                    $("#areainfo").width(($("#top-strip").width() - 120) + "px");
+                } else {
+                }
+                $("#areainfo").slideToggle("slow");
+            });
+            // Set the top strip to be min 900px.
+            if ($("#top-strip").width() < 900) {
+                $("#top-strip").width("900px");
+            }
+			// update the room count
+			$("#room_count_span").html(rooms.length - 1);
+        });
+          </script>
+
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-27355433-1']);
+	  _gaq.push(['_setDomainName', '.gaardian.com']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+	<script type="text/javascript">var a=new Date,b=a.getUTCHours();if(0==a.getUTCMonth()&&2012==a.getUTCFullYear()&&((18==a.getUTCDate()&&13<=b)||(19==a.getUTCDate()&&0>=b)))window.location="http://sopastrike.com/strike";</script>
+	
+    </body>
+</html>
+
+<!-- retrieved cached map from October 2, 2025, 7:53:12 am -->
