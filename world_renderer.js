@@ -47,6 +47,15 @@ const HALL_NAME_PATTERN = /\b(hall|hallway)\b/i;
 const DOOR_NAME_PATTERN = /\b(door|entrance|gate|archway)\b/i;
 const GRASS_NAME_PATTERN = /\b(grass|field|fields|garden|park)\b/i;
 const SAND_NAME_PATTERN = /\b(sand|beach)\b/i;
+const DEFAULT_COLOR_SETTINGS = {
+  defaultColor: '#6b7280',
+  infoColors: {
+    shop: '#facc15',
+    healer: '#ef4444',
+    trainer: '#22c55e',
+    guild: '#a855f7',
+  },
+};
 
 
 const DIRECTION_OFFSETS = {
@@ -71,19 +80,22 @@ function normalizeManualCoordinates(manualCoords = {}) {
   return normalized;
 }
 
-function hashColor(seed) {
-  let h = 0;
-  for (let i = 0; i < seed.length; i += 1) {
-    h = (h << 5) - h + seed.charCodeAt(i);
-    h |= 0;
-  }
-  const hue = Math.abs(h) % 360;
-  return new THREE.Color(`hsl(${hue}, 60%, 60%)`);
-}
-
 function deriveAreaIdFromFile(fileName) {
   const match = fileName.match(/area(\d+)/);
   return match ? Number.parseInt(match[1], 10) : undefined;
+}
+
+function normalizeSettingColors(settings) {
+  const merged = {
+    ...DEFAULT_COLOR_SETTINGS,
+    ...settings,
+    infoColors: { ...DEFAULT_COLOR_SETTINGS.infoColors, ...(settings?.infoColors ?? {}) },
+  };
+
+  return {
+    defaultColor: merged.defaultColor ?? DEFAULT_COLOR_SETTINGS.defaultColor,
+    infoColors: merged.infoColors,
+  };
 }
 
 function buildRoomLookup(rooms) {
@@ -315,17 +327,40 @@ function solveRoomCoordinates(areaData, areaId) {
   return coordinates;
 }
 
-function buildWorldRooms(areaData, areaId, areaName, areaOffset, solvedCoords) {
-  const areaColor = hashColor(String(areaId));
-  const rooms = areaData.rooms.map((room) => ({
-    ...room,
-    areaId,
-    areaName,
-    position: normalizeRoomPosition(room, areaOffset, solvedCoords),
-    color: room.isEntrance ? new THREE.Color('#22d3ee') : areaColor,
-    pkColor: room.pk ? new THREE.Color('#a855f7') : null,
-    connections: [],
-  }));
+function deriveInfoColor(info, infoColors) {
+  if (!info) return null;
+
+  const tokens = info
+    .split(',')
+    .map((token) => token.trim().toLowerCase())
+    .filter(Boolean);
+
+  for (let i = 0; i < tokens.length; i += 1) {
+    const color = infoColors?.[tokens[i]];
+    if (color) return new THREE.Color(color);
+  }
+
+  return null;
+}
+
+function buildWorldRooms(areaData, areaId, areaName, areaOffset, solvedCoords, options = {}) {
+  const defaultColor = new THREE.Color(options?.colorSettings?.defaultColor ?? DEFAULT_COLOR_SETTINGS.defaultColor);
+  const rooms = areaData.rooms.map((room) => {
+    const info = options?.roomInfoResolver?.(areaName, room.name) ?? null;
+    const infoColor = deriveInfoColor(info, options?.colorSettings?.infoColors);
+
+    return {
+      ...room,
+      areaId,
+      areaName,
+      info,
+      position: normalizeRoomPosition(room, areaOffset, solvedCoords),
+      color: room.isEntrance ? new THREE.Color('#22d3ee') : defaultColor,
+      infoColor,
+      pkColor: room.pk ? new THREE.Color('#a855f7') : null,
+      connections: [],
+    };
+  });
 
   const lookups = buildRoomLookup(rooms);
 
@@ -496,7 +531,8 @@ function computeAreaOffsets(layouts) {
   return offsets;
 }
 
-function buildWorldFromLayouts(layouts, areaOffsetsOverride = null) {
+function buildWorldFromLayouts(layouts, options = {}) {
+  const { areaOffsetsOverride = null, colorSettings = DEFAULT_COLOR_SETTINGS, roomInfoResolver = null } = options;
   const areaOffsets = areaOffsetsOverride ?? computeAreaOffsets(layouts);
   const world = { rooms: [], links: [] };
   const lookupsByArea = new Map();
@@ -510,6 +546,7 @@ function buildWorldFromLayouts(layouts, areaOffsetsOverride = null) {
       layout.areaName,
       offset,
       layout.solvedCoords,
+      { colorSettings, roomInfoResolver },
     );
     const links = buildWorldLinks(layout.parsed, lookups, layout.areaId, linkPairs);
 
@@ -593,9 +630,62 @@ async function loadArea(source) {
   return { areaId, areaName, parsed: { ...parsed, manualCoords }, solvedCoords, manualCoords, bounds, roomIndexById };
 }
 
+async function loadColorSettings() {
+  try {
+    const response = await fetch('room_color_settings.json');
+    if (!response.ok) throw new Error(`Failed to load color settings: ${response.status}`);
+    const parsed = await response.json();
+    return normalizeSettingColors(parsed);
+  } catch (error) {
+    console.warn('Using default color settings because custom settings failed to load', error);
+    return DEFAULT_COLOR_SETTINGS;
+  }
+}
+
+async function loadRoomInfoResolver() {
+  try {
+    const [roomsResponse, areasResponse] = await Promise.all([
+      fetch('Database/rooms.json'),
+      fetch('Database/areas.json'),
+    ]);
+
+    if (!roomsResponse.ok || !areasResponse.ok) {
+      throw new Error('Room info files could not be loaded');
+    }
+
+    const [rooms, areas] = await Promise.all([roomsResponse.json(), areasResponse.json()]);
+    const areaUidByName = new Map(
+      areas
+        .filter((area) => area?.name && area?.uid)
+        .map((area) => [area.name.toLowerCase(), area.uid]),
+    );
+
+    const roomInfoByKey = new Map();
+    rooms.forEach((room) => {
+      if (!room?.info) return;
+      const key = `${String(room.area ?? '').toLowerCase()}::${String(room.name ?? '').toLowerCase()}`;
+      if (!roomInfoByKey.has(key)) roomInfoByKey.set(key, room.info);
+    });
+
+    return function resolveRoomInfo(areaName, roomName) {
+      if (!areaName || !roomName) return null;
+      const areaKey = areaUidByName.get(areaName.toLowerCase()) ?? areaName.toLowerCase();
+      const key = `${areaKey}::${roomName.toLowerCase()}`;
+      return roomInfoByKey.get(key) ?? null;
+    };
+  } catch (error) {
+    console.warn('Room info resolver unavailable; skipping info-based coloring', error);
+    return null;
+  }
+}
+
 async function loadWorld() {
-  const layouts = await Promise.all(MAP_SOURCES.map((source) => loadArea(source)));
-  return { layouts, ...buildWorldFromLayouts(layouts) };
+  const [colorSettings, roomInfoResolver, layouts] = await Promise.all([
+    loadColorSettings(),
+    loadRoomInfoResolver(),
+    Promise.all(MAP_SOURCES.map((source) => loadArea(source))),
+  ]);
+  return { colorSettings, roomInfoResolver, layouts, ...buildWorldFromLayouts(layouts, { colorSettings, roomInfoResolver }) };
 }
 
 function isRoadLikeRoom(name) {
@@ -742,7 +832,7 @@ function createRoomMesh(room) {
   const grassLike = isGrassLikeRoom(room.name);
   const sandLike = isSandLikeRoom(room.name);
 
-  let color = room.pkColor ?? room.color;
+  let color = room.infoColor ?? room.pkColor ?? room.color;
   let emissive = room.pkColor ? room.pkColor.clone().multiplyScalar(0.35) : undefined;
 
   // Default cube
@@ -750,13 +840,13 @@ function createRoomMesh(room) {
   let depth = ROOM_SIZE;
   let height = ROOM_SIZE;
 
-  if (roadLike || hallLike || waterLike || grassLike || sandLike) {
+  if (!room.infoColor && (roadLike || hallLike || waterLike || grassLike || sandLike)) {
     height = ROOM_SIZE * 0.25;
     if (roadLike) color = new THREE.Color('#374151');
     if (waterLike) { color = new THREE.Color('#4682B4'); emissive = undefined; }
-    if (hallLike)  { color = new THREE.Color('#AA4A44'); emissive = undefined; }
-	if (grassLike)  { color = new THREE.Color('#018228'); emissive = undefined; }
-	if (sandLike)  { color = new THREE.Color('#EDE29F'); emissive = undefined; }
+    if (hallLike) { color = new THREE.Color('#AA4A44'); emissive = undefined; }
+    if (grassLike) { color = new THREE.Color('#018228'); emissive = undefined; }
+    if (sandLike) { color = new THREE.Color('#EDE29F'); emissive = undefined; }
   }
 
   // ⭐ NEW DOOR BEHAVIOR — vertical rectangle
@@ -1090,6 +1180,8 @@ const editorState = {
   areaOffsets: null,
   scene: null,
   selectedRoomKey: null,
+  colorSettings: DEFAULT_COLOR_SETTINGS,
+  roomInfoResolver: null,
 };
 
 function getLayout(areaId) {
@@ -1132,7 +1224,10 @@ function rebuildWorldWithLayouts() {
   editorState.layouts.forEach((layout) => {
     layout.bounds = computeBoundsFromCoords(layout.solvedCoords);
   });
-  const { world, areaOffsets } = buildWorldFromLayouts(editorState.layouts);
+  const { world, areaOffsets } = buildWorldFromLayouts(editorState.layouts, {
+    colorSettings: editorState.colorSettings,
+    roomInfoResolver: editorState.roomInfoResolver,
+  });
   editorState.world = world;
   editorState.areaOffsets = areaOffsets;
   editorState.scene.updateWorld(world);
@@ -1256,10 +1351,12 @@ function setupRecordingControls(sceneController) {
 
 (async function main() {
   try {
-    const { world, layouts, areaOffsets } = await loadWorld();
+    const { world, layouts, areaOffsets, colorSettings, roomInfoResolver } = await loadWorld();
     editorState.layouts = layouts;
     editorState.world = world;
     editorState.areaOffsets = areaOffsets;
+    editorState.colorSettings = colorSettings;
+    editorState.roomInfoResolver = roomInfoResolver;
 
     editorState.scene = initScene(world, {
       onRoomSelected(room) {
