@@ -1,0 +1,9 @@
+{
+  "defaultColor": "#6b7280",
+  "infoColors": {
+    "shop": "#facc15",
+    "healer": "#ef4444",
+    "trainer": "#22c55e",
+    "guild": "#a855f7"
+  }
+}
