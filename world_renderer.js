@@ -851,7 +851,7 @@ function updateSelection(element, room) {
 
 function initScene(world, { onRoomSelected } = {}) {
   const canvas = document.getElementById('world');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -982,6 +982,78 @@ function initScene(world, { onRoomSelected } = {}) {
 
   animate();
 
+  async function recordRotationGif() {
+    if (typeof GIF === 'undefined') {
+      throw new Error('GIF recording library failed to load');
+    }
+
+    const originalPosition = camera.position.clone();
+    const originalTarget = controls.target.clone();
+    const startOffset = originalPosition.clone().sub(originalTarget);
+    const radiusXY = Math.sqrt(startOffset.x * startOffset.x + startOffset.y * startOffset.y);
+    const height = startOffset.z;
+    const startAngle = Math.atan2(startOffset.y, startOffset.x);
+
+    const durationMs = 7000;
+    const fps = 15;
+    const frames = Math.max(1, Math.round((durationMs / 1000) * fps));
+
+    const size = renderer.getSize(new THREE.Vector2());
+    const gif = new GIF({
+      workers: 2,
+      quality: 12,
+      width: size.width,
+      height: size.height,
+      workerScript: 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js',
+    });
+
+    controls.enabled = false;
+
+    const renderAngle = (angle) => {
+      const offset = new THREE.Vector3(
+        Math.cos(angle) * radiusXY,
+        Math.sin(angle) * radiusXY,
+        height,
+      );
+      camera.position.copy(originalTarget).add(offset);
+      camera.lookAt(originalTarget);
+      renderer.render(scene, camera);
+    };
+
+    try {
+      for (let i = 0; i < frames; i += 1) {
+        const angle = startAngle + (Math.PI * 2 * (i / frames));
+        renderAngle(angle);
+        gif.addFrame(renderer.domElement, { copy: true, delay: 1000 / fps });
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+      }
+
+      await new Promise((resolve, reject) => {
+        gif.on('finished', (blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'world-rotation.gif';
+          link.click();
+          URL.revokeObjectURL(url);
+          resolve();
+        });
+
+        gif.on('error', (error) => {
+          reject(error);
+        });
+
+        gif.render();
+      });
+    } finally {
+      controls.enabled = true;
+      camera.position.copy(originalPosition);
+      controls.target.copy(originalTarget);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+  }
+
   function selectRoom(predicate) {
     const mesh = roomGroup.children.find((child) => predicate(child.userData?.room ?? {}));
     setSelection(mesh ?? null);
@@ -993,6 +1065,7 @@ function initScene(world, { onRoomSelected } = {}) {
       setSelection(null);
     },
     selectRoom,
+    recordRotationGif,
   };
 }
 
@@ -1135,6 +1208,35 @@ function setupEditorControls() {
   });
 }
 
+function setupRecordingControls(sceneController) {
+  const recordButton = document.getElementById('record-gif');
+  const status = document.getElementById('record-status');
+  if (!recordButton || !status) return;
+
+  recordButton.addEventListener('click', async (event) => {
+    event.preventDefault();
+    status.textContent = '';
+    recordButton.disabled = true;
+    recordButton.textContent = 'Recording...';
+
+    try {
+      await sceneController.recordRotationGif();
+      status.textContent = 'GIF downloaded';
+    } catch (error) {
+      console.error('GIF recording failed', error);
+      status.textContent = 'Recording failed';
+    } finally {
+      recordButton.disabled = false;
+      recordButton.textContent = 'Record rotating GIF';
+      setTimeout(() => {
+        if (status.textContent === 'GIF downloaded' || status.textContent === 'Recording failed') {
+          status.textContent = '';
+        }
+      }, 2500);
+    }
+  });
+}
+
 (async function main() {
   try {
     const { world, layouts, areaOffsets } = await loadWorld();
@@ -1150,6 +1252,7 @@ function setupEditorControls() {
     });
 
     setupEditorControls();
+    setupRecordingControls(editorState.scene);
   } catch (error) {
     console.error('Failed to initialize world renderer', error);
     const ui = document.getElementById('selection');
