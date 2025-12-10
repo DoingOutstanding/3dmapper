@@ -1,0 +1,2375 @@
+[
+    {
+        "color": "",
+        "flags": "",
+        "name": "Old clan holding area 4",
+        "texture": null,
+        "uid": "oldclanfou"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Land of Legend",
+        "texture": null,
+        "uid": "legend"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Land of Oz",
+        "texture": null,
+        "uid": "landofoz"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Gauntlet",
+        "texture": "darkstone.png",
+        "uid": "gauntlet"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Mountains of Desolation",
+        "texture": null,
+        "uid": "desolation"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Into the Long Night",
+        "texture": null,
+        "uid": "longnight"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Warzone",
+        "texture": null,
+        "uid": "warzone"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Deathtrap Dungeon",
+        "texture": "stone.png",
+        "uid": "deathtrap"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Great Salt Flats",
+        "texture": "sand.png",
+        "uid": "salt"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Realm of Infamy",
+        "texture": null,
+        "uid": "infamy"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Weather Observatory",
+        "texture": null,
+        "uid": "weather"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Xyl's Mosaic",
+        "texture": null,
+        "uid": "xylmos"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Earth Plane 4",
+        "texture": null,
+        "uid": "earthplane"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Foolish Promises",
+        "texture": null,
+        "uid": "promises"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Dungeon of Doom",
+        "texture": null,
+        "uid": "dundoom"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Killing Fields",
+        "texture": "grass4.png",
+        "uid": "fields"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Tournament of Illoria",
+        "texture": null,
+        "uid": "illoria"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Marshlands of Agroth",
+        "texture": null,
+        "uid": "agroth"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Olde Worlde Carnivale",
+        "texture": null,
+        "uid": "carnivale"
+    },
+    {
+        "color": "0xbbbbbb",
+        "flags": "",
+        "name": "Jungles of Verume",
+        "texture": "forest.png",
+        "uid": "verume"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Artificer's Mayhem",
+        "texture": null,
+        "uid": "mayhem"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Ranger Heaven",
+        "texture": null,
+        "uid": "rangers"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Old clan holding area 3",
+        "texture": null,
+        "uid": "oldclanthr"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Masquerade Island",
+        "texture": null,
+        "uid": "masq"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Kingsholm",
+        "texture": "test4.png",
+        "uid": "kingsholm"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Den of Thieves",
+        "texture": null,
+        "uid": "thieves"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Black Rose",
+        "texture": null,
+        "uid": "blackrose"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Island of Stardock",
+        "texture": null,
+        "uid": "stardock"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Dark Temple of Zyian",
+        "texture": "tile1.png",
+        "uid": "zyian"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Snuckles Village",
+        "texture": null,
+        "uid": "snuckles"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Curse of the Midnight Fens",
+        "texture": null,
+        "uid": "fens"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The School of Horror",
+        "texture": null,
+        "uid": "sohtwo"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Misty Shores of Yarr",
+        "texture": null,
+        "uid": "yarr"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Tree of Life",
+        "texture": null,
+        "uid": "tol"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Eternal Autumn",
+        "texture": null,
+        "uid": "autumn"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Graveyard",
+        "texture": null,
+        "uid": "graveyard"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Intrigues of Times Past",
+        "texture": null,
+        "uid": "times"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The First Ascent",
+        "texture": "rocky2.png",
+        "uid": "ascent"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Imperial City of Reme",
+        "texture": null,
+        "uid": "reme"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Verdure Estate",
+        "texture": null,
+        "uid": "verdure"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Canyon Memorial Hospital",
+        "texture": "tile1.png",
+        "uid": "canyon"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Faerie Tales II",
+        "texture": null,
+        "uid": "ftii"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Gold Rush",
+        "texture": null,
+        "uid": "goldrush"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Lower Planes",
+        "texture": null,
+        "uid": "lplanes"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Icy Caldera of Mauldoon",
+        "texture": null,
+        "uid": "caldera"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Realm of the Hawklords",
+        "texture": null,
+        "uid": "hawklord"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Old clan holding area 1",
+        "texture": null,
+        "uid": "oldclanone"
+    },
+    {
+        "color": "0x333333",
+        "flags": "",
+        "name": "Gelidus",
+        "texture": "snow.png",
+        "uid": "gelidus"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Drageran Empire",
+        "texture": null,
+        "uid": "drageran"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Empire of Talsa",
+        "texture": null,
+        "uid": "talsa"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Gladiator's Arena",
+        "texture": null,
+        "uid": "arena"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Nine Hells",
+        "texture": null,
+        "uid": "ninehells"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Darkside of the Fractured Lands",
+        "texture": null,
+        "uid": "darkside"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Realm of the Firebird",
+        "texture": null,
+        "uid": "firebird"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The UnderDark",
+        "texture": "stone.png",
+        "uid": "underdark"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Halls of the Damned",
+        "texture": null,
+        "uid": "damned"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Cradlebrook",
+        "texture": null,
+        "uid": "cradle"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Archipelago of Entropy",
+        "texture": null,
+        "uid": "entropy"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Astral Travels",
+        "texture": null,
+        "uid": "astral"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Battlefields of Adaldar",
+        "texture": null,
+        "uid": "adaldar"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Elemental Chaos",
+        "texture": null,
+        "uid": "elemental"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Faerie Tales",
+        "texture": null,
+        "uid": "ft1"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Dwarven Kingdom",
+        "texture": "stone.png",
+        "uid": "dwarven"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Mossflower Wood",
+        "texture": null,
+        "uid": "mossflower"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Paradise Lost",
+        "texture": null,
+        "uid": "paradise"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Uncharted Oceans",
+        "texture": "ocean1.png",
+        "uid": "uncharted"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Stonekeep",
+        "texture": "stones.png",
+        "uid": "stonekeep"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Northstar",
+        "texture": null,
+        "uid": "northstar"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Trouble with Gwillimberry",
+        "texture": null,
+        "uid": "gwillim"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Midgaard",
+        "texture": null,
+        "uid": "midgaard"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Tai'rha Laym",
+        "texture": null,
+        "uid": "laym"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Unearthly Bonds",
+        "texture": null,
+        "uid": "bonds"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "A Magical Hodgepodge",
+        "texture": null,
+        "uid": "hodgepodge"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Entrance to Hades",
+        "texture": null,
+        "uid": "hades"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Sen'narre Lake",
+        "texture": "ocean3.png",
+        "uid": "sennarre"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Pompeii",
+        "texture": null,
+        "uid": "pompeii"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Yggdrasil: The World Tree",
+        "texture": null,
+        "uid": "ygg"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Gilda And The Dragon",
+        "texture": null,
+        "uid": "gilda"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Nenukon and the Far Country",
+        "texture": null,
+        "uid": "nenukon"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Living Mines of Dak'Tai",
+        "texture": null,
+        "uid": "livingmine"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Partroxis",
+        "texture": null,
+        "uid": "partroxis"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Blighted Tundra of Andarin",
+        "texture": null,
+        "uid": "andarin"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Sanctity of Eternal Damnation",
+        "texture": null,
+        "uid": "sanctity"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Hatchling Aerie",
+        "texture": null,
+        "uid": "hatchling"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Southern Ocean",
+        "texture": "ocean4.png",
+        "uid": "southern"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Temple of Shal'indrael",
+        "texture": null,
+        "uid": "temple"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Guardian's Spyre of Knowledge",
+        "texture": null,
+        "uid": "spyreknow"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Diamond Soul Revelation",
+        "texture": null,
+        "uid": "dsr"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Jotunheim",
+        "texture": "rocky2.png",
+        "uid": "jotun"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Reman Conspiracy",
+        "texture": null,
+        "uid": "remcon"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Kingdom of Ahner",
+        "texture": "test.png",
+        "uid": "ahner"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Black Lagoon",
+        "texture": null,
+        "uid": "lagoon"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "ST:TNG",
+        "texture": null,
+        "uid": "sttngii"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Old clan holding area 2",
+        "texture": null,
+        "uid": "oldclantwo"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Insanitaria",
+        "texture": null,
+        "uid": "insan"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Fortress of Angband",
+        "texture": null,
+        "uid": "angband"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Eighteenth Dynasty",
+        "texture": null,
+        "uid": "dynasty"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Castle Reinhold",
+        "texture": null,
+        "uid": "reinhold"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Wobbly Woes of Woobleville",
+        "texture": null,
+        "uid": "wooble"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Chessboard",
+        "texture": "chess1.png",
+        "uid": "chessboard"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Deadlights",
+        "texture": null,
+        "uid": "deadlights"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Arisian Realm",
+        "texture": null,
+        "uid": "arisian"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Qong",
+        "texture": null,
+        "uid": "qong"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Winterlands",
+        "texture": null,
+        "uid": "winter"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Giant's Pet Store",
+        "texture": null,
+        "uid": "petstore"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Maelstrom",
+        "texture": null,
+        "uid": "maelstrom"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Realm of the Zodiac",
+        "texture": null,
+        "uid": "zodiac"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "A Bad Trip",
+        "texture": null,
+        "uid": "badtrip"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Helegear Sea",
+        "texture": null,
+        "uid": "helegear"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Secret Imm Project #69",
+        "texture": null,
+        "uid": "wolfmaze"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Sheila's Cat Sanctuary",
+        "texture": null,
+        "uid": "cats"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Sundered Vale",
+        "texture": "fire1.png",
+        "uid": "vale"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Death's Manor",
+        "texture": null,
+        "uid": "manor"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Amusement Park",
+        "texture": "stone.png",
+        "uid": "amusement"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The School of Horror",
+        "texture": null,
+        "uid": "soh"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Fabled City of Stone",
+        "texture": null,
+        "uid": "stone"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "All in a Fayke Day",
+        "texture": null,
+        "uid": "fayke"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Lowlands Paradise '96",
+        "texture": null,
+        "uid": "lowlands"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Fantasy Fields",
+        "texture": null,
+        "uid": "fantasy"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Three Pillars of Diatz",
+        "texture": null,
+        "uid": "diatz"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Castle Vlad-Shamir",
+        "texture": null,
+        "uid": "vlad"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Realm of Deneria",
+        "texture": null,
+        "uid": "deneria"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Amazon Nation",
+        "texture": null,
+        "uid": "amazon"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Desert Prison",
+        "texture": null,
+        "uid": "desert"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Yurgach Domain",
+        "texture": null,
+        "uid": "yurgach"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "House of Cards",
+        "texture": null,
+        "uid": "cards"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Sea King's Dominion",
+        "texture": null,
+        "uid": "seaking"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Ultima",
+        "texture": null,
+        "uid": "ultima"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Shadows of Minos",
+        "texture": "darkrock.png",
+        "uid": "minos"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Aardwolf Winter Festival 2008",
+        "texture": null,
+        "uid": "festival"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "A Peaceful Giant Village",
+        "texture": null,
+        "uid": "village"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Mirror Realm",
+        "texture": null,
+        "uid": "mirror"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Kerofk",
+        "texture": null,
+        "uid": "kerofk"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Imperial Nation",
+        "texture": null,
+        "uid": "imperial"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Call of Heroes",
+        "texture": "rocky.png",
+        "uid": "callhero"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Desert Doom",
+        "texture": "dirt.png",
+        "uid": "ddoom"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Scarred Lands",
+        "texture": null,
+        "uid": "scarred"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Warrior's Training Camp",
+        "texture": "test4.png",
+        "uid": "wtc"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Dark Elf Stronghold",
+        "texture": null,
+        "uid": "stronghold"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Dortmund",
+        "texture": "grass3.png",
+        "uid": "dortmund"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Necromancers' Guild",
+        "texture": null,
+        "uid": "necro"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Goblin Fortress",
+        "texture": null,
+        "uid": "fortress"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Temple of Shouggoth",
+        "texture": "temple.png",
+        "uid": "shouggoth"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Upper Planes",
+        "texture": null,
+        "uid": "uplanes"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Were Wood",
+        "texture": null,
+        "uid": "werewood"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Raganatittu",
+        "texture": null,
+        "uid": "raga"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Plains of Nulan'Boar",
+        "texture": "grass1.png",
+        "uid": "nulan"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Art of Melody",
+        "texture": "wood1.png",
+        "uid": "melody"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Ketu Uplands",
+        "texture": null,
+        "uid": "ketu"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Gathering Horde",
+        "texture": null,
+        "uid": "gathering"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Challenge Area",
+        "texture": null,
+        "uid": "challenge"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Keep of Kearvek",
+        "texture": null,
+        "uid": "kearvek"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Gallows Hill",
+        "texture": "grass4.png",
+        "uid": "gallows"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Labyrinth",
+        "texture": null,
+        "uid": "labyrinth"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "New Thalos",
+        "texture": null,
+        "uid": "newthalos"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Swordbreaker's Hoard",
+        "texture": "rocky.png",
+        "uid": "hoard"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Nottingham",
+        "texture": null,
+        "uid": "nottingham"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Nanjiki Ruins",
+        "texture": null,
+        "uid": "nanjiki"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Dread Tower",
+        "texture": null,
+        "uid": "dread"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Stuff of Shadows",
+        "texture": null,
+        "uid": "stuff"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Onslaught of Chaos",
+        "texture": null,
+        "uid": "onslaught"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Tir na nOg",
+        "texture": null,
+        "uid": "tirna"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Jenny's Tavern",
+        "texture": null,
+        "uid": "jenny"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Casino",
+        "texture": null,
+        "uid": "casino"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Zangar's Demonic Grotto",
+        "texture": null,
+        "uid": "zangar"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Coral Kingdom",
+        "texture": null,
+        "uid": "coral"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Continent of Mesolar",
+        "texture": "grass2.png",
+        "uid": "mesolar"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Monastery",
+        "texture": null,
+        "uid": "monastery"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Port",
+        "texture": null,
+        "uid": "port"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Laser Zone",
+        "texture": null,
+        "uid": "lasertwo"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Ruins of Diamond Reach",
+        "texture": null,
+        "uid": "ruins"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Fire Swamp",
+        "texture": "fire1.png",
+        "uid": "fireswamp"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Silver Volcano",
+        "texture": null,
+        "uid": "volcano"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Limbo",
+        "texture": null,
+        "uid": "limbo"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "War of the Wizards",
+        "texture": "dirt2.png",
+        "uid": "wizards"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Mount duNoir",
+        "texture": null,
+        "uid": "dunoir"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Child's Play",
+        "texture": null,
+        "uid": "childsplay"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Cougarian Queendom",
+        "texture": null,
+        "uid": "cougarian"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Land of the Beer Goblins",
+        "texture": null,
+        "uid": "beer"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Fort Terramire",
+        "texture": "wood.png",
+        "uid": "terramire"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The River of Despair",
+        "texture": "ocean2.png",
+        "uid": "despair"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Covenant of Mistridge",
+        "texture": null,
+        "uid": "mistridge"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Forest of Li'Dnesh",
+        "texture": "forest3.png",
+        "uid": "lidnesh"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Takeda's Warcamp",
+        "texture": null,
+        "uid": "takeda"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Empire of Aiighialla",
+        "texture": null,
+        "uid": "empire"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Ancient Greece",
+        "texture": null,
+        "uid": "greece"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Hotel Orlando",
+        "texture": "tile2.png",
+        "uid": "orlando"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Broken Halls of Horath",
+        "texture": null,
+        "uid": "horath"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Realm of the Sacred Flame",
+        "texture": null,
+        "uid": "firenation"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Atlantis",
+        "texture": null,
+        "uid": "atlantis"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Arboria",
+        "texture": null,
+        "uid": "arboria"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Wood Elves of Nalondir",
+        "texture": "grass2.png",
+        "uid": "woodelves"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Nowhere",
+        "texture": null,
+        "uid": "vault"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Umari's Castle",
+        "texture": null,
+        "uid": "umari"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Descent to Hell",
+        "texture": "hell.png",
+        "uid": "hell"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Glamdursil",
+        "texture": null,
+        "uid": "glamdursil"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Chaprenula's Laboratory",
+        "texture": null,
+        "uid": "lab"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Town of Solan",
+        "texture": "stones.png",
+        "uid": "solan"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Aardwolf Zoological Park",
+        "texture": null,
+        "uid": "zoo"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Storm Mountain",
+        "texture": "rocky2.png",
+        "uid": "storm"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Abyssal Caverns of Sahuagin",
+        "texture": null,
+        "uid": "sahuagin"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Old Cathedral",
+        "texture": null,
+        "uid": "cathedral"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Seven Wonders",
+        "texture": null,
+        "uid": "wonders"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Great City of Knossos",
+        "texture": null,
+        "uid": "knossos"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Infestation",
+        "texture": "dirtgrass.png",
+        "uid": "infest"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Cataclysm",
+        "texture": null,
+        "uid": "cataclysm"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Flying Citadel",
+        "texture": null,
+        "uid": "citadel"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Adventurers' Wayhouse",
+        "texture": null,
+        "uid": "wayhouse"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Dune: The Desert Planet",
+        "texture": null,
+        "uid": "dune"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Siren's Oasis Resort",
+        "texture": "sand.png",
+        "uid": "sirens"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Rosewood Castle",
+        "texture": null,
+        "uid": "rosewood"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Storm Ships of Lem-Dagor",
+        "texture": "",
+        "uid": "lemdagor"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Prosper's Island",
+        "texture": "",
+        "uid": "prosper"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Tairayden Peninsula",
+        "texture": "",
+        "uid": "peninsula"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Tribal Origins",
+        "texture": "",
+        "uid": "origins"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Avian Kingdom",
+        "texture": "",
+        "uid": "avian"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Path of the Believer",
+        "texture": "",
+        "uid": "believer"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Bard Clan",
+        "texture": "",
+        "uid": "bard"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Thandeld's Conflict",
+        "texture": "",
+        "uid": "conflict"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Cloud City of Gnomalin",
+        "texture": "cloud.png",
+        "uid": "gnomalin"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Mudwog's Swamp",
+        "texture": "",
+        "uid": "mudwog"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Wayward Alehouse",
+        "texture": "",
+        "uid": "alehouse"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Kobold Siege Camp",
+        "texture": "",
+        "uid": "siege"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Aardington Estate",
+        "texture": "",
+        "uid": "aardington"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Gnoll's Quarry",
+        "texture": "",
+        "uid": "quarry"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Ascension Bluff Nursing Home",
+        "texture": "space2.png",
+        "uid": "nursing"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Realm of Chaos",
+        "texture": "",
+        "uid": "chaos"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Loqui Clan Area",
+        "texture": "",
+        "uid": "loqui"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Boot Camp",
+        "texture": "",
+        "uid": "bootcamp"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Uprising",
+        "texture": "temple.png",
+        "uid": "uprising"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Imagi's Nation",
+        "texture": "",
+        "uid": "imagi"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Blood Opal of Rauko'ra",
+        "texture": "",
+        "uid": "raukora"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Ruins of Stormhaven",
+        "texture": "",
+        "uid": "stormhaven"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Tanra'vea",
+        "texture": "",
+        "uid": "tanra"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Andolor's Ocean Adventure Park",
+        "texture": "ocean4.png",
+        "uid": "oceanpark"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Halls of Vanir",
+        "texture": "",
+        "uid": "vanir"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Stronghold of the Imperium Clan",
+        "texture": "",
+        "uid": "imperium"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Crusader Clan",
+        "texture": "",
+        "uid": "crusaders"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Masaki Clan Area",
+        "texture": "",
+        "uid": "masaki"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Collective Mind of Tao",
+        "texture": "",
+        "uid": "tao"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Isle of Anglesey",
+        "texture": "",
+        "uid": "druid"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Aerial City of Cineko",
+        "texture": "",
+        "uid": "cineko"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Dusk Valley",
+        "texture": "",
+        "uid": "duskvalley"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Midgaardian Publishing House",
+        "texture": "",
+        "uid": "gaardian"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Adventures in Sendhia",
+        "texture": "",
+        "uid": "sendhian"
+    },
+    {
+        "color": "0x333333",
+        "flags": "",
+        "name": "Christmas Vacation",
+        "texture": "snow.png",
+        "uid": "xmas"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Ookushka Garrison",
+        "texture": "",
+        "uid": "ooku"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Hedgehogs' Paradise",
+        "texture": "",
+        "uid": "hedge"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Emerald Clan HQ",
+        "texture": "",
+        "uid": "emerald"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Rebellion of the Nix",
+        "texture": "",
+        "uid": "rebellion"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Annwn",
+        "texture": "forest.png",
+        "uid": "annwn"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Wildwood",
+        "texture": "",
+        "uid": "wildwood"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Order of Light",
+        "texture": "",
+        "uid": "light"
+    },
+    {
+        "color": "",
+        "flags": "manorarea",
+        "name": "Mountain View Estates",
+        "texture": "",
+        "uid": "manormount"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Touchstone Cavern",
+        "texture": "",
+        "uid": "touchstone"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Palace of Song",
+        "texture": "",
+        "uid": "songpalace"
+    },
+    {
+        "color": "0x5f00ff",
+        "flags": "",
+        "name": "Crossroads of Fortune",
+        "texture": "sparse.png",
+        "uid": "fortune"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Dominion Clan Area",
+        "texture": "",
+        "uid": "dominion"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Aardwolf Birthday Area",
+        "texture": "",
+        "uid": "birthday"
+    },
+    {
+        "color": "",
+        "flags": "manorarea",
+        "name": "The Aardwolf Isle Estates",
+        "texture": "",
+        "uid": "manorisle"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Brightsea and Glimmerdim",
+        "texture": "",
+        "uid": "glimmerdim"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Tilule Rehabilitation Clinic",
+        "texture": "test4.png",
+        "uid": "tilule"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Relinquished Tombs",
+        "texture": "stones.png",
+        "uid": "tombs"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Shadow's End",
+        "texture": "",
+        "uid": "shadowsend"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Tumari's Diner",
+        "texture": "wood1.png",
+        "uid": "diner"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Kiksaadi Cove",
+        "texture": "",
+        "uid": "cove"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Crimson Horde Clan Hall",
+        "texture": "",
+        "uid": "crimson"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Sanguine Tavern",
+        "texture": "",
+        "uid": "sanguine"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Empyrean, Streets of Downfall",
+        "texture": "",
+        "uid": "empyrean"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Nyne Woods",
+        "texture": "",
+        "uid": "nynewoods"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Witches of Omen Tor",
+        "texture": "",
+        "uid": "omentor"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Earth Lords",
+        "texture": "",
+        "uid": "earthlords"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Radiance Woods",
+        "texture": "",
+        "uid": "radiance"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Nebulous Horizon",
+        "texture": "",
+        "uid": "horizon"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Perdition Clan Area",
+        "texture": "",
+        "uid": "perdition"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Keep of the Kobaloi",
+        "texture": "",
+        "uid": "kobaloi"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Crynn's Church",
+        "texture": "",
+        "uid": "crynn"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Blood Sanctum",
+        "texture": "",
+        "uid": "sanctum"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Underground Hall",
+        "texture": "",
+        "uid": "daoine"
+    },
+    {
+        "color": "",
+        "flags": "manorarea",
+        "name": "The Aardwolf Real Estates",
+        "texture": "",
+        "uid": "manor1"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Cathedral of the Elements",
+        "texture": "",
+        "uid": "cabal"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The World of the Watchmen",
+        "texture": "",
+        "uid": "watchmen"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Shadokil Guildhouse",
+        "texture": "",
+        "uid": "shadokil"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Kul Tiras",
+        "texture": "",
+        "uid": "kultiras"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The White Dragon Clan",
+        "texture": "",
+        "uid": "dragon"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "A Clearing in the Woods",
+        "texture": "",
+        "uid": "romani"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Sho'aram, Castle in the Sand",
+        "texture": "sand.png",
+        "uid": "sandcastle"
+    },
+    {
+        "color": "",
+        "flags": "morgue",
+        "name": "Black Claw Crag",
+        "texture": "",
+        "uid": "blackclaw"
+    },
+    {
+        "color": "0x000000",
+        "flags": "",
+        "name": "Bloodlust Dungeon",
+        "texture": "hell.png",
+        "uid": "dungeon"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Keep of the Asherodan",
+        "texture": "",
+        "uid": "asherodan"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Twilight Hall",
+        "texture": "",
+        "uid": "pyre"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Wayfarer's Caravan",
+        "texture": "",
+        "uid": "caravan"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Disciples of Hassan Clan Hall",
+        "texture": "",
+        "uid": "doh"
+    },
+    {
+        "color": "",
+        "flags": "manorarea",
+        "name": "Shady Acres Estates",
+        "texture": "",
+        "uid": "manorwoods"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Ivory City",
+        "texture": "",
+        "uid": "amazonclan"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Arboretum",
+        "texture": "",
+        "uid": "arboretum"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Chakra Spire",
+        "texture": "tile2.png",
+        "uid": "chakra"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Sagewood Grove",
+        "texture": "",
+        "uid": "sagewood"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Vidblain, the Ever Dark",
+        "texture": "space2.png",
+        "uid": "vidblain"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The DarkLight",
+        "texture": "",
+        "uid": "darklight"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Council of the Wyrm",
+        "texture": "",
+        "uid": "wyrm"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Aylorian Academy",
+        "texture": "test3.png",
+        "uid": "academy"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Onyx Bazaar",
+        "texture": "",
+        "uid": "bazaar"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Twinlobe Clan HQ",
+        "texture": "",
+        "uid": "twinlobe"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Svrogan's Logging Camp",
+        "texture": "",
+        "uid": "logging"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Island of Lost Time",
+        "texture": "",
+        "uid": "losttime"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Fellchantry",
+        "texture": "stones.png",
+        "uid": "chantry"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Dhal'Gora Outlands",
+        "texture": "",
+        "uid": "dhalgora"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Wedded Bliss",
+        "texture": "",
+        "uid": "bliss"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Titans' Keep",
+        "texture": "",
+        "uid": "titan"
+    },
+    {
+        "color": "",
+        "flags": "manorarea",
+        "name": "Seaside Height Estates",
+        "texture": "",
+        "uid": "manorsea"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Dark Continent, Abend",
+        "texture": "rocky2.png",
+        "uid": "abend"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Alagh, the Blood Lands",
+        "texture": "sparse.png",
+        "uid": "alagh"
+    },
+    {
+        "color": "",
+        "flags": "morgue",
+        "name": "Winds of Fate",
+        "texture": "",
+        "uid": "winds"
+    },
+    {
+        "color": "",
+        "flags": "morgue",
+        "name": "White Claw Cavern",
+        "texture": "",
+        "uid": "whiteclaw"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Fractured Lands",
+        "texture": "",
+        "uid": "fractured"
+    },
+    {
+        "color": "",
+        "flags": "morgue",
+        "name": "Icefall",
+        "texture": "",
+        "uid": "icefall"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Cracks of Terra",
+        "texture": "",
+        "uid": "terra"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Legendary City of Tanelorn",
+        "texture": "",
+        "uid": "tanelorn"
+    },
+    {
+        "color": "",
+        "flags": "morgue",
+        "name": "Fractals of the Weave",
+        "texture": "space2.png",
+        "uid": "fractal"
+    },
+    {
+        "color": "",
+        "flags": "morgue",
+        "name": "Oradrin's Chosen",
+        "texture": "",
+        "uid": "oradrin"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Dark Temple of Zhamet",
+        "texture": "",
+        "uid": "rhabdo"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "Raiding School",
+        "texture": "",
+        "uid": "testmaze10"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Afterglow",
+        "texture": "",
+        "uid": "afterglow"
+    },
+    {
+        "color": "",
+        "flags": "quiet",
+        "name": "The Grand City of Aylor",
+        "texture": "stones.png",
+        "uid": "aylor"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Immortal Homes",
+        "texture": "",
+        "uid": "immhomes"
+    },
+    {
+        "color": "",
+        "flags": "manorarea",
+        "name": "Aardwolf Estates 2000",
+        "texture": "",
+        "uid": "manor3"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Chasm and The Catacombs",
+        "texture": "darkstone.png",
+        "uid": "chasm"
+    },
+    {
+        "color": "0xffdd69",
+        "flags": "",
+        "name": "Dunes in Gold",
+        "texture": "sand.png",
+        "uid": "dunes"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Skeletal Remains",
+        "texture": "",
+        "uid": "skeletal"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Tournament Camps",
+        "texture": "",
+        "uid": "camps"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Anthrox",
+        "texture": "",
+        "uid": "anthrox"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "Kimr's Farm",
+        "texture": "grass3.png",
+        "uid": "farm"
+    },
+    {
+        "color": "",
+        "flags": "",
+        "name": "The Slaughter House",
+        "texture": "",
+        "uid": "slaughter"
+    },
+    {
+        "color": "",
+        "flags": "morgue",
+        "name": "A Genie's Last Wish",
+        "texture": "",
+        "uid": "geniewish"
+    },
+    {
+        "color": "0x000000",
+        "flags": "morgue",
+        "name": "Transcendence",
+        "texture": "",
+        "uid": "transcend"
+    },
+    {
+        "color": "",
+        "flags": "morgue",
+        "name": "Journey to the Inferno",
+        "texture": "",
+        "uid": "inferno"
+    },
+    {
+        "color": "",
+        "flags": "clanarea",
+        "name": "The Fortress of Knowledge",
+        "texture": "",
+        "uid": "seekers"
+    },
+    {
+        "color": "",
+        "flags": "manorarea",
+        "name": "Prairie Village Estates",
+        "texture": "",
+        "uid": "manorville"
+    }
+]

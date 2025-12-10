@@ -1,0 +1,672 @@
+[
+    {
+        "color": 7,
+        "name": "city",
+        "uid": "2"
+    },
+    {
+        "color": 15,
+        "name": "insideice",
+        "uid": "31"
+    },
+    {
+        "color": 7,
+        "name": "tunnel",
+        "uid": "115"
+    },
+    {
+        "color": 7,
+        "name": "vertical_shaft",
+        "uid": "116"
+    },
+    {
+        "color": 8,
+        "name": "space4",
+        "uid": "56"
+    },
+    {
+        "color": 10,
+        "name": "forest2",
+        "uid": "125"
+    },
+    {
+        "color": 7,
+        "name": "inside",
+        "uid": "1"
+    },
+    {
+        "color": 6,
+        "name": "mountain_cyan",
+        "uid": "63"
+    },
+    {
+        "color": 1,
+        "name": "spacered",
+        "uid": "127"
+    },
+    {
+        "color": 9,
+        "name": "hell1",
+        "uid": "28"
+    },
+    {
+        "color": 7,
+        "name": "crossroad_ews",
+        "uid": "62"
+    },
+    {
+        "color": 7,
+        "name": "slashtwo",
+        "uid": "121"
+    },
+    {
+        "color": 7,
+        "name": "crossroad_se",
+        "uid": "61"
+    },
+    {
+        "color": 4,
+        "name": "underwater",
+        "uid": "14"
+    },
+    {
+        "color": 7,
+        "name": "slashfour",
+        "uid": "123"
+    },
+    {
+        "color": 9,
+        "name": "hell2",
+        "uid": "29"
+    },
+    {
+        "color": 7,
+        "name": "crossroad_nw",
+        "uid": "60"
+    },
+    {
+        "color": 7,
+        "name": "ruins",
+        "uid": "102"
+    },
+    {
+        "color": 12,
+        "name": "waterswim",
+        "uid": "7"
+    },
+    {
+        "color": 7,
+        "name": "aylorcity",
+        "uid": "101"
+    },
+    {
+        "color": 15,
+        "name": "icemount",
+        "uid": "51"
+    },
+    {
+        "color": 9,
+        "name": "hellinside",
+        "uid": "26"
+    },
+    {
+        "color": 8,
+        "name": "tornado",
+        "uid": "103"
+    },
+    {
+        "color": 15,
+        "name": "snow",
+        "uid": "50"
+    },
+    {
+        "color": 7,
+        "name": "afountain",
+        "uid": "97"
+    },
+    {
+        "color": 3,
+        "name": "quicksand",
+        "uid": "13"
+    },
+    {
+        "color": 3,
+        "name": "rocks",
+        "uid": "49"
+    },
+    {
+        "color": 9,
+        "name": "hellfountain",
+        "uid": "27"
+    },
+    {
+        "color": 7,
+        "name": "flowers2",
+        "uid": "99"
+    },
+    {
+        "color": 2,
+        "name": "field4",
+        "uid": "48"
+    },
+    {
+        "color": 11,
+        "name": "sun",
+        "uid": "109"
+    },
+    {
+        "color": 8,
+        "name": "space3",
+        "uid": "55"
+    },
+    {
+        "color": 8,
+        "name": "cloud2",
+        "uid": "111"
+    },
+    {
+        "color": 7,
+        "name": "Mudschool",
+        "uid": "24"
+    },
+    {
+        "color": 8,
+        "name": "space2",
+        "uid": "54"
+    },
+    {
+        "color": 7,
+        "name": "wind1",
+        "uid": "105"
+    },
+    {
+        "color": 8,
+        "name": "space1",
+        "uid": "53"
+    },
+    {
+        "color": 4,
+        "name": "ocean",
+        "uid": "12"
+    },
+    {
+        "color": 7,
+        "name": "lightning",
+        "uid": "107"
+    },
+    {
+        "color": 5,
+        "name": "areaexit",
+        "uid": "25"
+    },
+    {
+        "color": 15,
+        "name": "icehills",
+        "uid": "52"
+    },
+    {
+        "color": 4,
+        "name": "crypt",
+        "uid": "85"
+    },
+    {
+        "color": 3,
+        "name": "mountain",
+        "uid": "6"
+    },
+    {
+        "color": 7,
+        "name": "palace_room",
+        "uid": "84"
+    },
+    {
+        "color": 12,
+        "name": "ocean2",
+        "uid": "43"
+    },
+    {
+        "color": 8,
+        "name": "dungeon",
+        "uid": "22"
+    },
+    {
+        "color": 3,
+        "name": "dead_jungle",
+        "uid": "86"
+    },
+    {
+        "color": 2,
+        "name": "field",
+        "uid": "3"
+    },
+    {
+        "color": 3,
+        "name": "plain",
+        "uid": "42"
+    },
+    {
+        "color": 9,
+        "name": "bloodyroom",
+        "uid": "80"
+    },
+    {
+        "color": 11,
+        "name": "desert",
+        "uid": "11"
+    },
+    {
+        "color": 7,
+        "name": "bridge",
+        "uid": "41"
+    },
+    {
+        "color": 7,
+        "name": "road_crossroads",
+        "uid": "23"
+    },
+    {
+        "color": 3,
+        "name": "dead_field",
+        "uid": "82"
+    },
+    {
+        "color": 3,
+        "name": "ashen_field",
+        "uid": "93"
+    },
+    {
+        "color": 2,
+        "name": "swamp",
+        "uid": "40"
+    },
+    {
+        "color": 8,
+        "name": "mist",
+        "uid": "92"
+    },
+    {
+        "color": 2,
+        "name": "field2",
+        "uid": "47"
+    },
+    {
+        "color": 7,
+        "name": "cabin",
+        "uid": "94"
+    },
+    {
+        "color": 9,
+        "name": "volcano",
+        "uid": "20"
+    },
+    {
+        "color": 2,
+        "name": "field3",
+        "uid": "46"
+    },
+    {
+        "color": 7,
+        "name": "chaos_sea",
+        "uid": "88"
+    },
+    {
+        "color": 12,
+        "name": "ocean4",
+        "uid": "45"
+    },
+    {
+        "color": 14,
+        "name": "air",
+        "uid": "10"
+    },
+    {
+        "color": 9,
+        "name": "redcarpet",
+        "uid": "90"
+    },
+    {
+        "color": 4,
+        "name": "cave",
+        "uid": "21"
+    },
+    {
+        "color": 12,
+        "name": "ocean3",
+        "uid": "44"
+    },
+    {
+        "color": 8,
+        "name": "alley",
+        "uid": "71"
+    },
+    {
+        "color": 2,
+        "name": "hills",
+        "uid": "5"
+    },
+    {
+        "color": 4,
+        "name": "chessblack",
+        "uid": "68"
+    },
+    {
+        "color": 15,
+        "name": "chesswhite",
+        "uid": "69"
+    },
+    {
+        "color": 7,
+        "name": "bluecircle",
+        "uid": "129"
+    },
+    {
+        "color": 8,
+        "name": "darkspace",
+        "uid": "130"
+    },
+    {
+        "color": 7,
+        "name": "road",
+        "uid": "18"
+    },
+    {
+        "color": 2,
+        "name": "shop",
+        "uid": "66"
+    },
+    {
+        "color": 9,
+        "name": "rose",
+        "uid": "132"
+    },
+    {
+        "color": 7,
+        "name": "clanexit",
+        "uid": "67"
+    },
+    {
+        "color": 11,
+        "name": "vine",
+        "uid": "134"
+    },
+    {
+        "color": 5,
+        "name": "violet",
+        "uid": "135"
+    },
+    {
+        "color": 4,
+        "name": "moon",
+        "uid": "64"
+    },
+    {
+        "color": 7,
+        "name": "unused",
+        "uid": "9"
+    },
+    {
+        "color": 7,
+        "name": "temple",
+        "uid": "65"
+    },
+    {
+        "color": 4,
+        "name": "river",
+        "uid": "19"
+    },
+    {
+        "color": 13,
+        "name": "peony",
+        "uid": "133"
+    },
+    {
+        "color": 7,
+        "name": "whitespace",
+        "uid": "131"
+    },
+    {
+        "color": 7,
+        "name": "electric",
+        "uid": "77"
+    },
+    {
+        "color": 1,
+        "name": "redcircle",
+        "uid": "128"
+    },
+    {
+        "color": 9,
+        "name": "hellhall",
+        "uid": "32"
+    },
+    {
+        "color": 9,
+        "name": "xspot",
+        "uid": "126"
+    },
+    {
+        "color": 5,
+        "name": "office",
+        "uid": "76"
+    },
+    {
+        "color": 7,
+        "name": "crater",
+        "uid": "124"
+    },
+    {
+        "color": 7,
+        "name": "slashthree",
+        "uid": "122"
+    },
+    {
+        "color": 7,
+        "name": "slashone",
+        "uid": "120"
+    },
+    {
+        "color": 2,
+        "name": "jungle",
+        "uid": "39"
+    },
+    {
+        "color": 9,
+        "name": "hell4",
+        "uid": "33"
+    },
+    {
+        "color": 7,
+        "name": "hut",
+        "uid": "89"
+    },
+    {
+        "color": 7,
+        "name": "redtemple",
+        "uid": "118"
+    },
+    {
+        "color": 7,
+        "name": "well",
+        "uid": "78"
+    },
+    {
+        "color": 7,
+        "name": "interestpoint",
+        "uid": "117"
+    },
+    {
+        "color": 4,
+        "name": "underground",
+        "uid": "16"
+    },
+    {
+        "color": 7,
+        "name": "fiery_cave",
+        "uid": "114"
+    },
+    {
+        "color": 6,
+        "name": "shore",
+        "uid": "38"
+    },
+    {
+        "color": 7,
+        "name": "smallroad",
+        "uid": "34"
+    },
+    {
+        "color": 7,
+        "name": "lottery",
+        "uid": "70"
+    },
+    {
+        "color": 7,
+        "name": "cloud3",
+        "uid": "112"
+    },
+    {
+        "color": 6,
+        "name": "fountain",
+        "uid": "72"
+    },
+    {
+        "color": 7,
+        "name": "cloud1",
+        "uid": "110"
+    },
+    {
+        "color": 8,
+        "name": "rain",
+        "uid": "108"
+    },
+    {
+        "color": 7,
+        "name": "wind2",
+        "uid": "106"
+    },
+    {
+        "color": 3,
+        "name": "beach",
+        "uid": "37"
+    },
+    {
+        "color": 7,
+        "name": "smallroad_ew",
+        "uid": "35"
+    },
+    {
+        "color": 12,
+        "name": "waternoswim",
+        "uid": "8"
+    },
+    {
+        "color": 7,
+        "name": "dustdevil",
+        "uid": "104"
+    },
+    {
+        "color": 7,
+        "name": "bookshelves",
+        "uid": "74"
+    },
+    {
+        "color": 7,
+        "name": "road_eastwest",
+        "uid": "17"
+    },
+    {
+        "color": 7,
+        "name": "stairs",
+        "uid": "100"
+    },
+    {
+        "color": 7,
+        "name": "flowers1",
+        "uid": "98"
+    },
+    {
+        "color": 3,
+        "name": "trail_ew",
+        "uid": "36"
+    },
+    {
+        "color": 7,
+        "name": "hallway",
+        "uid": "95"
+    },
+    {
+        "color": 8,
+        "name": "city_underground",
+        "uid": "91"
+    },
+    {
+        "color": 9,
+        "name": "hell3",
+        "uid": "30"
+    },
+    {
+        "color": 7,
+        "name": "redgateway",
+        "uid": "119"
+    },
+    {
+        "color": 7,
+        "name": "ship",
+        "uid": "87"
+    },
+    {
+        "color": 10,
+        "name": "forest",
+        "uid": "4"
+    },
+    {
+        "color": 8,
+        "name": "graveyard",
+        "uid": "83"
+    },
+    {
+        "color": 7,
+        "name": "pillar",
+        "uid": "58"
+    },
+    {
+        "color": 3,
+        "name": "dead_forest",
+        "uid": "81"
+    },
+    {
+        "color": 9,
+        "name": "bloodyhall",
+        "uid": "79"
+    },
+    {
+        "color": 7,
+        "name": "bookshelves_ns",
+        "uid": "75"
+    },
+    {
+        "color": 7,
+        "name": "archive",
+        "uid": "73"
+    },
+    {
+        "color": 14,
+        "name": "rainbow",
+        "uid": "113"
+    },
+    {
+        "color": 8,
+        "name": "dark",
+        "uid": "59"
+    },
+    {
+        "color": 15,
+        "name": "ice",
+        "uid": "15"
+    },
+    {
+        "color": 7,
+        "name": "castle",
+        "uid": "57"
+    }
+]
