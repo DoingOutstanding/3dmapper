@@ -56,6 +56,29 @@
       #selection strong {
         color: #fcd34d;
       }
+      #capture {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      #capture button {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 4px;
+        background: #f97316;
+        color: #0b1224;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      #capture button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      #capture #record-status {
+        font-size: 12px;
+        color: #e5e7eb;
+      }
       #editor {
         margin-top: 10px;
         padding: 8px;
@@ -127,6 +150,10 @@
         <li><span style="color:#f43f5e">Pink</span> lines: one-way exits.</li>
       </ul>
       <div id="selection">Select a room to see details.</div>
+      <div id="capture">
+        <button id="record-gif">Record rotating GIF</button>
+        <span id="record-status"></span>
+      </div>
       <div id="editor">
         <div class="editor-row">
           <strong>Manual coordinates</strong>
@@ -148,6 +175,7 @@
     </div>
     <canvas id="world"></canvas>
 
+    <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js"></script>
     <script src="three.min.js"></script>
     <script src="OrbitControls.js"></script>
     <script type="module" src="world_renderer.js"></script>
