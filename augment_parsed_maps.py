@@ -136,8 +136,9 @@ def target_parsed_files() -> Iterable[Path]:
 def write_manifest() -> None:
     """Generate a manifest so the renderer can discover available maps."""
 
-    entries = []
-    for parsed_path in PARSED_DIR.glob("*.json"):
+    entries_by_uid: dict[str, dict] = {}
+
+    for parsed_path in sorted(PARSED_DIR.glob("*.json")):
         if parsed_path.name == "manifest.json":
             continue
 
@@ -145,16 +146,32 @@ def write_manifest() -> None:
         area_metadata = data.get("areaMetadata", {})
         html_metadata = data.get("metadata", {})
 
-        entries.append(
-            {
-                "file": f"parsed_maps/{parsed_path.name}",
-                "areaUid": area_metadata.get("uid"),
-                "areaId": html_metadata.get("area_id") or area_metadata.get("id"),
-                "areaName": area_metadata.get("name")
-                or html_metadata.get("area_name")
-                or parsed_path.stem,
-            }
-        )
+        entry = {
+            "file": f"parsed_maps/{parsed_path.name}",
+            "areaUid": area_metadata.get("uid"),
+            "areaId": html_metadata.get("area_id") or area_metadata.get("id"),
+            "areaName": area_metadata.get("name")
+            or html_metadata.get("area_name")
+            or parsed_path.stem,
+        }
+
+        key = entry["areaUid"] or entry["areaId"] or parsed_path.stem
+        existing = entries_by_uid.get(key)
+        preferred = parsed_path.stem == entry.get("areaUid")
+
+        if existing:
+            if existing.get("preferred"):
+                continue
+            if preferred:
+                entries_by_uid[key] = {"preferred": preferred, **entry}
+            continue
+
+        entries_by_uid[key] = {"preferred": preferred, **entry}
+
+    entries = [
+        {key: value for key, value in entry.items() if key != "preferred"}
+        for entry in entries_by_uid.values()
+    ]
 
     manifest_path = PARSED_DIR / "manifest.json"
     manifest_path.write_text(json.dumps({"maps": entries}, indent=2))
@@ -206,11 +223,32 @@ def main() -> None:
                 "texture": area_meta.get("texture"),
             }
 
+        json_text = json.dumps(data, indent=2)
         output_path = PARSED_DIR / f"{area_uid}.json"
-        output_path.write_text(json.dumps(data, indent=2))
+        output_path.write_text(json_text)
 
-        if output_path != parsed_path:
-            parsed_path.unlink(missing_ok=True)
+        legacy_paths = set()
+        html_area_id = data.get("metadata", {}).get("area_id")
+        source_file = data.get("sourceFile")
+
+        if parsed_path != output_path:
+            legacy_paths.add(parsed_path)
+
+        if html_area_id:
+            legacy_paths.add(PARSED_DIR / f"area{html_area_id}.json")
+
+        if isinstance(source_file, str) and source_file.startswith("area") and source_file.endswith(
+            ".html"
+        ):
+            legacy_paths.add(PARSED_DIR / f"{source_file[:-5]}.json")
+
+        for legacy_path in legacy_paths:
+            if legacy_path == output_path:
+                continue
+            legacy_path.write_text(json_text)
+            print(f"Wrote compatibility copy: {legacy_path.name}")
+
+        if parsed_path != output_path:
             print(f"Renamed {parsed_path.name} -> {output_path.name}")
 
         print(f"Updated {output_path.relative_to(REPO_ROOT)}")
