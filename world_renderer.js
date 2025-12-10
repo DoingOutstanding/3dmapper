@@ -1,4 +1,7 @@
-const MAP_MANIFEST_URL = 'parsed_maps/manifest.json';
+const DEFAULT_MAP_SOURCES = [
+  { file: 'parsed_maps/area18.json', areaId: 18, displayName: 'The Grand City of Aylor' },
+  { file: 'parsed_maps/area258.json', areaId: 258, displayName: 'Aylorian Academy' },
+];
 
 const LINK_TYPES = {
   LINK_ONEWAY: 0,
@@ -685,10 +688,11 @@ async function loadRoomInfoResolver() {
 }
 
 async function loadWorld() {
+  const mapSources = Array.isArray(globalThis.MAP_SOURCES) ? globalThis.MAP_SOURCES : DEFAULT_MAP_SOURCES;
   const [colorSettings, roomInfoResolver, layouts] = await Promise.all([
     loadColorSettings(),
     loadRoomInfoResolver(),
-    Promise.all(MAP_SOURCES.map((source) => loadArea(source))),
+    Promise.all(mapSources.map((source) => loadArea(source))),
   ]);
   return { colorSettings, roomInfoResolver, layouts, ...buildWorldFromLayouts(layouts, { colorSettings, roomInfoResolver }) };
 }
