@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import Dict, Iterable, List, Optional, Set
 
 # This script augments the parsed map JSON files for the Aylor areas using
 # metadata from the Database exports. It enriches rooms with terrain and
@@ -12,15 +12,29 @@ REPO_ROOT = Path(__file__).parent
 DB_DIR = REPO_ROOT / "Database"
 PARSED_DIR = REPO_ROOT / "parsed_maps"
 
-TARGET_AREAS: Dict[int, str] = {
-    18: "aylor",  # The Grand City of Aylor
-    258: "academy",  # The Aylorian Academy
-}
+# Limit enrichment to the two Aylor areas we have been focusing on.
+TARGET_AREA_UIDS = {"aylor", "academy"}
 
 
 def load_json(path: Path):
     with path.open() as f:
         return json.load(f)
+
+
+def normalize_name(value: Optional[str]) -> Optional[str]:
+    if value is None:
+        return None
+    return value.strip().casefold()
+
+
+def determine_area_uid(metadata: dict, areas_by_name: Dict[str, dict]) -> Optional[str]:
+    """Use the parsed HTML metadata to find the database area UID."""
+
+    area_name = normalize_name(metadata.get("area_name"))
+    if area_name and area_name in areas_by_name:
+        return areas_by_name[area_name]["uid"]
+
+    return None
 
 
 def build_room_index(rooms: List[dict], target_area_uids: set[str]) -> Dict[str, Dict[str, List[dict]]]:
@@ -110,19 +124,40 @@ def pick_room_match_with_exits(
     return best_match
 
 
+def target_parsed_files() -> Iterable[Path]:
+    # Only process the Aylor and Aylorian Academy maps we are working with.
+    for candidate in (PARSED_DIR / "area18.json", PARSED_DIR / "area258.json"):
+        if candidate.exists():
+            yield candidate
+
+
 
 def main() -> None:
     db_rooms = load_json(DB_DIR / "rooms.json")
-    db_areas = {area["uid"]: area for area in load_json(DB_DIR / "areas.json")}
+    db_areas_list = load_json(DB_DIR / "areas.json")
+    db_areas = {area["uid"]: area for area in db_areas_list}
+    areas_by_name = {
+        normalize_name(area["name"]): area for area in db_areas_list if normalize_name(area.get("name"))
+    }
     db_exits = load_json(DB_DIR / "exits.json")
 
-    target_area_uids = set(TARGET_AREAS.values())
+    target_data = []
+    for parsed_path in target_parsed_files():
+        data = load_json(parsed_path)
+        area_uid = determine_area_uid(data.get("metadata", {}), areas_by_name)
+        if not area_uid:
+            print(f"Skipping {parsed_path.name}: unable to determine area UID from metadata")
+            continue
+        if area_uid not in TARGET_AREA_UIDS:
+            print(f"Skipping {parsed_path.name}: area UID {area_uid!r} not in target set")
+            continue
+        target_data.append((parsed_path, area_uid, data))
+
+    target_area_uids = {area_uid for _, area_uid, _ in target_data}
     room_index = build_room_index(db_rooms, target_area_uids)
     db_neighbors = build_db_neighbors(db_rooms, target_area_uids, db_exits)
 
-    for area_num, area_uid in TARGET_AREAS.items():
-        parsed_path = PARSED_DIR / f"area{area_num}.json"
-        data = load_json(parsed_path)
+    for parsed_path, area_uid, data in target_data:
         parsed_neighbors = build_parsed_neighbors(data)
 
         for room in data.get("rooms", []):
@@ -141,8 +176,14 @@ def main() -> None:
                 "texture": area_meta.get("texture"),
             }
 
-        parsed_path.write_text(json.dumps(data, indent=2))
-        print(f"Updated {parsed_path.relative_to(REPO_ROOT)}")
+        output_path = PARSED_DIR / f"{area_uid}.json"
+        output_path.write_text(json.dumps(data, indent=2))
+
+        if output_path != parsed_path:
+            parsed_path.unlink(missing_ok=True)
+            print(f"Renamed {parsed_path.name} -> {output_path.name}")
+
+        print(f"Updated {output_path.relative_to(REPO_ROOT)}")
 
 
 if __name__ == "__main__":
