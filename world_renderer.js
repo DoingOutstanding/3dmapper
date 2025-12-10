@@ -204,22 +204,41 @@ function solveRoomCoordinates(areaData, areaId) {
 
   propagateQueue();
 
-  const usedKeys = new Set();
-  const coordKey = (coord) => `${coord.x},${coord.y},${coord.z}`;
+  const usedCoords = [];
+  const MIN_SEPARATION = 0.65;
   const ensureUnique = (coord) => {
     let attempt = 0;
     let candidate = { ...coord };
-    while (usedKeys.has(coordKey(candidate))) {
-      const bump = 0.35 * (attempt + 1);
-      candidate = { x: coord.x + bump, y: coord.y + bump, z: coord.z + (attempt % 2 === 0 ? 0 : bump) };
+    const radialStep = 0.25;
+
+    const isColliding = (test) =>
+      usedCoords.some((placed) => {
+        const dx = placed.x - test.x;
+        const dy = placed.y - test.y;
+        const dz = (placed.z ?? 0) - (test.z ?? 0);
+        return Math.sqrt(dx * dx + dy * dy + dz * dz) < MIN_SEPARATION;
+      });
+
+    while (isColliding(candidate)) {
+      const ring = Math.floor(attempt / 6) + 1;
+      const angle = (attempt % 6) * (Math.PI / 3);
+      const radius = ring * radialStep;
+      candidate = {
+        x: coord.x + Math.cos(angle) * radius,
+        y: coord.y + Math.sin(angle) * radius,
+        z: coord.z + (attempt % 2 === 0 ? 0 : radialStep * 0.5),
+      };
       attempt += 1;
     }
-    usedKeys.add(coordKey(candidate));
+
+    usedCoords.push(candidate);
     return candidate;
   };
 
+  let fallbackCount = 0;
   const unplacedFallback = () => {
-    const shift = usedKeys.size * 0.5;
+    const shift = fallbackCount * 3;
+    fallbackCount += 1;
     return { x: shift, y: shift, z: 0 };
   };
 
@@ -239,7 +258,7 @@ function solveRoomCoordinates(areaData, areaId) {
     const delta = DIRECTION_OFFSETS[firstExit.direction?.toLowerCase?.() ?? ''];
     if (!targetCoords || !delta) return;
 
-    const lean = 0.35;
+    const lean = 0.2;
     diagonalOffsets.set(fromIndex, {
       x: targetCoords.x - delta.x + (delta.x === 0 ? lean : delta.x * 0.25),
       y: targetCoords.y - delta.y + (delta.y === 0 ? lean : delta.y * 0.25),
