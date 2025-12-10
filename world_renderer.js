@@ -16,17 +16,12 @@ const ORIGIN_REFERENCE = {
   coordinates: { x: 11, y: 12, z: 0 },
 };
 
-function computeAreaOffset(anchorCoordinates) {
-  return {
-    // Align axes so north/south map to ±X, east/west to ±Y, up/down to ±Z.
-    x: -(anchorCoordinates?.y ?? 0),
-    y: -(anchorCoordinates?.x ?? 0),
-    z: -(anchorCoordinates?.z ?? 0),
-  };
-}
-
 const AREA_OFFSETS = {
-  [ORIGIN_REFERENCE.areaId]: computeAreaOffset(ORIGIN_REFERENCE.coordinates),
+  [ORIGIN_REFERENCE.areaId]: {
+    x: -ORIGIN_REFERENCE.coordinates.x,
+    y: -ORIGIN_REFERENCE.coordinates.y,
+    z: -ORIGIN_REFERENCE.coordinates.z,
+  },
 };
 
 const ROOM_RADIUS = 0.6;
@@ -59,12 +54,9 @@ function buildRoomLookup(rooms) {
 
 function normalizeRoomPosition(room, areaOffset) {
   return new THREE.Vector3(
-    // X axis = north/south (positive north). Map Y becomes world X.
-    (room.y + (areaOffset?.x ?? 0)) * WORLD_SCALE,
-    // Y axis = east/west (positive east). Map X becomes world Y.
-    (room.x + (areaOffset?.y ?? 0)) * WORLD_SCALE,
-    // Z axis = up/down. Reserved for future vertical offsets.
-    ((room.z ?? 0) + (areaOffset?.z ?? 0)) * WORLD_SCALE,
+    (room.x + (areaOffset?.x ?? 0)) * WORLD_SCALE,
+    (room.y + (areaOffset?.y ?? 0)) * WORLD_SCALE,
+    (areaOffset?.z ?? 0) * WORLD_SCALE,
   );
 }
 

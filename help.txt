@@ -17,4 +17,3 @@ Render the world
 
 Origin and coordinates
 - The world origin is pinned to Aylor room id 2 at map coordinates (11, 12, 0). All areas are offset relative to that anchor.
-- Axes use a north/east/up orientation: +X = north, -X = south; +Y = east, -Y = west; +Z = up, -Z = down.
