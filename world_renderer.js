@@ -304,6 +304,7 @@ function initScene(world) {
   scene.background = new THREE.Color('#0b1224');
 
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+  camera.up.set(0, 0, 1);
   camera.position.set(25, 35, 45);
 
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -317,6 +318,7 @@ function initScene(world) {
   scene.add(keyLight);
 
   const grid = new THREE.GridHelper(200, 50, '#1f2937', '#111827');
+  grid.rotation.x = Math.PI / 2;
   grid.material.opacity = 0.5;
   grid.material.transparent = true;
   scene.add(grid);
