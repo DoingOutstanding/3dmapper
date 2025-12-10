@@ -28,8 +28,8 @@ const AREA_OFFSETS = {
   [ORIGIN_REFERENCE.areaId]: computeAreaOffset(ORIGIN_REFERENCE.coordinates),
 };
 
-const ROOM_RADIUS = 0.6;
-const WORLD_SCALE = 1.25;
+const ROOM_SIZE = 1;
+const WORLD_SCALE = 2;
 const MIN_MAP_VERTICAL_GAP = 1;
 
 const DIRECTION_OFFSETS = {
@@ -194,9 +194,8 @@ function buildWorldRooms(areaData, areaId, areaName, areaOffset, solvedCoords) {
   return { rooms, lookups };
 }
 
-function buildWorldLinks(areaData, lookups, areaId) {
+function buildWorldLinks(areaData, lookups, areaId, seenPairs = new Set()) {
   const links = [];
-  const seenPairs = new Set();
   const entries = Object.entries(areaData.roomConnections ?? {});
 
   entries.forEach(([roomIndex, connectionList]) => {
@@ -252,6 +251,61 @@ function computeAreaOffsets(layouts) {
   return offsets;
 }
 
+function parseAreaIdFromExit(areaExit) {
+  const raw = areaExit?.raw;
+  if (!raw) return null;
+  const match = raw.match(/RoomAreaExitInfo\((\d+)/i);
+  return match ? Number.parseInt(match[1], 10) : null;
+}
+
+function findAreaEntrance(lookup) {
+  if (!lookup) return null;
+  const rooms = Array.from(lookup.byIndex.values());
+  return rooms.find((room) => room.isEntrance) ?? rooms[0] ?? null;
+}
+
+function buildCrossAreaLinks(layouts, lookupsByArea, linkPairs) {
+  const links = [];
+
+  layouts.forEach((layout) => {
+    const fromLookup = lookupsByArea.get(layout.areaId);
+    if (!fromLookup) return;
+
+    Object.entries(layout.parsed.roomConnections ?? {}).forEach(([roomIndex, connectionList]) => {
+      const fromRoom = fromLookup.byIndex.get(Number(roomIndex));
+      if (!fromRoom) return;
+
+      connectionList.forEach((connection) => {
+        const targetAreaId = parseAreaIdFromExit(connection.areaExit);
+        if (!targetAreaId) return;
+        const targetLookup = lookupsByArea.get(targetAreaId);
+        const toRoom = findAreaEntrance(targetLookup);
+        if (!toRoom) return;
+
+        const key = [
+          `${fromRoom.areaId}:${fromRoom.id}`,
+          `${toRoom.areaId}:${toRoom.id}`,
+        ]
+          .sort()
+          .join('->');
+        if (linkPairs.has(key)) return;
+        linkPairs.add(key);
+
+        links.push({
+          from: fromRoom,
+          to: toRoom,
+          linkType: connection.linkType ?? LINK_TYPES.LINK_TO_ANOTHER_AREA,
+          exitType: connection.exitType,
+          areaId: fromRoom.areaId,
+          crossArea: true,
+        });
+      });
+    });
+  });
+
+  return links;
+}
+
 async function loadArea(source) {
   const response = await fetch(source.file);
   if (!response.ok) {
@@ -270,15 +324,20 @@ async function loadWorld() {
   const layouts = await Promise.all(MAP_SOURCES.map((source) => loadArea(source)));
   const areaOffsets = computeAreaOffsets(layouts);
   const world = { rooms: [], links: [] };
+  const lookupsByArea = new Map();
+  const linkPairs = new Set();
 
   layouts.forEach((layout) => {
     const offset = areaOffsets[layout.areaId] ?? { x: 0, y: 0, z: 0 };
     const { rooms, lookups } = buildWorldRooms(layout.parsed, layout.areaId, layout.areaName, offset, layout.solvedCoords);
-    const links = buildWorldLinks(layout.parsed, lookups, layout.areaId);
+    const links = buildWorldLinks(layout.parsed, lookups, layout.areaId, linkPairs);
 
     world.rooms.push(...rooms);
     world.links.push(...links);
+    lookupsByArea.set(layout.areaId, lookups);
   });
+
+  world.links.push(...buildCrossAreaLinks(layouts, lookupsByArea, linkPairs));
   return world;
 }
 
@@ -287,20 +346,26 @@ function createRoomMesh(room) {
     color: room.pkColor ?? room.color,
     emissive: room.pkColor ? room.pkColor.clone().multiplyScalar(0.35) : undefined,
   });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(ROOM_RADIUS, 18, 14), material);
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(ROOM_SIZE, ROOM_SIZE, ROOM_SIZE), material);
   mesh.position.copy(room.position);
   mesh.userData = { room };
   return mesh;
 }
 
-function createLink(from, to, linkType) {
-  const points = [from.position, to.position];
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
-  const material = new THREE.LineBasicMaterial({
+function createLink(from, to, linkType, { crossArea = false } = {}) {
+  const startToEnd = new THREE.Vector3().subVectors(to.position, from.position);
+  const length = startToEnd.length();
+  const radius = crossArea ? 0.12 : 0.07;
+  const geometry = new THREE.CylinderGeometry(radius, radius, length, 10);
+  const material = new THREE.MeshStandardMaterial({
     color: linkType === LINK_TYPES.LINK_TWOWAY ? '#f97316' : '#f43f5e',
-    linewidth: 1,
+    emissive: crossArea ? new THREE.Color('#f43f5e').multiplyScalar(0.25) : undefined,
   });
-  return new THREE.Line(geometry, material);
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.copy(from.position).addScaledVector(startToEnd, 0.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), startToEnd.clone().normalize());
+  mesh.userData = { from, to, linkType, crossArea };
+  return mesh;
 }
 
 function formatRoom(room) {
@@ -381,7 +446,7 @@ function initScene(world) {
   scene.add(roomGroup);
 
   world.rooms.forEach((room) => roomGroup.add(createRoomMesh(room)));
-  world.links.forEach((link) => linkGroup.add(createLink(link.from, link.to, link.linkType)));
+  world.links.forEach((link) => linkGroup.add(createLink(link.from, link.to, link.linkType, { crossArea: link.crossArea })));
 
   const selectionElement = document.getElementById('selection');
   const raycaster = new THREE.Raycaster();
