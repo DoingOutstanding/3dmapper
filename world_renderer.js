@@ -41,7 +41,13 @@ const AREA_OFFSETS = {
 const ROOM_SIZE = 1;
 const WORLD_SCALE = 2;
 const MIN_MAP_VERTICAL_GAP = 1;
-const ROAD_NAME_PATTERN = /\b(path|paths|pathway|intersection|intersections|crossroad|crossroads|road|roads|rd\.?|avenue|avenues|ave\.?|street|streets|st\.?)\b/i;
+const ROAD_NAME_PATTERN = /\b(path|paths|pathway|intersection|intersections|crossroad|alley|boulevard|way|boardwalk|lane|crossroads|road|roads|rd\.?|avenue|avenues|ave\.?|street|streets|st\.?)\b/i;
+const WATER_NAME_PATTERN = /\b(lake|water|pond)\b/i;
+const HALL_NAME_PATTERN = /\b(hall|hallway)\b/i;
+const DOOR_NAME_PATTERN = /\b(door|entrance|gate|archway)\b/i;
+const GRASS_NAME_PATTERN = /\b(grass|field|fields|garden|park)\b/i;
+const SAND_NAME_PATTERN = /\b(sand|beach)\b/i;
+
 
 const DIRECTION_OFFSETS = {
   north: { x: 1, y: 0, z: 0 },
@@ -596,20 +602,82 @@ function isRoadLikeRoom(name) {
   return ROAD_NAME_PATTERN.test(name ?? '');
 }
 
+function isWaterLikeRoom(name) {
+  return WATER_NAME_PATTERN.test(name ?? '');
+}
+
+function isHallLikeRoom(name) {
+  return HALL_NAME_PATTERN.test(name ?? '');
+}
+
+function isDoorLikeRoom(name) {
+  return DOOR_NAME_PATTERN.test(name ?? '');
+}
+
+function isGrassLikeRoom(name) {
+  return GRASS_NAME_PATTERN.test(name ?? '');
+}
+
+function isSandLikeRoom(name) {
+  return SAND_NAME_PATTERN.test(name ?? '');
+}
+
+
 function createRoomMesh(room) {
+  const waterLike = isWaterLikeRoom(room.name);
   const roadLike = isRoadLikeRoom(room.name);
+  const hallLike = isHallLikeRoom(room.name);
+  const doorLike = isDoorLikeRoom(room.name);
+  const grassLike = isGrassLikeRoom(room.name);
+  const sandLike = isSandLikeRoom(room.name);
+
+  let color = room.pkColor ?? room.color;
+  let emissive = room.pkColor ? room.pkColor.clone().multiplyScalar(0.35) : undefined;
+
+  // Default cube
+  let width = ROOM_SIZE;
+  let depth = ROOM_SIZE;
+  let height = ROOM_SIZE;
+
+  if (roadLike || hallLike || waterLike || grassLike || sandLike) {
+    height = ROOM_SIZE * 0.25;
+    if (roadLike) color = new THREE.Color('#374151');
+    if (waterLike) { color = new THREE.Color('#4682B4'); emissive = undefined; }
+    if (hallLike)  { color = new THREE.Color('#AA4A44'); emissive = undefined; }
+	if (grassLike)  { color = new THREE.Color('#018228'); emissive = undefined; }
+	if (sandLike)  { color = new THREE.Color('#EDE29F'); emissive = undefined; }
+  }
+
+  // ⭐ NEW DOOR BEHAVIOR — vertical rectangle
+  if (doorLike) {
+    color = new THREE.Color('#A35005');   // wood / sandstone door color
+    width = ROOM_SIZE * 0.25;
+    depth = ROOM_SIZE * 0.75;             // thin
+    height = ROOM_SIZE * 1.4;             // taller than normal rooms
+  }
+
+  const geometry = new THREE.BoxGeometry(width, depth, height);
+
   const material = new THREE.MeshStandardMaterial({
-    color: roadLike ? new THREE.Color('#374151') : room.pkColor ?? room.color,
-    emissive: room.pkColor && !roadLike ? room.pkColor.clone().multiplyScalar(0.35) : undefined,
+    color,
+    emissive,
   });
-  const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(ROOM_SIZE, ROOM_SIZE, ROOM_SIZE * (roadLike ? 0.25 : 1)),
-    material,
-  );
-  mesh.position.copy(room.position);
+
+  const mesh = new THREE.Mesh(geometry, material);
+
+  // Default position centers at cube middle — but door should sit on floor:
+  if (doorLike) {
+    mesh.position.copy(room.position);
+    mesh.position.z += height / 2;       // lift door so it sits on the ground
+  } else {
+    mesh.position.copy(room.position);
+  }
+
   mesh.userData = { room };
   return mesh;
 }
+
+
 
 function createLink(from, to, linkType, { crossArea = false } = {}) {
   const startToEnd = new THREE.Vector3().subVectors(to.position, from.position);
