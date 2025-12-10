@@ -698,7 +698,7 @@ function initScene(world, { onRoomSelected } = {}) {
   const selectionElement = document.getElementById('selection');
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
-  let highlighted = null;
+  let hovered = null;
   let selected = null;
 
   function clearGroup(group) {
@@ -720,15 +720,30 @@ function initScene(world, { onRoomSelected } = {}) {
 
   applyWorld(world);
 
-  function setSelection(mesh) {
-    highlighted?.material.emissive?.set('#000000');
-    highlighted = mesh;
-    selected = mesh?.userData?.room ?? null;
-    if (highlighted?.material?.emissive) {
-      highlighted.material.emissive.set('#fcd34d');
+  function setHovered(mesh) {
+    if (hovered === mesh) return;
+    if (hovered && hovered !== selected && hovered.material?.emissive) {
+      hovered.material.emissive.set('#000000');
     }
-    updateSelection(selectionElement, selected);
-    onRoomSelected?.(selected);
+    hovered = mesh;
+    if (hovered && hovered !== selected && hovered.material?.emissive) {
+      hovered.material.emissive.set('#22d3ee');
+    }
+  }
+
+  function setSelection(mesh) {
+    if (selected && selected.material?.emissive) {
+      selected.material.emissive.set('#000000');
+    }
+    selected = mesh;
+    if (selected?.material?.emissive) {
+      selected.material.emissive.set('#fcd34d');
+    }
+    updateSelection(selectionElement, selected?.userData?.room ?? null);
+    onRoomSelected?.(selected?.userData?.room ?? null);
+    if (hovered && hovered !== selected && hovered.material?.emissive) {
+      hovered.material.emissive.set('#22d3ee');
+    }
   }
 
   function onPointerMove(event) {
@@ -737,8 +752,7 @@ function initScene(world, { onRoomSelected } = {}) {
     raycaster.setFromCamera(pointer, camera);
     const hits = raycaster.intersectObjects(roomGroup.children);
     const hit = hits[0]?.object ?? null;
-    if (hit === highlighted) return;
-    setSelection(hit);
+    setHovered(hit);
   }
 
   function onResize() {
@@ -748,6 +762,11 @@ function initScene(world, { onRoomSelected } = {}) {
   }
 
   window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerdown', () => {
+    if (hovered) {
+      setSelection(hovered);
+    }
+  });
   window.addEventListener('resize', onResize);
 
   function animate() {
