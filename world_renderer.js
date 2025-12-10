@@ -282,6 +282,53 @@ function computeAreaOffsets(layouts) {
     // Keep resolving anchors until no new offsets can be derived.
   }
 
+  function ensureAnchorSeparation() {
+    let adjusted = false;
+
+    CROSS_AREA_ANCHORS.forEach((anchor) => {
+      const sourceOffset = offsets[anchor.areaId];
+      const targetOffset = offsets[anchor.targetAreaId];
+      if (!sourceOffset || !targetOffset) return;
+
+      const sourceLayout = layoutsByArea.get(anchor.areaId);
+      const targetLayout = layoutsByArea.get(anchor.targetAreaId);
+      if (!sourceLayout || !targetLayout) return;
+
+      const delta = DIRECTION_OFFSETS[anchor.direction?.toLowerCase?.() ?? ''];
+      const axis = delta?.x ? 'x' : delta?.y ? 'y' : delta?.z ? 'z' : null;
+      const sign = axis ? Math.sign(delta[axis] ?? 0) : 0;
+      if (!axis || !sign) return;
+
+      const axisKey = axis.toUpperCase();
+      const sourceMin = sourceLayout.bounds[`min${axisKey}`] + (sourceOffset?.[axis] ?? 0);
+      const sourceMax = sourceLayout.bounds[`max${axisKey}`] + (sourceOffset?.[axis] ?? 0);
+      const targetMin = targetLayout.bounds[`min${axisKey}`] + (targetOffset?.[axis] ?? 0);
+      const targetMax = targetLayout.bounds[`max${axisKey}`] + (targetOffset?.[axis] ?? 0);
+
+      if (sign > 0) {
+        const desiredMax = targetMin - MIN_MAP_VERTICAL_GAP;
+        if (sourceMax > desiredMax) {
+          const shift = desiredMax - sourceMax;
+          offsets[anchor.areaId] = { ...sourceOffset, [axis]: (sourceOffset?.[axis] ?? 0) + shift };
+          adjusted = true;
+        }
+      } else {
+        const desiredMin = targetMax + MIN_MAP_VERTICAL_GAP;
+        if (sourceMin < desiredMin) {
+          const shift = desiredMin - sourceMin;
+          offsets[anchor.areaId] = { ...sourceOffset, [axis]: (sourceOffset?.[axis] ?? 0) + shift };
+          adjusted = true;
+        }
+      }
+    });
+
+    return adjusted;
+  }
+
+  while (ensureAnchorSeparation()) {
+    // Keep lifting anchored areas along their connection axis until gaps are satisfied.
+  }
+
   let highestPlacedZ = Number.NEGATIVE_INFINITY;
 
   layouts.forEach((layout) => {
