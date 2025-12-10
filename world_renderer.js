@@ -51,6 +51,19 @@ const DIRECTION_OFFSETS = {
   down: { x: 0, y: 0, z: -1 },
 };
 
+function normalizeManualCoordinates(manualCoords = {}) {
+  const normalized = {};
+  Object.entries(manualCoords).forEach(([roomIndex, coords]) => {
+    if (!coords) return;
+    normalized[Number(roomIndex)] = {
+      x: Number(coords.x ?? 0),
+      y: Number(coords.y ?? 0),
+      z: Number(coords.z ?? 0),
+    };
+  });
+  return normalized;
+}
+
 function hashColor(seed) {
   let h = 0;
   for (let i = 0; i < seed.length; i += 1) {
@@ -476,6 +489,32 @@ function computeAreaOffsets(layouts) {
   return offsets;
 }
 
+function buildWorldFromLayouts(layouts, areaOffsetsOverride = null) {
+  const areaOffsets = areaOffsetsOverride ?? computeAreaOffsets(layouts);
+  const world = { rooms: [], links: [] };
+  const lookupsByArea = new Map();
+  const linkPairs = new Set();
+
+  layouts.forEach((layout) => {
+    const offset = areaOffsets[layout.areaId] ?? { x: 0, y: 0, z: 0 };
+    const { rooms, lookups } = buildWorldRooms(
+      layout.parsed,
+      layout.areaId,
+      layout.areaName,
+      offset,
+      layout.solvedCoords,
+    );
+    const links = buildWorldLinks(layout.parsed, lookups, layout.areaId, linkPairs);
+
+    world.rooms.push(...rooms);
+    world.links.push(...links);
+    lookupsByArea.set(layout.areaId, lookups);
+  });
+
+  world.links.push(...buildCrossAreaLinks(layouts, lookupsByArea, linkPairs));
+  return { world, lookupsByArea, areaOffsets };
+}
+
 function parseAreaIdFromExit(areaExit) {
   const raw = areaExit?.raw;
   if (!raw) return null;
@@ -539,32 +578,17 @@ async function loadArea(source) {
   const parsed = await response.json();
   const areaId = source.areaId ?? deriveAreaIdFromFile(source.file);
   const areaName = source.displayName ?? parsed.metadata?.area_name ?? `Area ${areaId}`;
-  const solvedCoords = solveRoomCoordinates(parsed, areaId);
+  const manualCoords = normalizeManualCoordinates(parsed.manualCoords);
+  const solvedCoords = { ...solveRoomCoordinates(parsed, areaId), ...manualCoords };
   const bounds = computeBoundsFromCoords(solvedCoords);
   const roomIndexById = new Map(parsed.rooms.map((room) => [room.id, room.index]));
 
-  return { areaId, areaName, parsed, solvedCoords, bounds, roomIndexById };
+  return { areaId, areaName, parsed: { ...parsed, manualCoords }, solvedCoords, manualCoords, bounds, roomIndexById };
 }
 
 async function loadWorld() {
   const layouts = await Promise.all(MAP_SOURCES.map((source) => loadArea(source)));
-  const areaOffsets = computeAreaOffsets(layouts);
-  const world = { rooms: [], links: [] };
-  const lookupsByArea = new Map();
-  const linkPairs = new Set();
-
-  layouts.forEach((layout) => {
-    const offset = areaOffsets[layout.areaId] ?? { x: 0, y: 0, z: 0 };
-    const { rooms, lookups } = buildWorldRooms(layout.parsed, layout.areaId, layout.areaName, offset, layout.solvedCoords);
-    const links = buildWorldLinks(layout.parsed, lookups, layout.areaId, linkPairs);
-
-    world.rooms.push(...rooms);
-    world.links.push(...links);
-    lookupsByArea.set(layout.areaId, lookups);
-  });
-
-  world.links.push(...buildCrossAreaLinks(layouts, lookupsByArea, linkPairs));
-  return world;
+  return { layouts, ...buildWorldFromLayouts(layouts) };
 }
 
 function createRoomMesh(room) {
@@ -637,7 +661,7 @@ function updateSelection(element, room) {
   `;
 }
 
-function initScene(world) {
+function initScene(world, { onRoomSelected } = {}) {
   const canvas = document.getElementById('world');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -671,13 +695,56 @@ function initScene(world) {
   scene.add(linkGroup);
   scene.add(roomGroup);
 
-  world.rooms.forEach((room) => roomGroup.add(createRoomMesh(room)));
-  world.links.forEach((link) => linkGroup.add(createLink(link.from, link.to, link.linkType, { crossArea: link.crossArea })));
-
   const selectionElement = document.getElementById('selection');
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
-  let highlighted = null;
+  let hovered = null;
+  let selected = null;
+
+  function clearGroup(group) {
+    while (group.children.length) {
+      const child = group.children.pop();
+      group.remove(child);
+    }
+  }
+
+  function applyWorld(newWorld) {
+    clearGroup(roomGroup);
+    clearGroup(linkGroup);
+
+    newWorld.rooms.forEach((room) => roomGroup.add(createRoomMesh(room)));
+    newWorld.links.forEach((link) =>
+      linkGroup.add(createLink(link.from, link.to, link.linkType, { crossArea: link.crossArea })),
+    );
+  }
+
+  applyWorld(world);
+
+  function setHovered(mesh) {
+    if (hovered === mesh) return;
+    if (hovered && hovered !== selected && hovered.material?.emissive) {
+      hovered.material.emissive.set('#000000');
+    }
+    hovered = mesh;
+    if (hovered && hovered !== selected && hovered.material?.emissive) {
+      hovered.material.emissive.set('#22d3ee');
+    }
+  }
+
+  function setSelection(mesh) {
+    if (selected && selected.material?.emissive) {
+      selected.material.emissive.set('#000000');
+    }
+    selected = mesh;
+    if (selected?.material?.emissive) {
+      selected.material.emissive.set('#fcd34d');
+    }
+    updateSelection(selectionElement, selected?.userData?.room ?? null);
+    onRoomSelected?.(selected?.userData?.room ?? null);
+    if (hovered && hovered !== selected && hovered.material?.emissive) {
+      hovered.material.emissive.set('#22d3ee');
+    }
+  }
 
   function onPointerMove(event) {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -685,13 +752,7 @@ function initScene(world) {
     raycaster.setFromCamera(pointer, camera);
     const hits = raycaster.intersectObjects(roomGroup.children);
     const hit = hits[0]?.object ?? null;
-    if (hit === highlighted) return;
-    highlighted?.material.emissive?.set('#000000');
-    highlighted = hit;
-    if (highlighted?.material?.emissive) {
-      highlighted.material.emissive.set('#fcd34d');
-    }
-    updateSelection(selectionElement, highlighted?.userData?.room);
+    setHovered(hit);
   }
 
   function onResize() {
@@ -701,6 +762,11 @@ function initScene(world) {
   }
 
   window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerdown', () => {
+    if (hovered) {
+      setSelection(hovered);
+    }
+  });
   window.addEventListener('resize', onResize);
 
   function animate() {
@@ -710,12 +776,175 @@ function initScene(world) {
   }
 
   animate();
+
+  function selectRoom(predicate) {
+    const mesh = roomGroup.children.find((child) => predicate(child.userData?.room ?? {}));
+    setSelection(mesh ?? null);
+  }
+
+  return {
+    updateWorld(newWorld) {
+      applyWorld(newWorld);
+      setSelection(null);
+    },
+    selectRoom,
+  };
+}
+
+const editorState = {
+  layouts: [],
+  world: null,
+  areaOffsets: null,
+  scene: null,
+  selectedRoomKey: null,
+};
+
+function getLayout(areaId) {
+  return editorState.layouts.find((layout) => layout.areaId === areaId) ?? null;
+}
+
+function getLogicalCoordinates(room) {
+  const layout = getLayout(room?.areaId);
+  return layout?.solvedCoords?.[room.index] ?? null;
+}
+
+function updateEditorForm(room) {
+  const xInput = document.getElementById('coord-x');
+  const yInput = document.getElementById('coord-y');
+  const zInput = document.getElementById('coord-z');
+  const applyButton = document.getElementById('apply-coordinates');
+  const saveButton = document.getElementById('save-area');
+  const status = document.getElementById('editor-status');
+
+  status.textContent = '';
+
+  if (!room) {
+    xInput.value = '';
+    yInput.value = '';
+    zInput.value = '';
+    applyButton.disabled = true;
+    saveButton.disabled = true;
+    return;
+  }
+
+  const logical = getLogicalCoordinates(room) ?? { x: 0, y: 0, z: 0 };
+  xInput.value = logical.x;
+  yInput.value = logical.y;
+  zInput.value = logical.z ?? 0;
+  applyButton.disabled = false;
+  saveButton.disabled = false;
+}
+
+function rebuildWorldWithLayouts() {
+  editorState.layouts.forEach((layout) => {
+    layout.bounds = computeBoundsFromCoords(layout.solvedCoords);
+  });
+  const { world, areaOffsets } = buildWorldFromLayouts(editorState.layouts);
+  editorState.world = world;
+  editorState.areaOffsets = areaOffsets;
+  editorState.scene.updateWorld(world);
+}
+
+function applyManualCoordinates(coords) {
+  const selection = editorState.selectedRoomKey;
+  if (!selection) return;
+
+  const layout = getLayout(selection.areaId);
+  if (!layout) return;
+
+  const roomIndex = layout.roomIndexById.get(selection.roomId);
+  if (roomIndex == null) return;
+
+  layout.manualCoords = layout.manualCoords ?? {};
+  layout.parsed.manualCoords = layout.manualCoords;
+  layout.manualCoords[roomIndex] = { ...coords };
+  layout.solvedCoords[roomIndex] = { ...coords };
+
+  rebuildWorldWithLayouts();
+
+  editorState.scene.selectRoom((room) => room.areaId === selection.areaId && room.id === selection.roomId);
+
+  const status = document.getElementById('editor-status');
+  status.textContent = 'Coordinates applied';
+  setTimeout(() => {
+    if (status.textContent === 'Coordinates applied') {
+      status.textContent = '';
+    }
+  }, 1500);
+}
+
+function saveCurrentAreaFile() {
+  const selection = editorState.selectedRoomKey;
+  if (!selection) return;
+
+  const layout = getLayout(selection.areaId);
+  if (!layout) return;
+
+  const status = document.getElementById('editor-status');
+  const fileName = layout.parsed.sourceFile ?? `area${layout.areaId}.json`;
+  const payload = { ...layout.parsed, manualCoords: layout.manualCoords ?? {} };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = fileName;
+  link.click();
+  URL.revokeObjectURL(link.href);
+
+  status.textContent = `Saved ${fileName}`;
+  setTimeout(() => {
+    if (status.textContent === `Saved ${fileName}`) {
+      status.textContent = '';
+    }
+  }, 2000);
+}
+
+function setupEditorControls() {
+  const xInput = document.getElementById('coord-x');
+  const yInput = document.getElementById('coord-y');
+  const zInput = document.getElementById('coord-z');
+  const applyButton = document.getElementById('apply-coordinates');
+  const saveButton = document.getElementById('save-area');
+
+  applyButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (!editorState.selectedRoomKey) return;
+
+    const coords = {
+      x: Number(xInput.value),
+      y: Number(yInput.value),
+      z: Number(zInput.value ?? 0),
+    };
+
+    if (Number.isNaN(coords.x) || Number.isNaN(coords.y) || Number.isNaN(coords.z)) {
+      const status = document.getElementById('editor-status');
+      status.textContent = 'Enter valid numbers for X/Y/Z';
+      return;
+    }
+
+    applyManualCoordinates(coords);
+  });
+
+  saveButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    saveCurrentAreaFile();
+  });
 }
 
 (async function main() {
   try {
-    const world = await loadWorld();
-    initScene(world);
+    const { world, layouts, areaOffsets } = await loadWorld();
+    editorState.layouts = layouts;
+    editorState.world = world;
+    editorState.areaOffsets = areaOffsets;
+
+    editorState.scene = initScene(world, {
+      onRoomSelected(room) {
+        editorState.selectedRoomKey = room ? { areaId: room.areaId, roomId: room.id } : null;
+        updateEditorForm(room);
+      },
+    });
+
+    setupEditorControls();
   } catch (error) {
     console.error('Failed to initialize world renderer', error);
     const ui = document.getElementById('selection');
