@@ -125,10 +125,40 @@ def pick_room_match_with_exits(
 
 
 def target_parsed_files() -> Iterable[Path]:
-    # Only process the Aylor and Aylorian Academy maps we are working with.
-    for candidate in (PARSED_DIR / "area18.json", PARSED_DIR / "area258.json"):
-        if candidate.exists():
-            yield candidate
+    """Yield parsed map JSON files that exist in the repository."""
+
+    for candidate in PARSED_DIR.glob("*.json"):
+        if candidate.name == "manifest.json":
+            continue
+        yield candidate
+
+
+def write_manifest() -> None:
+    """Generate a manifest so the renderer can discover available maps."""
+
+    entries = []
+    for parsed_path in PARSED_DIR.glob("*.json"):
+        if parsed_path.name == "manifest.json":
+            continue
+
+        data = load_json(parsed_path)
+        area_metadata = data.get("areaMetadata", {})
+        html_metadata = data.get("metadata", {})
+
+        entries.append(
+            {
+                "file": f"parsed_maps/{parsed_path.name}",
+                "areaUid": area_metadata.get("uid"),
+                "areaId": html_metadata.get("area_id") or area_metadata.get("id"),
+                "areaName": area_metadata.get("name")
+                or html_metadata.get("area_name")
+                or parsed_path.stem,
+            }
+        )
+
+    manifest_path = PARSED_DIR / "manifest.json"
+    manifest_path.write_text(json.dumps({"maps": entries}, indent=2))
+    print(f"Updated {manifest_path.relative_to(REPO_ROOT)}")
 
 
 
@@ -184,6 +214,8 @@ def main() -> None:
             print(f"Renamed {parsed_path.name} -> {output_path.name}")
 
         print(f"Updated {output_path.relative_to(REPO_ROOT)}")
+
+    write_manifest()
 
 
 if __name__ == "__main__":

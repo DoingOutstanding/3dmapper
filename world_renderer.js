@@ -1,7 +1,4 @@
-const MAP_SOURCES = [
-  { file: 'parsed_maps/area18.json', areaId: 18, displayName: 'The Grand City of Aylor' },
-  { file: 'parsed_maps/area258.json', areaId: 258, displayName: 'Aylorian Academy' },
-];
+const MAP_MANIFEST_URL = 'parsed_maps/manifest.json';
 
 const LINK_TYPES = {
   LINK_ONEWAY: 0,
@@ -11,17 +8,17 @@ const LINK_TYPES = {
 };
 
 const ORIGIN_REFERENCE = {
-  areaId: 18,
+  areaId: 'aylor',
   roomId: 2,
   coordinates: { x: 0, y: 0, z: 0 },
 };
 
 const CROSS_AREA_ANCHORS = [
   {
-    areaId: 258,
+    areaId: 'academy',
     roomId: 136,
     direction: 'down',
-    targetAreaId: 18,
+    targetAreaId: 'aylor',
     targetRoomId: 2,
   },
 ];
@@ -583,8 +580,16 @@ async function loadArea(source) {
     throw new Error(`Failed to load ${source.file}: ${response.status}`);
   }
   const parsed = await response.json();
-  const areaId = source.areaId ?? deriveAreaIdFromFile(source.file);
-  const areaName = source.displayName ?? parsed.metadata?.area_name ?? `Area ${areaId}`;
+  const areaId =
+    source.areaId ??
+    source.areaUid ??
+    parsed.areaMetadata?.uid ??
+    parsed.metadata?.area_id ??
+    deriveAreaIdFromFile(source.file) ??
+    parsed.metadata?.area_name ??
+    source.file;
+  const areaName =
+    source.displayName ?? parsed.areaMetadata?.name ?? parsed.metadata?.area_name ?? `Area ${areaId}`;
   const manualCoords = normalizeManualCoordinates(parsed.manualCoords);
   const solvedCoords = { ...solveRoomCoordinates(parsed, areaId), ...manualCoords };
   const bounds = computeBoundsFromCoords(solvedCoords);
@@ -594,7 +599,19 @@ async function loadArea(source) {
 }
 
 async function loadWorld() {
-  const layouts = await Promise.all(MAP_SOURCES.map((source) => loadArea(source)));
+  const manifestResponse = await fetch(MAP_MANIFEST_URL);
+  if (!manifestResponse.ok) {
+    throw new Error(`Failed to load map manifest: ${manifestResponse.status}`);
+  }
+
+  const manifest = await manifestResponse.json();
+  const sources = manifest?.maps ?? [];
+
+  if (!sources.length) {
+    throw new Error('No map sources found in manifest');
+  }
+
+  const layouts = await Promise.all(sources.map((source) => loadArea(source)));
   return { layouts, ...buildWorldFromLayouts(layouts) };
 }
 
