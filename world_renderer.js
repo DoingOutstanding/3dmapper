@@ -982,7 +982,13 @@ function initScene(world, { onRoomSelected } = {}) {
 
   animate();
 
-  async function recordRotationGif() {
+  async function recordRotationGif(onStatus) {
+    const setStatus = (message) => {
+      if (typeof onStatus === 'function' && message) {
+        onStatus(message);
+      }
+    };
+
     if (typeof GIF === 'undefined') {
       throw new Error('GIF recording library failed to load');
     }
@@ -999,6 +1005,10 @@ function initScene(world, { onRoomSelected } = {}) {
     const frames = Math.max(1, Math.round((durationMs / 1000) * fps));
 
     const size = renderer.getSize(new THREE.Vector2());
+    if (!size.width || !size.height) {
+      throw new Error('Renderer has no size; is the canvas visible?');
+    }
+
     const gif = new GIF({
       workers: 2,
       quality: 12,
@@ -1020,6 +1030,8 @@ function initScene(world, { onRoomSelected } = {}) {
       renderer.render(scene, camera);
     };
 
+    setStatus('Capturing frames...');
+
     try {
       for (let i = 0; i < frames; i += 1) {
         const angle = startAngle + (Math.PI * 2 * (i / frames));
@@ -1027,6 +1039,8 @@ function initScene(world, { onRoomSelected } = {}) {
         gif.addFrame(renderer.domElement, { copy: true, delay: 1000 / fps });
         await new Promise((resolve) => requestAnimationFrame(resolve));
       }
+
+      setStatus('Encoding GIF...');
 
       await new Promise((resolve, reject) => {
         gif.on('finished', (blob) => {
@@ -1045,6 +1059,7 @@ function initScene(world, { onRoomSelected } = {}) {
 
         gif.render();
       });
+      setStatus('GIF downloaded');
     } finally {
       controls.enabled = true;
       camera.position.copy(originalPosition);
@@ -1220,16 +1235,18 @@ function setupRecordingControls(sceneController) {
     recordButton.textContent = 'Recording...';
 
     try {
-      await sceneController.recordRotationGif();
-      status.textContent = 'GIF downloaded';
+      await sceneController.recordRotationGif((message) => {
+        status.textContent = message;
+      });
     } catch (error) {
       console.error('GIF recording failed', error);
-      status.textContent = 'Recording failed';
+      const details = error?.message ? `: ${error.message}` : '';
+      status.textContent = `Recording failed${details}`;
     } finally {
       recordButton.disabled = false;
       recordButton.textContent = 'Record rotating GIF';
       setTimeout(() => {
-        if (status.textContent === 'GIF downloaded' || status.textContent === 'Recording failed') {
+        if (status.textContent.startsWith('GIF downloaded') || status.textContent.startsWith('Recording failed')) {
           status.textContent = '';
         }
       }, 2500);
