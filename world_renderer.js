@@ -622,6 +622,117 @@ function isSandLikeRoom(name) {
   return SAND_NAME_PATTERN.test(name ?? '');
 }
 
+function classifySurfaceType(room) {
+  const name = room.name ?? '';
+
+  if (isWaterLikeRoom(name)) return 'water';
+  if (isRoadLikeRoom(name)) return 'road';
+  if (isHallLikeRoom(name)) return 'hall';
+  if (isGrassLikeRoom(name)) return 'grass';
+  if (isSandLikeRoom(name)) return 'sand';
+
+  return null;
+}
+
+function surfaceStyleFor(type) {
+  const baseHeight = ROOM_SIZE * 0.25;
+  switch (type) {
+    case 'road':
+      return { color: new THREE.Color('#374151'), height: baseHeight };
+    case 'hall':
+      return { color: new THREE.Color('#AA4A44'), height: baseHeight };
+    case 'water':
+      return { color: new THREE.Color('#4682B4'), height: baseHeight };
+    case 'grass':
+      return { color: new THREE.Color('#018228'), height: baseHeight };
+    case 'sand':
+      return { color: new THREE.Color('#EDE29F'), height: baseHeight };
+    default:
+      return { color: new THREE.Color('#9ca3af'), height: baseHeight };
+  }
+}
+
+function createSurfaceMesh(rect, style, representativeRoom) {
+  const geometry = new THREE.BoxGeometry(rect.width, rect.depth, style.height);
+  const material = new THREE.MeshStandardMaterial({ color: style.color });
+  const mesh = new THREE.Mesh(geometry, material);
+
+  mesh.position.set(rect.centerX, rect.centerY, representativeRoom.position.z);
+  mesh.userData = { room: representativeRoom };
+  return mesh;
+}
+
+function buildSurfaceMeshes(rooms) {
+  const surfaceMeshes = [];
+  const coveredRoomIds = new Set();
+  const cellSize = WORLD_SCALE;
+
+  const grouped = new Map();
+
+  rooms.forEach((room) => {
+    const type = classifySurfaceType(room);
+    if (!type) return;
+    const key = `${type}|${room.position.z.toFixed(5)}`;
+    if (!grouped.has(key)) {
+      grouped.set(key, { type, z: room.position.z, rooms: [] });
+    }
+    grouped.get(key).rooms.push(room);
+  });
+
+  grouped.forEach(({ type, rooms: typeRooms }) => {
+    const style = surfaceStyleFor(type);
+    const rows = new Map();
+
+    typeRooms.forEach((room) => {
+      const yKey = room.position.y.toFixed(5);
+      if (!rows.has(yKey)) rows.set(yKey, new Map());
+      rows.get(yKey).set(room.position.x.toFixed(5), room);
+    });
+
+    rows.forEach((row, yKey) => {
+      const sortedX = Array.from(row.keys())
+        .map(Number)
+        .sort((a, b) => a - b);
+
+      let i = 0;
+      while (i < sortedX.length) {
+        const startX = sortedX[i];
+        let widthCells = 1;
+
+        while (i + widthCells < sortedX.length) {
+          const nextX = sortedX[i + widthCells];
+          if (Math.abs(nextX - startX - widthCells * cellSize) < 0.001) {
+            widthCells += 1;
+          } else {
+            break;
+          }
+        }
+
+        const anchorRoom = row.get(sortedX[i].toFixed(5));
+
+        for (let dx = 0; dx < widthCells; dx += 1) {
+          const removalKey = (startX + dx * cellSize).toFixed(5);
+          const removedRoom = row.get(removalKey);
+          if (removedRoom) coveredRoomIds.add(`${removedRoom.areaId}:${removedRoom.id}`);
+          row.delete(removalKey);
+        }
+
+        const rect = {
+          width: widthCells * cellSize,
+          depth: cellSize,
+          centerX: startX + (widthCells - 1) * (cellSize / 2),
+          centerY: Number(yKey),
+        };
+
+        surfaceMeshes.push(createSurfaceMesh(rect, style, anchorRoom ?? typeRooms[0]));
+        i += widthCells;
+      }
+    });
+  });
+
+  return { surfaceMeshes, coveredRoomIds };
+}
+
 
 function createRoomMesh(room) {
   const waterLike = isWaterLikeRoom(room.name);
@@ -767,8 +878,10 @@ function initScene(world, { onRoomSelected } = {}) {
   grid.material.transparent = true;
   scene.add(grid);
 
+  const surfaceGroup = new THREE.Group();
   const roomGroup = new THREE.Group();
   const linkGroup = new THREE.Group();
+  scene.add(surfaceGroup);
   scene.add(linkGroup);
   scene.add(roomGroup);
 
@@ -786,10 +899,16 @@ function initScene(world, { onRoomSelected } = {}) {
   }
 
   function applyWorld(newWorld) {
+    clearGroup(surfaceGroup);
     clearGroup(roomGroup);
     clearGroup(linkGroup);
 
-    newWorld.rooms.forEach((room) => roomGroup.add(createRoomMesh(room)));
+    const { surfaceMeshes, coveredRoomIds } = buildSurfaceMeshes(newWorld.rooms);
+
+    surfaceMeshes.forEach((mesh) => surfaceGroup.add(mesh));
+    newWorld.rooms
+      .filter((room) => !coveredRoomIds.has(`${room.areaId}:${room.id}`))
+      .forEach((room) => roomGroup.add(createRoomMesh(room)));
     newWorld.links.forEach((link) =>
       linkGroup.add(createLink(link.from, link.to, link.linkType, { crossArea: link.crossArea })),
     );
