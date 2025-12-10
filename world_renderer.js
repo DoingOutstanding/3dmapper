@@ -16,16 +16,29 @@ const ORIGIN_REFERENCE = {
   coordinates: { x: 11, y: 12, z: 0 },
 };
 
+function computeAreaOffset(anchorCoordinates) {
+  return {
+    x: -(anchorCoordinates?.x ?? 0),
+    y: -(anchorCoordinates?.y ?? 0),
+    z: -(anchorCoordinates?.z ?? 0),
+  };
+}
+
 const AREA_OFFSETS = {
-  [ORIGIN_REFERENCE.areaId]: {
-    x: -ORIGIN_REFERENCE.coordinates.x,
-    y: -ORIGIN_REFERENCE.coordinates.y,
-    z: -ORIGIN_REFERENCE.coordinates.z,
-  },
+  [ORIGIN_REFERENCE.areaId]: computeAreaOffset(ORIGIN_REFERENCE.coordinates),
 };
 
 const ROOM_RADIUS = 0.6;
 const WORLD_SCALE = 1.25;
+
+const DIRECTION_OFFSETS = {
+  north: { x: 1, y: 0, z: 0 },
+  south: { x: -1, y: 0, z: 0 },
+  east: { x: 0, y: 1, z: 0 },
+  west: { x: 0, y: -1, z: 0 },
+  up: { x: 0, y: 0, z: 1 },
+  down: { x: 0, y: 0, z: -1 },
+};
 
 function hashColor(seed) {
   let h = 0;
@@ -52,22 +65,80 @@ function buildRoomLookup(rooms) {
   return { byId, byIndex };
 }
 
-function normalizeRoomPosition(room, areaOffset) {
+function normalizeRoomPosition(room, areaOffset, solvedCoords) {
+  const coordinates = solvedCoords?.[room.index] ?? { x: room.x, y: room.y, z: room.z ?? 0 };
   return new THREE.Vector3(
-    (room.x + (areaOffset?.x ?? 0)) * WORLD_SCALE,
-    (room.y + (areaOffset?.y ?? 0)) * WORLD_SCALE,
-    (areaOffset?.z ?? 0) * WORLD_SCALE,
+    // X axis = north/south (positive north).
+    (coordinates.x + (areaOffset?.x ?? 0)) * WORLD_SCALE,
+    // Y axis = east/west (positive east).
+    (coordinates.y + (areaOffset?.y ?? 0)) * WORLD_SCALE,
+    // Z axis = up/down. Stack up/down rooms along Z.
+    ((coordinates.z ?? 0) + (areaOffset?.z ?? 0)) * WORLD_SCALE,
   );
+}
+
+function solveRoomCoordinates(areaData, areaId) {
+  const coordinates = {};
+  const queue = [];
+
+  const originRoom =
+    areaId === ORIGIN_REFERENCE.areaId
+      ? areaData.rooms.find((room) => room.id === ORIGIN_REFERENCE.roomId)
+      : null;
+
+  if (originRoom) {
+    coordinates[originRoom.index] = { ...ORIGIN_REFERENCE.coordinates };
+    queue.push(originRoom.index);
+  }
+
+  if (!queue.length && areaData.rooms.length) {
+    coordinates[areaData.rooms[0].index] = { x: 0, y: 0, z: 0 };
+    queue.push(areaData.rooms[0].index);
+  }
+
+  const connections = areaData.roomConnections ?? {};
+
+  while (queue.length) {
+    const current = queue.shift();
+    const currentCoords = coordinates[current];
+    const exits = connections[current] ?? [];
+
+    exits.forEach((conn) => {
+      if (conn.to == null) return;
+      const direction = conn.direction?.toLowerCase();
+      const delta = DIRECTION_OFFSETS[direction];
+      if (!delta) return;
+
+      const targetIndex = Number(conn.to);
+      if (coordinates[targetIndex] != null) return;
+
+      coordinates[targetIndex] = {
+        x: currentCoords.x + delta.x,
+        y: currentCoords.y + delta.y,
+        z: currentCoords.z + delta.z,
+      };
+      queue.push(targetIndex);
+    });
+  }
+
+  areaData.rooms.forEach((room) => {
+    if (coordinates[room.index] == null) {
+      coordinates[room.index] = { x: 0, y: 0, z: 0 };
+    }
+  });
+
+  return coordinates;
 }
 
 function buildWorldRooms(areaData, areaId, areaName) {
   const areaOffset = AREA_OFFSETS[areaId] ?? { x: 0, y: 0, z: 0 };
   const areaColor = hashColor(String(areaId));
+  const solvedCoords = solveRoomCoordinates(areaData, areaId);
   const rooms = areaData.rooms.map((room) => ({
     ...room,
     areaId,
     areaName,
-    position: normalizeRoomPosition(room, areaOffset),
+    position: normalizeRoomPosition(room, areaOffset, solvedCoords),
     color: room.isEntrance ? new THREE.Color('#22d3ee') : areaColor,
     pkColor: room.pk ? new THREE.Color('#a855f7') : null,
     connections: [],
