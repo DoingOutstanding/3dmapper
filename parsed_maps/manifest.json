@@ -1,0 +1,16 @@
+{
+  "maps": [
+    {
+      "file": "parsed_maps/academy.json",
+      "areaUid": "academy",
+      "areaId": null,
+      "areaName": "The Aylorian Academy"
+    },
+    {
+      "file": "parsed_maps/aylor.json",
+      "areaUid": "aylor",
+      "areaId": null,
+      "areaName": "The Grand City of Aylor"
+    }
+  ]
+}
