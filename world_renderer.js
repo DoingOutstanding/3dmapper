@@ -1,8 +1,3 @@
-const DEFAULT_MAP_SOURCES = [
-  { file: 'parsed_maps/area18.json', areaId: 18, displayName: 'The Grand City of Aylor' },
-  { file: 'parsed_maps/area258.json', areaId: 258, displayName: 'Aylorian Academy' },
-];
-
 const LINK_TYPES = {
   LINK_ONEWAY: 0,
   LINK_TWOWAY: 1,
@@ -16,15 +11,7 @@ const ORIGIN_REFERENCE = {
   coordinates: { x: 0, y: 0, z: 0 },
 };
 
-const CROSS_AREA_ANCHORS = [
-  {
-    areaId: 258,
-    roomId: 136,
-    direction: 'down',
-    targetAreaId: 18,
-    targetRoomId: 2,
-  },
-];
+const CROSS_AREA_ANCHORS = [];
 
 function computeAreaOffset(anchorCoordinates) {
   return {
@@ -427,10 +414,42 @@ function computeAreaOffsets(layouts) {
   const offsets = { ...AREA_OFFSETS };
   const layoutsByArea = new Map(layouts.map((layout) => [layout.areaId, layout]));
 
+  const buildAnchors = () => {
+    const dynamicAnchors = [];
+
+    layouts.forEach((layout) => {
+      if (!offsets[layout.areaId]) return;
+
+      Object.entries(layout.parsed.roomConnections ?? {}).forEach(([roomIndex, connectionList]) => {
+        const sourceRoom = layout.roomsByIndex.get(Number(roomIndex));
+        if (!sourceRoom) return;
+
+        connectionList?.forEach((connection) => {
+          const targetAreaId = parseAreaIdFromExit(connection.areaExit);
+          if (!targetAreaId) return;
+
+          const targetLayout = layoutsByArea.get(targetAreaId);
+          const targetRoom = findLayoutEntrance(targetLayout);
+          if (!targetLayout || !targetRoom) return;
+
+          dynamicAnchors.push({
+            areaId: targetAreaId,
+            roomId: targetRoom.id,
+            direction: invertDirection(connection.direction),
+            targetAreaId: layout.areaId,
+            targetRoomId: sourceRoom.id,
+          });
+        });
+      });
+    });
+
+    return [...CROSS_AREA_ANCHORS, ...dynamicAnchors];
+  };
+
   function resolveAnchorOffsets() {
     let placed = false;
 
-    CROSS_AREA_ANCHORS.forEach((anchor) => {
+    buildAnchors().forEach((anchor) => {
       if (offsets[anchor.areaId]) return;
       const targetOffset = offsets[anchor.targetAreaId];
       if (!targetOffset) return;
@@ -468,7 +487,7 @@ function computeAreaOffsets(layouts) {
   function ensureAnchorSeparation() {
     let adjusted = false;
 
-    CROSS_AREA_ANCHORS.forEach((anchor) => {
+    buildAnchors().forEach((anchor) => {
       const sourceOffset = offsets[anchor.areaId];
       const targetOffset = offsets[anchor.targetAreaId];
       if (!sourceOffset || !targetOffset) return;
@@ -566,6 +585,30 @@ function parseAreaIdFromExit(areaExit) {
   return match ? Number.parseInt(match[1], 10) : null;
 }
 
+function invertDirection(direction) {
+  switch ((direction ?? '').toLowerCase()) {
+    case 'north':
+      return 'south';
+    case 'south':
+      return 'north';
+    case 'east':
+      return 'west';
+    case 'west':
+      return 'east';
+    case 'up':
+      return 'down';
+    case 'down':
+      return 'up';
+    default:
+      return direction;
+  }
+}
+
+function findLayoutEntrance(layout) {
+  if (!layout?.parsed?.rooms?.length) return null;
+  return layout.parsed.rooms.find((room) => room.isEntrance) ?? layout.parsed.rooms[0];
+}
+
 function findAreaEntrance(lookup) {
   if (!lookup) return null;
   const rooms = Array.from(lookup.byIndex.values());
@@ -634,8 +677,55 @@ async function loadArea(source) {
   const solvedCoords = { ...solveRoomCoordinates(parsed, areaId), ...manualCoords };
   const bounds = computeBoundsFromCoords(solvedCoords);
   const roomIndexById = new Map(parsed.rooms.map((room) => [room.id, room.index]));
+  const roomsByIndex = new Map(parsed.rooms.map((room) => [room.index, room]));
 
-  return { areaId, areaName, parsed: { ...parsed, manualCoords }, solvedCoords, manualCoords, bounds, roomIndexById };
+  return {
+    areaId,
+    areaName,
+    parsed: { ...parsed, manualCoords },
+    solvedCoords,
+    manualCoords,
+    bounds,
+    roomIndexById,
+    roomsByIndex,
+  };
+}
+
+async function loadManifestSources() {
+  try {
+    const response = await fetch('parsed_maps/manifest.json');
+    if (!response.ok) throw new Error(`Failed to load manifest: ${response.status}`);
+    const manifest = await response.json();
+    const entries = Array.isArray(manifest?.maps) ? manifest.maps : [];
+
+    return entries
+      .map((entry) => {
+        if (!entry?.file) return null;
+        return {
+          file: entry.file,
+          areaId: entry.areaId ?? entry.areaUid,
+          areaUid: entry.areaUid ?? entry.areaId,
+          displayName: entry.areaName ?? entry.displayName,
+        };
+      })
+      .filter(Boolean);
+  } catch (error) {
+    console.error('Failed to load manifest; no map sources available', error);
+    return [];
+  }
+}
+
+async function loadMapSources() {
+  if (Array.isArray(globalThis.MAP_SOURCES)) return globalThis.MAP_SOURCES;
+
+  const manifestSources = await loadManifestSources();
+
+  const seenFiles = new Set();
+  return manifestSources.filter((source) => {
+    if (!source?.file || seenFiles.has(source.file)) return false;
+    seenFiles.add(source.file);
+    return true;
+  });
 }
 
 async function loadColorSettings() {
@@ -688,7 +778,7 @@ async function loadRoomInfoResolver() {
 }
 
 async function loadWorld() {
-  const mapSources = Array.isArray(globalThis.MAP_SOURCES) ? globalThis.MAP_SOURCES : DEFAULT_MAP_SOURCES;
+  const mapSources = await loadMapSources();
   const [colorSettings, roomInfoResolver, layouts] = await Promise.all([
     loadColorSettings(),
     loadRoomInfoResolver(),
