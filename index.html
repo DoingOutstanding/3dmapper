@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Mapper</title>
+  <style>
+    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background: #0d1117; color: #e6edf3; }
+    #overlay { position: absolute; top: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%); pointer-events: none; z-index: 2; }
+    #overlay h1 { margin: 0 0 8px 0; font-size: 20px; font-weight: 600; }
+    #legend { display: flex; gap: 16px; flex-wrap: wrap; }
+    .legend-entry { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .legend-swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25); }
+    #scene { width: 100%; height: 100%; }
+    #error { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: rgba(255, 85, 85, 0.15); color: #ff9797; font-size: 13px; display: none; z-index: 2; }
+  </style>
+</head>
+<body>
+  <div id="overlay">
+    <h1>Aardwolf 3D Mapper</h1>
+    <div id="legend"></div>
+  </div>
+  <div id="scene"></div>
+  <div id="error"></div>
+  <script src="three.min.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
