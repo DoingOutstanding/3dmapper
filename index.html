@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D Mapper</title>
   <style>
+    :root { --sidebar-width: 320px; }
     body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background: #0d1117; color: #e6edf3; }
+    #app { display: flex; flex-direction: row; align-items: stretch; height: 100vh; width: 100vw; }
+    #sceneContainer { position: relative; flex: 1 1 auto; min-width: 0; }
     #overlay { position: absolute; top: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%); pointer-events: none; z-index: 2; }
     #overlay h1 { margin: 0 0 8px 0; font-size: 20px; font-weight: 600; }
     #legend { display: flex; gap: 16px; flex-wrap: wrap; }
@@ -13,15 +16,48 @@
     .legend-swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25); }
     #scene { width: 100%; height: 100%; }
     #error { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: rgba(255, 85, 85, 0.15); color: #ff9797; font-size: 13px; display: none; z-index: 2; }
+    #controls { margin-top: 8px; display: flex; gap: 8px; pointer-events: auto; }
+    button { background: #1f6feb; border: 1px solid #3a88ff; color: white; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    button:hover { background: #3a88ff; }
+    #layout-note { font-size: 12px; color: #9ca3af; pointer-events: auto; margin-top: 4px; }
+    #sidebar { width: var(--sidebar-width); flex-shrink: 0; background: #0b1220; border-left: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; }
+    #sidebar .sidebar-header { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    #sidebar h2 { margin: 0 0 8px 0; font-size: 16px; }
+    #progress { position: relative; height: 8px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+    #progressBar { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: #22d3ee; transition: width 0.2s ease; }
+    #progressLabel { margin-top: 6px; font-size: 12px; color: #9ca3af; }
+    #roomList { flex: 1; min-height: 0; overflow-y: auto; padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+    .room-section { border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px; background: rgba(255,255,255,0.02); }
+    .room-section-header { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-bottom: 8px; }
+    .room-section-count { font-size: 12px; color: #9ca3af; margin-left: auto; }
+    .room-items { display: flex; flex-direction: column; gap: 4px; max-height: 260px; overflow-y: auto; padding-right: 4px; }
+    .room-item { font-size: 13px; color: #cbd5e1; padding: 4px 6px; border-radius: 6px; }
+    .room-item:nth-child(odd) { background: rgba(255,255,255,0.02); }
   </style>
 </head>
 <body>
-  <div id="overlay">
-    <h1>Aardwolf 3D Mapper</h1>
-    <div id="legend"></div>
+  <div id="app">
+    <div id="sceneContainer">
+      <div id="overlay">
+        <h1>Aardwolf 3D Mapper</h1>
+        <div id="legend"></div>
+        <div id="controls">
+          <button id="saveLayout" type="button">Save layout</button>
+        </div>
+        <div id="layout-note">Drag a colored mega-box to move an area. Saving downloads mega coordinates.</div>
+      </div>
+      <div id="scene"></div>
+      <div id="error"></div>
+    </div>
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <h2>Rooms</h2>
+        <div id="progress"><div id="progressBar"></div></div>
+        <div id="progressLabel">Starting...</div>
+      </div>
+      <div id="roomList"></div>
+    </aside>
   </div>
-  <div id="scene"></div>
-  <div id="error"></div>
   <script src="three.min.js"></script>
   <script src="OrbitControls.js"></script>
   <script src="app.js"></script>
