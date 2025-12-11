@@ -11,17 +11,17 @@ const LINK_TYPES = {
 };
 
 const ORIGIN_REFERENCE = {
-  areaId: 'aylor',
+  areaId: 18,
   roomId: 2,
   coordinates: { x: 0, y: 0, z: 0 },
 };
 
 const CROSS_AREA_ANCHORS = [
   {
-    areaId: 'academy',
+    areaId: 258,
     roomId: 136,
     direction: 'down',
-    targetAreaId: 'aylor',
+    targetAreaId: 18,
     targetRoomId: 2,
   },
 ];
