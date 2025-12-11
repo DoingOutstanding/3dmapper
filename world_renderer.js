@@ -638,6 +638,46 @@ async function loadArea(source) {
   return { areaId, areaName, parsed: { ...parsed, manualCoords }, solvedCoords, manualCoords, bounds, roomIndexById };
 }
 
+async function loadManifestSources() {
+  try {
+    const response = await fetch('parsed_maps/manifest.json');
+    if (!response.ok) throw new Error(`Failed to load manifest: ${response.status}`);
+    const manifest = await response.json();
+    const entries = Array.isArray(manifest?.maps) ? manifest.maps : [];
+
+    return entries
+      .map((entry) => {
+        if (!entry?.file) return null;
+        return {
+          file: entry.file,
+          areaId: entry.areaId ?? entry.areaUid,
+          areaUid: entry.areaUid ?? entry.areaId,
+          displayName: entry.areaName ?? entry.displayName,
+        };
+      })
+      .filter(Boolean);
+  } catch (error) {
+    console.warn('Using default map sources because manifest could not be loaded', error);
+    return [];
+  }
+}
+
+async function loadMapSources() {
+  if (Array.isArray(globalThis.MAP_SOURCES)) return globalThis.MAP_SOURCES;
+
+  const manifestSources = await loadManifestSources();
+  const merged = [];
+  const seenFiles = new Set();
+
+  [...manifestSources, ...DEFAULT_MAP_SOURCES].forEach((source) => {
+    if (!source?.file || seenFiles.has(source.file)) return;
+    merged.push(source);
+    seenFiles.add(source.file);
+  });
+
+  return merged.length ? merged : DEFAULT_MAP_SOURCES;
+}
+
 async function loadColorSettings() {
   try {
     const response = await fetch('room_color_settings.json');
@@ -688,7 +728,7 @@ async function loadRoomInfoResolver() {
 }
 
 async function loadWorld() {
-  const mapSources = Array.isArray(globalThis.MAP_SOURCES) ? globalThis.MAP_SOURCES : DEFAULT_MAP_SOURCES;
+  const mapSources = await loadMapSources();
   const [colorSettings, roomInfoResolver, layouts] = await Promise.all([
     loadColorSettings(),
     loadRoomInfoResolver(),
