@@ -7,6 +7,12 @@
       "areaName": "The Aylorian Academy"
     },
     {
+      "file": "parsed_maps/area13.json",
+      "areaUid": null,
+      "areaId": null,
+      "areaName": "Land of Legend"
+    },
+    {
       "file": "parsed_maps/aylor.json",
       "areaUid": "aylor",
       "areaId": null,

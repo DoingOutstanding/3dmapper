@@ -1,0 +1,3993 @@
+{
+  "exits": [
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 1,
+      "room2": 2
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 3,
+      "room2": 4
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 3,
+      "room2": 5
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 6,
+      "room2": 7
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 5,
+      "room2": 8
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 5,
+      "room2": 3
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 5,
+      "room2": 9
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 10,
+      "room2": 11
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 12,
+      "room2": 7
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 13,
+      "room2": 14
+    },
+    {
+      "areaExit": {
+        "raw": "new RoomAreaExitInfo(18, 'The Grand City of Aylor')"
+      },
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 13,
+      "room2": null
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 15,
+      "room2": 16
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 17,
+      "room2": 18
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 17,
+      "room2": 19
+    },
+    {
+      "areaExit": null,
+      "direction": "other",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "give Maine conductor",
+      "exitType": 7,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 17,
+      "room2": 20
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 18,
+      "room2": 21
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 18,
+      "room2": 17
+    },
+    {
+      "areaExit": null,
+      "direction": "other",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "give Mississippi conductor",
+      "exitType": 7,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 18,
+      "room2": 10
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 21,
+      "room2": 22
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 21,
+      "room2": 18
+    },
+    {
+      "areaExit": null,
+      "direction": "other",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "give Texas conductor",
+      "exitType": 7,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 21,
+      "room2": 12
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 22,
+      "room2": 23
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 22,
+      "room2": 21
+    },
+    {
+      "areaExit": null,
+      "direction": "other",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "give Virginia conductor",
+      "exitType": 7,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 22,
+      "room2": 24
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 25,
+      "room2": 26
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 25,
+      "room2": 27
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 28,
+      "room2": 29
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 28,
+      "room2": 2
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 28,
+      "room2": 30
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 31,
+      "room2": 32
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 33,
+      "room2": 24
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 24,
+      "room2": 34
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 24,
+      "room2": 33
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 24,
+      "room2": 35
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 7,
+      "room2": 36
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 7,
+      "room2": 12
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 7,
+      "room2": 6
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 37,
+      "room2": 32
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 37,
+      "room2": 34
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 32,
+      "room2": 38
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 32,
+      "room2": 31
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 32,
+      "room2": 37
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 39,
+      "room2": 40
+    },
+    {
+      "areaExit": {
+        "raw": "new RoomAreaExitInfo(18, 'The Grand City of Aylor')"
+      },
+      "direction": "down",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 5,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 39,
+      "room2": null
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 2,
+      "room2": 28
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 2,
+      "room2": 1
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 41,
+      "room2": 42
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 11,
+      "room2": 43
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 11,
+      "room2": 10
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 8,
+      "room2": 5
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 8,
+      "room2": 44
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 20,
+      "room2": 44
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 38,
+      "room2": 32
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 34,
+      "room2": 37
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 34,
+      "room2": 24
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 35,
+      "room2": 24
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 44,
+      "room2": 8
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 44,
+      "room2": 20
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 43,
+      "room2": 45
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 43,
+      "room2": 11
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 45,
+      "room2": 30
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 45,
+      "room2": 43
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 30,
+      "room2": 28
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 30,
+      "room2": 45
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 29,
+      "room2": 28
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 46,
+      "room2": 14
+    },
+    {
+      "areaExit": null,
+      "direction": "other",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "board (buy ticket first)",
+      "exitType": 7,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 46,
+      "room2": 19
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 47,
+      "room2": 3
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 9,
+      "room2": 9
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 9,
+      "room2": 9
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 9,
+      "room2": 9
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 9,
+      "room2": 9
+    },
+    {
+      "areaExit": null,
+      "direction": "other",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "mobprog",
+      "exitType": 7,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 9,
+      "room2": 47
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 1
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 19,
+      "room2": 17
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 36,
+      "room2": 7
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 36,
+      "room2": 42
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 42,
+      "room2": 41
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 42,
+      "room2": 36
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 42,
+      "room2": 26
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 26,
+      "room2": 25
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 26,
+      "room2": 42
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 27,
+      "room2": 25
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 48,
+      "room2": 23
+    },
+    {
+      "areaExit": null,
+      "direction": "other",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "mobprog",
+      "exitType": 7,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 48,
+      "room2": 39
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 16,
+      "room2": 15
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 16,
+      "room2": 4
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 23,
+      "room2": 48
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 4,
+      "room2": 3
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 4,
+      "room2": 16
+    },
+    {
+      "areaExit": null,
+      "direction": "west",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 3,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 49,
+      "room2": 14
+    },
+    {
+      "areaExit": null,
+      "direction": "north",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 0,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 14,
+      "room2": 46
+    },
+    {
+      "areaExit": null,
+      "direction": "east",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 1,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 14,
+      "room2": 49
+    },
+    {
+      "areaExit": null,
+      "direction": "south",
+      "door": {
+        "keyDescription": "",
+        "keyName": "",
+        "keyRoom": null,
+        "name": "",
+        "type": 0
+      },
+      "exitAction": "",
+      "exitType": 2,
+      "forceBroken": false,
+      "linkType": 0,
+      "random": false,
+      "room1": 14,
+      "room2": 13
+    }
+  ],
+  "labels": [
+    {
+      "color": "black",
+      "index": 1,
+      "text": "Maine",
+      "type": 11,
+      "width": 3,
+      "x": 2,
+      "y": 2
+    },
+    {
+      "color": "black",
+      "index": 2,
+      "text": "Texas",
+      "type": 11,
+      "width": 3,
+      "x": 6,
+      "y": 2
+    },
+    {
+      "color": "black",
+      "index": 3,
+      "text": "West Virginia",
+      "type": 11,
+      "width": 2,
+      "x": 11,
+      "y": 1
+    },
+    {
+      "color": "black",
+      "index": 4,
+      "text": "Mississippi",
+      "type": 11,
+      "width": 3,
+      "x": 4,
+      "y": 9
+    }
+  ],
+  "metadata": {
+    "area_name": "Land of Legend",
+    "details": {
+      "created by": "Morrigu<br>",
+      "level range": "1-20    \t\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "repop message": "Allllllllll aboooooooooooard!<br>",
+      "room count": "<span id=\"room_count_span\">0</span> displayed on map; 49 explorable<br>",
+      "wiki page": "Open <a href=\"http://www.aardwolf.com/wiki/index.php/Area/LandOfLegend\">Land of Legend</a> on the Aardwolf Wiki"
+    },
+    "title": "Land of Legend @ The Gaardian Map Archives"
+  },
+  "roomConnections": {
+    "1": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 2
+      }
+    ],
+    "2": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 28
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 1
+      }
+    ],
+    "3": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 4
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 5
+      }
+    ],
+    "4": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 3
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 16
+      }
+    ],
+    "5": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 8
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 3
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 9
+      }
+    ],
+    "6": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 7
+      }
+    ],
+    "7": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 36
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 12
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 6
+      }
+    ],
+    "8": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 5
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 44
+      }
+    ],
+    "9": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 9
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 9
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 9
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 9
+      },
+      {
+        "areaExit": null,
+        "direction": "other",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "mobprog",
+        "exitType": 7,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 47
+      }
+    ],
+    "10": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 11
+      }
+    ],
+    "11": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 43
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 10
+      }
+    ],
+    "12": [
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 7
+      }
+    ],
+    "13": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 14
+      },
+      {
+        "areaExit": {
+          "raw": "new RoomAreaExitInfo(18, 'The Grand City of Aylor')"
+        },
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": null
+      }
+    ],
+    "14": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 46
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 49
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 13
+      }
+    ],
+    "15": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 16
+      }
+    ],
+    "16": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 15
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 4
+      }
+    ],
+    "17": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 18
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 19
+      },
+      {
+        "areaExit": null,
+        "direction": "other",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "give Maine conductor",
+        "exitType": 7,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 20
+      }
+    ],
+    "18": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 21
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 17
+      },
+      {
+        "areaExit": null,
+        "direction": "other",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "give Mississippi conductor",
+        "exitType": 7,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 10
+      }
+    ],
+    "19": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 17
+      }
+    ],
+    "20": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 44
+      }
+    ],
+    "21": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 22
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 18
+      },
+      {
+        "areaExit": null,
+        "direction": "other",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "give Texas conductor",
+        "exitType": 7,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 12
+      }
+    ],
+    "22": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 23
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 1
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 21
+      },
+      {
+        "areaExit": null,
+        "direction": "other",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "give Virginia conductor",
+        "exitType": 7,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 24
+      }
+    ],
+    "23": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 48
+      }
+    ],
+    "24": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 34
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 33
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 35
+      }
+    ],
+    "25": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 26
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 27
+      }
+    ],
+    "26": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 25
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 42
+      }
+    ],
+    "27": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 25
+      }
+    ],
+    "28": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 29
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 2
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 30
+      }
+    ],
+    "29": [
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 28
+      }
+    ],
+    "30": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 28
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 45
+      }
+    ],
+    "31": [
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 32
+      }
+    ],
+    "32": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 38
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 31
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 37
+      }
+    ],
+    "33": [
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 24
+      }
+    ],
+    "34": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 37
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 24
+      }
+    ],
+    "35": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 24
+      }
+    ],
+    "36": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 7
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 42
+      }
+    ],
+    "37": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 32
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 34
+      }
+    ],
+    "38": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 32
+      }
+    ],
+    "39": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 40
+      },
+      {
+        "areaExit": {
+          "raw": "new RoomAreaExitInfo(18, 'The Grand City of Aylor')"
+        },
+        "direction": "down",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 5,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": null
+      }
+    ],
+    "41": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 42
+      }
+    ],
+    "42": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 41
+      },
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 36
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 26
+      }
+    ],
+    "43": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 45
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 11
+      }
+    ],
+    "44": [
+      {
+        "areaExit": null,
+        "direction": "east",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 1,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 8
+      },
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 20
+      }
+    ],
+    "45": [
+      {
+        "areaExit": null,
+        "direction": "north",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 0,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 30
+      },
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 43
+      }
+    ],
+    "46": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 14
+      },
+      {
+        "areaExit": null,
+        "direction": "other",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "board (buy ticket first)",
+        "exitType": 7,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 19
+      }
+    ],
+    "47": [
+      {
+        "areaExit": null,
+        "direction": "south",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 2,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 3
+      }
+    ],
+    "48": [
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 23
+      },
+      {
+        "areaExit": null,
+        "direction": "other",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "mobprog",
+        "exitType": 7,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 39
+      }
+    ],
+    "49": [
+      {
+        "areaExit": null,
+        "direction": "west",
+        "door": {
+          "keyDescription": "",
+          "keyName": "",
+          "keyRoom": null,
+          "name": "",
+          "type": 0
+        },
+        "exitAction": "",
+        "exitType": 3,
+        "forceBroken": false,
+        "linkType": 0,
+        "random": false,
+        "to": 14
+      }
+    ]
+  },
+  "rooms": [
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 1,
+      "index": 1,
+      "isEntrance": false,
+      "name": "A bar",
+      "pk": false,
+      "roomcolor": "",
+      "x": 8,
+      "y": 11
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 3,
+      "index": 3,
+      "isEntrance": false,
+      "name": "A breakfast tent",
+      "pk": false,
+      "roomcolor": "",
+      "x": 4,
+      "y": 4
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 6,
+      "index": 6,
+      "isEntrance": false,
+      "name": "A canyon",
+      "pk": false,
+      "roomcolor": "",
+      "x": 8,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 5,
+      "index": 5,
+      "isEntrance": false,
+      "name": "A clearing",
+      "pk": false,
+      "roomcolor": "",
+      "x": 3,
+      "y": 4
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 10,
+      "index": 10,
+      "isEntrance": false,
+      "name": "A dock along the Mississippi River",
+      "pk": false,
+      "roomcolor": "",
+      "x": 4,
+      "y": 10
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 12,
+      "index": 12,
+      "isEntrance": false,
+      "name": "A dusty train station on the edge of the Texas desert",
+      "pk": false,
+      "roomcolor": "",
+      "x": 10,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 13,
+      "index": 13,
+      "isEntrance": true,
+      "name": "A ferry from the train station to Aylor's Waterways",
+      "pk": false,
+      "roomcolor": "",
+      "x": 1,
+      "y": 11
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 15,
+      "index": 15,
+      "isEntrance": false,
+      "name": "A lumber camp",
+      "pk": false,
+      "roomcolor": "",
+      "x": 5,
+      "y": 4
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 17,
+      "index": 17,
+      "isEntrance": false,
+      "name": "A Passenger Car",
+      "pk": false,
+      "roomcolor": "",
+      "x": 2,
+      "y": 7
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 18,
+      "index": 18,
+      "isEntrance": false,
+      "name": "A Passenger Car",
+      "pk": false,
+      "roomcolor": "",
+      "x": 4,
+      "y": 7
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 21,
+      "index": 21,
+      "isEntrance": false,
+      "name": "A Passenger Car",
+      "pk": false,
+      "roomcolor": "",
+      "x": 10,
+      "y": 7
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 22,
+      "index": 22,
+      "isEntrance": false,
+      "name": "A Passenger Car",
+      "pk": false,
+      "roomcolor": "",
+      "x": 13,
+      "y": 7
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 25,
+      "index": 25,
+      "isEntrance": false,
+      "name": "A ravine",
+      "pk": false,
+      "roomcolor": "",
+      "x": 7,
+      "y": 3
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 28,
+      "index": 28,
+      "isEntrance": false,
+      "name": "A seedy port",
+      "pk": false,
+      "roomcolor": "",
+      "x": 8,
+      "y": 9
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 31,
+      "index": 31,
+      "isEntrance": false,
+      "name": "A side tunnel",
+      "pk": false,
+      "roomcolor": "",
+      "x": 14,
+      "y": 2
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 33,
+      "index": 33,
+      "isEntrance": false,
+      "name": "A small clearing",
+      "pk": false,
+      "roomcolor": "",
+      "x": 14,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 24,
+      "index": 24,
+      "isEntrance": false,
+      "name": "A temporary train station",
+      "pk": false,
+      "roomcolor": "",
+      "x": 13,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 7,
+      "index": 7,
+      "isEntrance": false,
+      "name": "A trail",
+      "pk": false,
+      "roomcolor": "",
+      "x": 9,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 37,
+      "index": 37,
+      "isEntrance": false,
+      "name": "Along a partially-built railway tunnel",
+      "pk": false,
+      "roomcolor": "",
+      "x": 13,
+      "y": 3
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 32,
+      "index": 32,
+      "isEntrance": false,
+      "name": "Along a partially-built railway tunnel",
+      "pk": false,
+      "roomcolor": "",
+      "x": 13,
+      "y": 2
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 39,
+      "index": 39,
+      "isEntrance": false,
+      "name": "Amid the devastation of a train wreck",
+      "pk": true,
+      "roomcolor": "",
+      "x": 15,
+      "y": 9
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 2,
+      "index": 2,
+      "isEntrance": false,
+      "name": "An alley",
+      "pk": false,
+      "roomcolor": "",
+      "x": 8,
+      "y": 10
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 41,
+      "index": 41,
+      "isEntrance": false,
+      "name": "An oasis",
+      "pk": false,
+      "roomcolor": "",
+      "x": 8,
+      "y": 3
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 11,
+      "index": 11,
+      "isEntrance": false,
+      "name": "Deck of a keel boat",
+      "pk": false,
+      "roomcolor": "",
+      "x": 5,
+      "y": 10
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 8,
+      "index": 8,
+      "isEntrance": false,
+      "name": "Deep in the forest",
+      "pk": false,
+      "roomcolor": "",
+      "x": 3,
+      "y": 3
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 20,
+      "index": 20,
+      "isEntrance": false,
+      "name": "Deep in the woods of Maine",
+      "pk": false,
+      "roomcolor": "",
+      "x": 2,
+      "y": 4
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 38,
+      "index": 38,
+      "isEntrance": false,
+      "name": "End of the Tunnel",
+      "pk": false,
+      "roomcolor": "",
+      "x": 13,
+      "y": 1
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 34,
+      "index": 34,
+      "isEntrance": false,
+      "name": "Entrance to a long railroad tunnel",
+      "pk": false,
+      "roomcolor": "",
+      "x": 13,
+      "y": 4
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 35,
+      "index": 35,
+      "isEntrance": false,
+      "name": "Mine Office",
+      "pk": false,
+      "roomcolor": "",
+      "x": 12,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 44,
+      "index": 44,
+      "isEntrance": false,
+      "name": "Old Logging Trail",
+      "pk": false,
+      "roomcolor": "",
+      "x": 2,
+      "y": 3
+    },
+    {
+      "aggroType": 1,
+      "graffiti": false,
+      "id": 43,
+      "index": 43,
+      "isEntrance": false,
+      "name": "On the Mississippi River",
+      "pk": false,
+      "roomcolor": "",
+      "x": 6,
+      "y": 10
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 45,
+      "index": 45,
+      "isEntrance": false,
+      "name": "On the Mississippi River",
+      "pk": false,
+      "roomcolor": "",
+      "x": 7,
+      "y": 10
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 30,
+      "index": 30,
+      "isEntrance": false,
+      "name": "On the Mississippi River",
+      "pk": false,
+      "roomcolor": "",
+      "x": 7,
+      "y": 9
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 29,
+      "index": 29,
+      "isEntrance": false,
+      "name": "On the Mississippi River",
+      "pk": false,
+      "roomcolor": "",
+      "x": 9,
+      "y": 9
+    },
+    {
+      "aggroType": 0,
+      "graffiti": true,
+      "id": 46,
+      "index": 46,
+      "isEntrance": false,
+      "name": "Platform 12",
+      "pk": false,
+      "roomcolor": "",
+      "x": 1,
+      "y": 9
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 47,
+      "index": 47,
+      "isEntrance": false,
+      "name": "Round Lake",
+      "pk": false,
+      "roomcolor": "",
+      "x": 4,
+      "y": 3
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 9,
+      "index": 9,
+      "isEntrance": false,
+      "name": "Round River",
+      "pk": false,
+      "roomcolor": "",
+      "x": 3,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 19,
+      "index": 19,
+      "isEntrance": false,
+      "name": "The Caboose",
+      "pk": false,
+      "roomcolor": "",
+      "x": 1,
+      "y": 7
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 36,
+      "index": 36,
+      "isEntrance": false,
+      "name": "The Desert",
+      "pk": false,
+      "roomcolor": "",
+      "x": 9,
+      "y": 4
+    },
+    {
+      "aggroType": 1,
+      "graffiti": false,
+      "id": 42,
+      "index": 42,
+      "isEntrance": false,
+      "name": "The desert",
+      "pk": false,
+      "roomcolor": "",
+      "x": 8,
+      "y": 4
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 26,
+      "index": 26,
+      "isEntrance": false,
+      "name": "The desert",
+      "pk": false,
+      "roomcolor": "",
+      "x": 7,
+      "y": 4
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 27,
+      "index": 27,
+      "isEntrance": false,
+      "name": "The Desert",
+      "pk": false,
+      "roomcolor": "",
+      "x": 6,
+      "y": 3
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 48,
+      "index": 48,
+      "isEntrance": false,
+      "name": "The Engine",
+      "pk": false,
+      "roomcolor": "",
+      "x": 15,
+      "y": 7
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 16,
+      "index": 16,
+      "isEntrance": false,
+      "name": "The Grand Canyon",
+      "pk": false,
+      "roomcolor": "",
+      "x": 5,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 23,
+      "index": 23,
+      "isEntrance": false,
+      "name": "The Water and Coal Car",
+      "pk": false,
+      "roomcolor": "",
+      "x": 14,
+      "y": 7
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 4,
+      "index": 4,
+      "isEntrance": false,
+      "name": "The wilds of Minnesota",
+      "pk": false,
+      "roomcolor": "",
+      "x": 4,
+      "y": 5
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 49,
+      "index": 49,
+      "isEntrance": false,
+      "name": "Ticket Booth",
+      "pk": false,
+      "roomcolor": "",
+      "x": 2,
+      "y": 10
+    },
+    {
+      "aggroType": 0,
+      "graffiti": false,
+      "id": 14,
+      "index": 14,
+      "isEntrance": false,
+      "name": "Union Station",
+      "pk": false,
+      "roomcolor": "",
+      "x": 1,
+      "y": 10
+    }
+  ],
+  "sourceFile": "area13.html"
+}
