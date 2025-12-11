@@ -195,14 +195,18 @@ function buildLegend(areaColors, areas) {
 }
 
 function centerCamera(camera, controls, bounds) {
+  camera.up.set(0, 0, 1);
   const center = new THREE.Vector3(
     (bounds.min.x + bounds.max.x) / 2,
     (bounds.min.y + bounds.max.y) / 2,
     (bounds.min.z + bounds.max.z) / 2
   );
   controls.target.copy(center);
-  const span = Math.max(bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y, 40);
-  camera.position.set(center.x + span, center.y + span, center.z + span);
+  const span = Math.max(bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y, 60);
+  camera.position.set(center.x, center.y, bounds.max.z + span);
+  controls.minPolarAngle = 0;
+  controls.maxPolarAngle = Math.PI / 2;
+  controls.screenSpacePanning = true;
 }
 
 function calculateAreaBounds(areaId, areaRooms) {
@@ -311,12 +315,20 @@ function buildScene(rooms, exits, areaColors, areas) {
 
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
+  controls.enableRotate = true;
 
   const ambient = new THREE.AmbientLight('#ffffff', 0.6);
   scene.add(ambient);
   const directional = new THREE.DirectionalLight('#ffffff', 0.7);
   directional.position.set(30, 40, 50);
   scene.add(directional);
+
+  const gridHelper = new THREE.GridHelper(800, 80, '#334155', '#1e293b');
+  gridHelper.rotation.x = Math.PI / 2;
+  scene.add(gridHelper);
+  const axesHelper = new THREE.AxesHelper(20);
+  axesHelper.position.set(-10, -10, 0);
+  scene.add(axesHelper);
 
   const roomGeometry = new THREE.BoxGeometry(1.6, 1.6, 1.6);
   const bounds = { min: new THREE.Vector3(Infinity, Infinity, Infinity), max: new THREE.Vector3(-Infinity, -Infinity, -Infinity) };
