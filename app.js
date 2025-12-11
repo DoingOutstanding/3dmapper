@@ -1,14 +1,25 @@
-const AREA_FILTER = new Set(['aylor', 'academy']);
+const AREA_FILTER = null;
 const DIR_OFFSETS = {
   n: [0, 1, 0], s: [0, -1, 0], e: [1, 0, 0], w: [-1, 0, 0],
   ne: [1, 1, 0], nw: [-1, 1, 0], se: [1, -1, 0], sw: [-1, -1, 0],
   u: [0, 0, 1], d: [0, 0, -1]
 };
 const SCALE = 6;
+const AREA_GRID_SPACING = 40;
+
+const areaOffsets = new Map();
+const roomPositionsByArea = new Map();
+const areaGroups = new Map();
+const exitLines = [];
+
+let draggedAreaId = null;
+let dragPlane = null;
+let dragOffset = null;
 
 const errorBanner = document.getElementById('error');
 const legend = document.getElementById('legend');
 const sceneHost = document.getElementById('scene');
+const saveButton = document.getElementById('saveLayout');
 
 function showError(message) {
   errorBanner.textContent = message;
@@ -19,6 +30,17 @@ async function loadJson(path) {
   const response = await fetch(path);
   if (!response.ok) throw new Error(`Failed to load ${path}: ${response.status}`);
   return response.json();
+}
+
+async function loadOptionalJson(path) {
+  try {
+    const response = await fetch(path);
+    if (!response.ok) return null;
+    return response.json();
+  } catch (error) {
+    console.warn(`Optional load failed for ${path}:`, error);
+    return null;
+  }
 }
 
 function pickColors(areas) {
@@ -42,6 +64,16 @@ function mergeKnownPositions(rooms) {
 
 function normalizeDir(dir) {
   return (dir || '').toLowerCase();
+}
+
+function groupRoomsByArea(rooms) {
+  const map = new Map();
+  rooms.forEach(room => {
+    const list = map.get(room.area) || [];
+    list.push(room);
+    map.set(room.area, list);
+  });
+  return map;
 }
 
 function propagatePositions(rooms, exits) {
@@ -79,6 +111,19 @@ function propagatePositions(rooms, exits) {
   });
 
   return positions;
+}
+
+function computeRoomPositionsByArea(rooms, exits) {
+  const byArea = groupRoomsByArea(rooms);
+  const result = new Map();
+
+  byArea.forEach((areaRooms, areaId) => {
+    const areaRoomIds = new Set(areaRooms.map(r => r.uid));
+    const areaExits = exits.filter(exit => areaRoomIds.has(exit.fromuid) && areaRoomIds.has(exit.touid));
+    result.set(areaId, propagatePositions(areaRooms, areaExits));
+  });
+
+  return result;
 }
 
 function buildLegend(areaColors, areas) {
@@ -128,7 +173,100 @@ function centerCamera(camera, controls, bounds) {
   camera.position.set(center.x + span, center.y + span, center.z + span);
 }
 
-function buildScene(rooms, exits, positions, areaColors, areas) {
+function calculateAreaBounds(areaId, areaRooms) {
+  const areaPositions = roomPositionsByArea.get(areaId) || new Map();
+  const bounds = { min: new THREE.Vector3(Infinity, Infinity, Infinity), max: new THREE.Vector3(-Infinity, -Infinity, -Infinity) };
+
+  areaRooms.forEach(room => {
+    const pos = areaPositions.get(room.uid) || [0, 0, 0];
+    bounds.min.min(new THREE.Vector3(...pos));
+    bounds.max.max(new THREE.Vector3(...pos));
+  });
+
+  if (!isFinite(bounds.min.x)) {
+    bounds.min.set(-1, -1, -1);
+    bounds.max.set(1, 1, 1);
+  }
+
+  return bounds;
+}
+
+function computeDefaultAreaOffsets(areas, rooms) {
+  const byArea = groupRoomsByArea(rooms);
+  const layout = new Map();
+  const gridWidth = Math.ceil(Math.sqrt(areas.length));
+  let cursorX = 0;
+  let cursorY = 0;
+
+  areas.forEach((area, index) => {
+    const areaRooms = byArea.get(area.uid) || [];
+    const bounds = calculateAreaBounds(area.uid, areaRooms);
+    const width = (bounds.max.x - bounds.min.x) + AREA_GRID_SPACING;
+    const height = (bounds.max.y - bounds.min.y) + AREA_GRID_SPACING;
+
+    layout.set(area.uid, new THREE.Vector3(cursorX * AREA_GRID_SPACING, cursorY * AREA_GRID_SPACING, 0));
+
+    cursorX += Math.max(1, Math.ceil(width / AREA_GRID_SPACING));
+    if (cursorX >= gridWidth) {
+      cursorX = 0;
+      cursorY += Math.max(1, Math.ceil(height / AREA_GRID_SPACING));
+    }
+  });
+
+  return layout;
+}
+
+function applySavedOffsets(savedOffsets, defaultOffsets) {
+  const merged = new Map(defaultOffsets);
+  if (savedOffsets) {
+    Object.entries(savedOffsets).forEach(([areaId, value]) => {
+      merged.set(areaId, new THREE.Vector3(value.x, value.y, value.z));
+    });
+  }
+  return merged;
+}
+
+function getRoomWorldPosition(roomId, roomById) {
+  const room = roomById.get(roomId);
+  if (!room) return null;
+  const areaPosition = roomPositionsByArea.get(room.area) || new Map();
+  const local = areaPosition.get(roomId) || [0, 0, 0];
+  const offset = areaOffsets.get(room.area) || new THREE.Vector3();
+  return new THREE.Vector3(
+    (local[0] + offset.x) * SCALE,
+    (local[1] + offset.y) * SCALE,
+    (local[2] + offset.z) * SCALE
+  );
+}
+
+function updateExitLines(roomById) {
+  exitLines.forEach(line => {
+    const { from, to } = line.userData;
+    const start = getRoomWorldPosition(from, roomById);
+    const end = getRoomWorldPosition(to, roomById);
+    if (!start || !end) return;
+    line.geometry.setFromPoints([start, end]);
+    line.geometry.attributes.position.needsUpdate = true;
+  });
+}
+
+function saveMegaCoordinates(areas) {
+  const payload = {};
+  areas.forEach(area => {
+    const vector = areaOffsets.get(area.uid) || new THREE.Vector3();
+    payload[area.uid] = { x: vector.x, y: vector.y, z: vector.z };
+  });
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'mega-coordinates.json';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function buildScene(rooms, exits, areaColors, areas) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#0b1220');
 
@@ -150,39 +288,115 @@ function buildScene(rooms, exits, positions, areaColors, areas) {
 
   const roomGeometry = new THREE.BoxGeometry(1.6, 1.6, 1.6);
   const bounds = { min: new THREE.Vector3(Infinity, Infinity, Infinity), max: new THREE.Vector3(-Infinity, -Infinity, -Infinity) };
+  const byArea = groupRoomsByArea(rooms);
+  const dragHandles = [];
+  const roomById = new Map(rooms.map(r => [r.uid, r]));
 
-  rooms.forEach(room => {
-    const position = positions.get(room.uid);
-    const [x, y, z] = position.map(v => v * SCALE);
-    const color = areaColors.get(room.area);
+  byArea.forEach((areaRooms, areaId) => {
+    const group = new THREE.Group();
+    areaGroups.set(areaId, group);
+    const offset = areaOffsets.get(areaId) || new THREE.Vector3();
+    group.position.set(offset.x * SCALE, offset.y * SCALE, offset.z * SCALE);
+
+    const positions = roomPositionsByArea.get(areaId) || new Map();
+    const color = areaColors.get(areaId) || '#ffffff';
     const material = new THREE.MeshStandardMaterial({ color, roughness: 0.4, metalness: 0.1 });
-    const cube = new THREE.Mesh(roomGeometry, material);
-    cube.position.set(x, y, z);
-    cube.userData = room;
-    scene.add(cube);
 
-    const label = createLabel(room.name, color);
-    label.position.set(x, y + 1.8, z);
-    scene.add(label);
+    areaRooms.forEach(room => {
+      const position = positions.get(room.uid) || [0, 0, 0];
+      const [x, y, z] = position.map(v => v * SCALE);
+      const cube = new THREE.Mesh(roomGeometry, material);
+      cube.position.set(x, y, z);
+      cube.userData = room;
+      group.add(cube);
 
-    bounds.min.min(cube.position);
-    bounds.max.max(cube.position);
+      const label = createLabel(room.name, color);
+      label.position.set(x, y + 1.8, z);
+      group.add(label);
+
+      const worldPosition = new THREE.Vector3(x, y, z).add(group.position);
+      bounds.min.min(worldPosition);
+      bounds.max.max(worldPosition);
+    });
+
+    const areaBox = new THREE.Box3().setFromObject(group);
+    const size = new THREE.Vector3();
+    areaBox.getSize(size);
+    const center = new THREE.Vector3();
+    areaBox.getCenter(center);
+    const handleGeom = new THREE.BoxGeometry(size.x + SCALE * 2, size.y + SCALE * 2, size.z + SCALE * 2);
+    const handleMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.08, depthWrite: false });
+    const handle = new THREE.Mesh(handleGeom, handleMat);
+    handle.position.copy(center);
+    handle.userData.areaId = areaId;
+    handle.name = `area-handle-${areaId}`;
+    group.add(handle);
+    dragHandles.push(handle);
+
+    scene.add(group);
   });
 
   const exitMaterial = new THREE.LineBasicMaterial({ color: '#94a3b8', transparent: true, opacity: 0.5 });
   exits.forEach(exit => {
-    const start = positions.get(exit.fromuid);
-    const end = positions.get(exit.touid);
+    const start = getRoomWorldPosition(exit.fromuid, roomById);
+    const end = getRoomWorldPosition(exit.touid, roomById);
     if (!start || !end) return;
-    const geometry = new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(...start.map(v => v * SCALE)),
-      new THREE.Vector3(...end.map(v => v * SCALE)),
-    ]);
+    const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
     const line = new THREE.Line(geometry, exitMaterial);
+    line.userData = { from: exit.fromuid, to: exit.touid };
     scene.add(line);
+    exitLines.push(line);
   });
 
   centerCamera(camera, controls, bounds);
+
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2();
+
+  function updatePointer(event) {
+    pointer.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    pointer.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+  }
+
+  function onPointerDown(event) {
+    updatePointer(event);
+    raycaster.setFromCamera(pointer, camera);
+    const intersects = raycaster.intersectObjects(dragHandles, false);
+    if (intersects.length === 0) return;
+    const hit = intersects[0];
+    draggedAreaId = hit.object.userData.areaId;
+    const normal = camera.getWorldDirection(new THREE.Vector3()).negate();
+    dragPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(normal, hit.point);
+    const areaGroup = areaGroups.get(draggedAreaId);
+    dragOffset = hit.point.clone().sub(areaGroup.position);
+    controls.enabled = false;
+  }
+
+  function onPointerMove(event) {
+    if (!draggedAreaId || !dragPlane) return;
+    updatePointer(event);
+    raycaster.setFromCamera(pointer, camera);
+    const target = new THREE.Vector3();
+    if (raycaster.ray.intersectPlane(dragPlane, target)) {
+      const areaGroup = areaGroups.get(draggedAreaId);
+      const nextPosition = target.clone().sub(dragOffset);
+      areaGroup.position.copy(nextPosition);
+      const offset = nextPosition.clone().divideScalar(SCALE);
+      areaOffsets.set(draggedAreaId, offset);
+      updateExitLines(roomById);
+    }
+  }
+
+  function onPointerUp() {
+    draggedAreaId = null;
+    dragPlane = null;
+    dragOffset = null;
+    controls.enabled = true;
+  }
+
+  renderer.domElement.addEventListener('pointerdown', onPointerDown);
+  renderer.domElement.addEventListener('pointermove', onPointerMove);
+  renderer.domElement.addEventListener('pointerup', onPointerUp);
 
   function animate() {
     requestAnimationFrame(animate);
@@ -200,27 +414,37 @@ function buildScene(rooms, exits, positions, areaColors, areas) {
 
 async function bootstrap() {
   try {
-    const [areas, rooms, exits] = await Promise.all([
+    const [areas, rooms, exits, savedOffsets] = await Promise.all([
       loadJson('Database/areas.json'),
       loadJson('Database/rooms.json'),
       loadJson('Database/exits.json'),
+      loadOptionalJson('Database/mega-coordinates.json'),
     ]);
 
-    const selectedAreas = areas.filter(a => AREA_FILTER.has(a.uid));
+    const selectedAreas = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
     const areaColors = pickColors(selectedAreas);
     buildLegend(areaColors, selectedAreas);
 
     const areaRoomSet = new Set(selectedAreas.map(a => a.uid));
     const filteredRooms = rooms.filter(r => areaRoomSet.has(r.area));
     const roomById = new Map(filteredRooms.map(r => [r.uid, r]));
-    const filteredExits = exits.filter(exit => {
-      const fromRoom = roomById.get(exit.fromuid);
-      const toRoom = roomById.get(exit.touid);
-      return Boolean(fromRoom && toRoom);
-    });
+    const filteredExits = exits.filter(exit => roomById.has(exit.fromuid) && roomById.has(exit.touid));
 
-    const positions = propagatePositions(filteredRooms, filteredExits);
-    buildScene(filteredRooms, filteredExits, positions, areaColors, selectedAreas);
+    const computedPositions = computeRoomPositionsByArea(filteredRooms, filteredExits);
+    roomPositionsByArea.clear();
+    computedPositions.forEach((value, key) => roomPositionsByArea.set(key, value));
+
+    const defaults = computeDefaultAreaOffsets(selectedAreas, filteredRooms);
+    const mergedOffsets = applySavedOffsets(savedOffsets, defaults);
+    areaOffsets.clear();
+    mergedOffsets.forEach((value, key) => areaOffsets.set(key, value));
+
+    areaGroups.clear();
+    exitLines.length = 0;
+
+    buildScene(filteredRooms, filteredExits, areaColors, selectedAreas);
+
+    saveButton.addEventListener('click', () => saveMegaCoordinates(selectedAreas));
   } catch (error) {
     console.error(error);
     showError(error.message);
