@@ -20,6 +20,15 @@ const errorBanner = document.getElementById('error');
 const legend = document.getElementById('legend');
 const sceneHost = document.getElementById('scene');
 const saveButton = document.getElementById('saveLayout');
+const roomList = document.getElementById('roomList');
+const progressBar = document.getElementById('progressBar');
+const progressLabel = document.getElementById('progressLabel');
+
+function setProgress(percent, label) {
+  const clamped = Math.max(0, Math.min(1, percent));
+  progressBar.style.width = `${Math.round(clamped * 100)}%`;
+  progressLabel.textContent = label;
+}
 
 function showError(message) {
   errorBanner.textContent = message;
@@ -74,6 +83,49 @@ function groupRoomsByArea(rooms) {
     map.set(room.area, list);
   });
   return map;
+}
+
+function renderRoomList(areas, rooms, areaColors) {
+  roomList.innerHTML = '';
+  const roomsByArea = groupRoomsByArea(rooms);
+  const sortedAreas = [...areas].sort((a, b) => a.name.localeCompare(b.name));
+
+  sortedAreas.forEach(area => {
+    const section = document.createElement('div');
+    section.className = 'room-section';
+
+    const header = document.createElement('div');
+    header.className = 'room-section-header';
+
+    const swatch = document.createElement('div');
+    swatch.className = 'legend-swatch';
+    swatch.style.background = areaColors.get(area.uid);
+    header.appendChild(swatch);
+
+    const name = document.createElement('span');
+    name.textContent = area.name;
+    header.appendChild(name);
+
+    const count = document.createElement('span');
+    count.className = 'room-section-count';
+    const areaRooms = roomsByArea.get(area.uid) || [];
+    count.textContent = `${areaRooms.length} rooms`;
+    header.appendChild(count);
+
+    section.appendChild(header);
+
+    const roomItems = document.createElement('div');
+    roomItems.className = 'room-items';
+    [...areaRooms].sort((a, b) => a.name.localeCompare(b.name)).forEach(room => {
+      const item = document.createElement('div');
+      item.className = 'room-item';
+      item.textContent = room.name;
+      roomItems.appendChild(item);
+    });
+
+    section.appendChild(roomItems);
+    roomList.appendChild(section);
+  });
 }
 
 function propagatePositions(rooms, exits) {
@@ -140,26 +192,6 @@ function buildLegend(areaColors, areas) {
     entry.appendChild(label);
     legend.appendChild(entry);
   });
-}
-
-function createLabel(text, color) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const fontSize = 64;
-  ctx.font = `${fontSize}px Arial`;
-  const textMetrics = ctx.measureText(text);
-  canvas.width = textMetrics.width + 32;
-  canvas.height = fontSize + 24;
-  ctx.font = `${fontSize}px Arial`;
-  ctx.fillStyle = 'rgba(13,17,23,0.65)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = color;
-  ctx.fillText(text, 16, fontSize);
-  const texture = new THREE.CanvasTexture(canvas);
-  const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
-  const sprite = new THREE.Sprite(material);
-  sprite.scale.set(canvas.width / 32, canvas.height / 32, 1);
-  return sprite;
 }
 
 function centerCamera(camera, controls, bounds) {
@@ -310,10 +342,6 @@ function buildScene(rooms, exits, areaColors, areas) {
       cube.userData = room;
       group.add(cube);
 
-      const label = createLabel(room.name, color);
-      label.position.set(x, y + 1.8, z);
-      group.add(label);
-
       const worldPosition = new THREE.Vector3(x, y, z).add(group.position);
       bounds.min.min(worldPosition);
       bounds.max.max(worldPosition);
@@ -414,12 +442,14 @@ function buildScene(rooms, exits, areaColors, areas) {
 
 async function bootstrap() {
   try {
-    const [areas, rooms, exits, savedOffsets] = await Promise.all([
-      loadJson('Database/areas.json'),
-      loadJson('Database/rooms.json'),
-      loadJson('Database/exits.json'),
-      loadOptionalJson('Database/mega-coordinates.json'),
-    ]);
+    setProgress(0.05, 'Loading areas...');
+    const areas = await loadJson('Database/areas.json');
+    setProgress(0.2, 'Loading rooms...');
+    const rooms = await loadJson('Database/rooms.json');
+    setProgress(0.35, 'Loading exits...');
+    const exits = await loadJson('Database/exits.json');
+    setProgress(0.45, 'Loading saved layout...');
+    const savedOffsets = await loadOptionalJson('Database/mega-coordinates.json');
 
     const selectedAreas = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
     const areaColors = pickColors(selectedAreas);
@@ -430,6 +460,9 @@ async function bootstrap() {
     const roomById = new Map(filteredRooms.map(r => [r.uid, r]));
     const filteredExits = exits.filter(exit => roomById.has(exit.fromuid) && roomById.has(exit.touid));
 
+    renderRoomList(selectedAreas, filteredRooms, areaColors);
+    setProgress(0.55, 'Computing room layout...');
+
     const computedPositions = computeRoomPositionsByArea(filteredRooms, filteredExits);
     roomPositionsByArea.clear();
     computedPositions.forEach((value, key) => roomPositionsByArea.set(key, value));
@@ -439,10 +472,14 @@ async function bootstrap() {
     areaOffsets.clear();
     mergedOffsets.forEach((value, key) => areaOffsets.set(key, value));
 
+    setProgress(0.7, 'Building scene...');
+
     areaGroups.clear();
     exitLines.length = 0;
 
     buildScene(filteredRooms, filteredExits, areaColors, selectedAreas);
+
+    setProgress(1, 'Ready');
 
     saveButton.addEventListener('click', () => saveMegaCoordinates(selectedAreas));
   } catch (error) {
