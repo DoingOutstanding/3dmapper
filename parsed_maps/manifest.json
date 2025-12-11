@@ -1,9 +1,13 @@
 {
   "maps": [
     {
-      "file": "parsed_maps/academy.json",
-      "areaUid": "academy",
-      "areaId": null,
+      "file": "parsed_maps/area18.json",
+      "areaId": 18,
+      "areaName": "The Grand City of Aylor"
+    },
+    {
+      "file": "parsed_maps/area258.json",
+      "areaId": 258,
       "areaName": "The Aylorian Academy"
     },
     {
@@ -15,8 +19,12 @@
     {
       "file": "parsed_maps/aylor.json",
       "areaUid": "aylor",
-      "areaId": null,
       "areaName": "The Grand City of Aylor"
+    },
+    {
+      "file": "parsed_maps/academy.json",
+      "areaUid": "academy",
+      "areaName": "The Aylorian Academy"
     }
   ]
 }
