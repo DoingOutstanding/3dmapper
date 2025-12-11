@@ -3,12 +3,16 @@
 This viewer renders the Aylor and Academy areas from the Aardwolf database JSON files with Three.js.
 
 ## Getting started
-1. From the project root, start a simple web server so the browser can fetch the JSON assets:
-   ```bash
-   python -m http.server 8000
-   ```
-2. Open the viewer in your browser at `http://localhost:8000/`.
-3. The legend at the top lists the visible areas and their colors.
+- Quick start (opens your browser automatically):
+  ```bash
+  python serve.py
+  ```
+- Manual start from the project root (useful for custom host/port):
+  ```bash
+  python -m http.server 8000
+  # then open http://localhost:8000/
+  ```
+- If you see a 404 page, ensure you are running the server from this repository's root so the `Database/` folder is available.
 
 ## Navigation controls
 - **Rotate:** Click and drag the left mouse button.
@@ -24,3 +28,4 @@ This viewer renders the Aylor and Academy areas from the Aardwolf database JSON 
 ## Troubleshooting
 - If you see a red error banner, check the browser console for the full message (e.g., missing JSON files or a blocked fetch due to running without a web server).
 - Ensure all JSON files remain in the `Database/` folder relative to `index.html`.
+- Use `python serve.py --host 0.0.0.0 --port 8000 --no-browser` if another device needs to reach your machine.
