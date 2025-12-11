@@ -133,11 +133,7 @@ def target_parsed_files() -> Iterable[Path]:
         yield candidate
 
 
-def write_manifest() -> None:
-    """Generate a manifest so the renderer can discover available maps."""
-
-    entries_by_uid: dict[str, dict] = {}
-
+def iter_manifest_entries():
     for parsed_path in sorted(PARSED_DIR.glob("*.json")):
         if parsed_path.name == "manifest.json":
             continue
@@ -146,7 +142,7 @@ def write_manifest() -> None:
         area_metadata = data.get("areaMetadata", {})
         html_metadata = data.get("metadata", {})
 
-        entry = {
+        yield {
             "file": f"parsed_maps/{parsed_path.name}",
             "areaUid": area_metadata.get("uid"),
             "areaId": html_metadata.get("area_id") or area_metadata.get("id"),
@@ -155,25 +151,12 @@ def write_manifest() -> None:
             or parsed_path.stem,
         }
 
-        key = entry["areaUid"] or entry["areaId"] or parsed_path.stem
-        existing = entries_by_uid.get(key)
-        preferred = parsed_path.stem == entry.get("areaUid")
 
-        if existing:
-            if existing.get("preferred"):
-                continue
-            if preferred:
-                entries_by_uid[key] = {"preferred": preferred, **entry}
-            continue
-
-        entries_by_uid[key] = {"preferred": preferred, **entry}
-
-    entries = [
-        {key: value for key, value in entry.items() if key != "preferred"}
-        for entry in entries_by_uid.values()
-    ]
+def write_manifest() -> None:
+    """Generate a manifest so the renderer can discover available maps."""
 
     manifest_path = PARSED_DIR / "manifest.json"
+    entries = list(iter_manifest_entries())
     manifest_path.write_text(json.dumps({"maps": entries}, indent=2))
     print(f"Updated {manifest_path.relative_to(REPO_ROOT)}")
 

@@ -1,8 +1,3 @@
-const DEFAULT_MAP_SOURCES = [
-  { file: 'parsed_maps/area18.json', areaId: 18, displayName: 'The Grand City of Aylor' },
-  { file: 'parsed_maps/area258.json', areaId: 258, displayName: 'Aylorian Academy' },
-];
-
 const LINK_TYPES = {
   LINK_ONEWAY: 0,
   LINK_TWOWAY: 1,
@@ -657,7 +652,7 @@ async function loadManifestSources() {
       })
       .filter(Boolean);
   } catch (error) {
-    console.warn('Using default map sources because manifest could not be loaded', error);
+    console.error('Failed to load manifest; no map sources available', error);
     return [];
   }
 }
@@ -666,16 +661,13 @@ async function loadMapSources() {
   if (Array.isArray(globalThis.MAP_SOURCES)) return globalThis.MAP_SOURCES;
 
   const manifestSources = await loadManifestSources();
-  const merged = [];
+
   const seenFiles = new Set();
-
-  [...manifestSources, ...DEFAULT_MAP_SOURCES].forEach((source) => {
-    if (!source?.file || seenFiles.has(source.file)) return;
-    merged.push(source);
+  return manifestSources.filter((source) => {
+    if (!source?.file || seenFiles.has(source.file)) return false;
     seenFiles.add(source.file);
+    return true;
   });
-
-  return merged.length ? merged : DEFAULT_MAP_SOURCES;
 }
 
 async function loadColorSettings() {
