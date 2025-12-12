@@ -10,17 +10,14 @@ const AREA_GRID_SPACING = 40;
 const areaOffsets = new Map();
 const roomPositionsByArea = new Map();
 const areaGroups = new Map();
-const exitLines = [];
 
 let draggedAreaId = null;
 let dragPlane = null;
 let dragOffset = null;
 
 const errorBanner = document.getElementById('error');
-const legend = document.getElementById('legend');
 const sceneHost = document.getElementById('scene');
 const saveButton = document.getElementById('saveLayout');
-const roomList = document.getElementById('roomList');
 const progressBar = document.getElementById('progressBar');
 const progressLabel = document.getElementById('progressLabel');
 
@@ -85,49 +82,6 @@ function groupRoomsByArea(rooms) {
   return map;
 }
 
-function renderRoomList(areas, rooms, areaColors) {
-  roomList.innerHTML = '';
-  const roomsByArea = groupRoomsByArea(rooms);
-  const sortedAreas = [...areas].sort((a, b) => a.name.localeCompare(b.name));
-
-  sortedAreas.forEach(area => {
-    const section = document.createElement('div');
-    section.className = 'room-section';
-
-    const header = document.createElement('div');
-    header.className = 'room-section-header';
-
-    const swatch = document.createElement('div');
-    swatch.className = 'legend-swatch';
-    swatch.style.background = areaColors.get(area.uid);
-    header.appendChild(swatch);
-
-    const name = document.createElement('span');
-    name.textContent = area.name;
-    header.appendChild(name);
-
-    const count = document.createElement('span');
-    count.className = 'room-section-count';
-    const areaRooms = roomsByArea.get(area.uid) || [];
-    count.textContent = `${areaRooms.length} rooms`;
-    header.appendChild(count);
-
-    section.appendChild(header);
-
-    const roomItems = document.createElement('div');
-    roomItems.className = 'room-items';
-    [...areaRooms].sort((a, b) => a.name.localeCompare(b.name)).forEach(room => {
-      const item = document.createElement('div');
-      item.className = 'room-item';
-      item.textContent = room.name;
-      roomItems.appendChild(item);
-    });
-
-    section.appendChild(roomItems);
-    roomList.appendChild(section);
-  });
-}
-
 function propagatePositions(rooms, exits) {
   const positions = mergeKnownPositions(rooms);
   const queue = [...positions.keys()];
@@ -178,22 +132,6 @@ function computeRoomPositionsByArea(rooms, exits) {
   return result;
 }
 
-function buildLegend(areaColors, areas) {
-  legend.innerHTML = '';
-  areas.forEach(area => {
-    const entry = document.createElement('div');
-    entry.className = 'legend-entry';
-    const swatch = document.createElement('div');
-    swatch.className = 'legend-swatch';
-    swatch.style.background = areaColors.get(area.uid);
-    const label = document.createElement('span');
-    label.textContent = area.name;
-    entry.appendChild(swatch);
-    entry.appendChild(label);
-    legend.appendChild(entry);
-  });
-}
-
 function centerCamera(camera, controls, bounds) {
   camera.up.set(0, 0, 1);
   const center = new THREE.Vector3(
@@ -204,9 +142,9 @@ function centerCamera(camera, controls, bounds) {
   controls.target.copy(center);
   const span = Math.max(bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y, 60);
   camera.position.set(center.x, center.y, bounds.max.z + span);
-  controls.minPolarAngle = 0;
-  controls.maxPolarAngle = Math.PI / 2;
   controls.screenSpacePanning = true;
+  controls.enableRotate = false;
+  camera.lookAt(center);
 }
 
 function calculateAreaBounds(areaId, areaRooms) {
@@ -262,30 +200,6 @@ function applySavedOffsets(savedOffsets, defaultOffsets) {
   return merged;
 }
 
-function getRoomWorldPosition(roomId, roomById) {
-  const room = roomById.get(roomId);
-  if (!room) return null;
-  const areaPosition = roomPositionsByArea.get(room.area) || new Map();
-  const local = areaPosition.get(roomId) || [0, 0, 0];
-  const offset = areaOffsets.get(room.area) || new THREE.Vector3();
-  return new THREE.Vector3(
-    (local[0] + offset.x) * SCALE,
-    (local[1] + offset.y) * SCALE,
-    (local[2] + offset.z) * SCALE
-  );
-}
-
-function updateExitLines(roomById) {
-  exitLines.forEach(line => {
-    const { from, to } = line.userData;
-    const start = getRoomWorldPosition(from, roomById);
-    const end = getRoomWorldPosition(to, roomById);
-    if (!start || !end) return;
-    line.geometry.setFromPoints([start, end]);
-    line.geometry.attributes.position.needsUpdate = true;
-  });
-}
-
 function saveMegaCoordinates(areas) {
   const payload = {};
   areas.forEach(area => {
@@ -302,7 +216,28 @@ function saveMegaCoordinates(areas) {
   URL.revokeObjectURL(url);
 }
 
-function buildScene(rooms, exits, areaColors, areas) {
+function makeAreaLabel(text) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#e6edf3';
+  ctx.font = 'bold 64px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, depthWrite: false });
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(40, 10, 1);
+  return sprite;
+}
+
+function buildScene(rooms, areaColors, areas) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#0b1220');
 
@@ -315,7 +250,7 @@ function buildScene(rooms, exits, areaColors, areas) {
 
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.enableRotate = true;
+  controls.enableRotate = false;
 
   const ambient = new THREE.AmbientLight('#ffffff', 0.6);
   scene.add(ambient);
@@ -330,11 +265,9 @@ function buildScene(rooms, exits, areaColors, areas) {
   axesHelper.position.set(-10, -10, 0);
   scene.add(axesHelper);
 
-  const roomGeometry = new THREE.BoxGeometry(1.6, 1.6, 1.6);
   const bounds = { min: new THREE.Vector3(Infinity, Infinity, Infinity), max: new THREE.Vector3(-Infinity, -Infinity, -Infinity) };
   const byArea = groupRoomsByArea(rooms);
   const dragHandles = [];
-  const roomById = new Map(rooms.map(r => [r.uid, r]));
 
   byArea.forEach((areaRooms, areaId) => {
     const group = new THREE.Group();
@@ -344,49 +277,56 @@ function buildScene(rooms, exits, areaColors, areas) {
 
     const positions = roomPositionsByArea.get(areaId) || new Map();
     const color = areaColors.get(areaId) || '#ffffff';
-    const material = new THREE.MeshStandardMaterial({ color, roughness: 0.4, metalness: 0.1 });
-
+    const min = new THREE.Vector3(Infinity, Infinity, Infinity);
+    const max = new THREE.Vector3(-Infinity, -Infinity, -Infinity);
     areaRooms.forEach(room => {
-      const position = positions.get(room.uid) || [0, 0, 0];
-      const [x, y, z] = position.map(v => v * SCALE);
-      const cube = new THREE.Mesh(roomGeometry, material);
-      cube.position.set(x, y, z);
-      cube.userData = room;
-      group.add(cube);
-
-      const worldPosition = new THREE.Vector3(x, y, z).add(group.position);
-      bounds.min.min(worldPosition);
-      bounds.max.max(worldPosition);
+      const pos = positions.get(room.uid) || [0, 0, 0];
+      min.min(new THREE.Vector3(...pos));
+      max.max(new THREE.Vector3(...pos));
     });
 
-    const areaBox = new THREE.Box3().setFromObject(group);
-    const size = new THREE.Vector3();
-    areaBox.getSize(size);
-    const center = new THREE.Vector3();
-    areaBox.getCenter(center);
-    const handleGeom = new THREE.BoxGeometry(size.x + SCALE * 2, size.y + SCALE * 2, size.z + SCALE * 2);
-    const handleMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.08, depthWrite: false });
-    const handle = new THREE.Mesh(handleGeom, handleMat);
-    handle.position.copy(center);
-    handle.userData.areaId = areaId;
-    handle.name = `area-handle-${areaId}`;
-    group.add(handle);
-    dragHandles.push(handle);
+    if (!isFinite(min.x)) {
+      min.set(-2, -2, -0.5);
+      max.set(2, 2, 0.5);
+    }
+
+    const sizeX = (max.x - min.x) * SCALE + SCALE * 4;
+    const sizeY = (max.y - min.y) * SCALE + SCALE * 4;
+    const squareSize = Math.max(sizeX, sizeY, SCALE * 10);
+    const height = SCALE * 4;
+
+    const center = new THREE.Vector3(
+      ((min.x + max.x) / 2) * SCALE,
+      ((min.y + max.y) / 2) * SCALE,
+      ((min.z + max.z) / 2) * SCALE
+    );
+
+    const material = new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0.05, transparent: false });
+    const boxGeom = new THREE.BoxGeometry(squareSize, squareSize, height);
+    const areaMesh = new THREE.Mesh(boxGeom, material);
+    areaMesh.position.copy(center);
+    areaMesh.userData.areaId = areaId;
+    areaMesh.name = `area-${areaId}`;
+    group.add(areaMesh);
+    dragHandles.push(areaMesh);
+
+    const areaMeta = areas.find(a => a.uid === areaId);
+    const label = makeAreaLabel(areaMeta?.name || areaRooms[0]?.area_name || areaRooms[0]?.name || 'Area');
+    label.position.set(center.x, center.y, center.z + height / 2 + 6);
+    group.add(label);
+
+    const halfSize = new THREE.Vector3(squareSize / 2, squareSize / 2, height / 2);
+    const worldCenter = center.clone().add(group.position);
+    bounds.min.min(worldCenter.clone().sub(halfSize));
+    bounds.max.max(worldCenter.clone().add(halfSize));
 
     scene.add(group);
   });
 
-  const exitMaterial = new THREE.LineBasicMaterial({ color: '#94a3b8', transparent: true, opacity: 0.5 });
-  exits.forEach(exit => {
-    const start = getRoomWorldPosition(exit.fromuid, roomById);
-    const end = getRoomWorldPosition(exit.touid, roomById);
-    if (!start || !end) return;
-    const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
-    const line = new THREE.Line(geometry, exitMaterial);
-    line.userData = { from: exit.fromuid, to: exit.touid };
-    scene.add(line);
-    exitLines.push(line);
-  });
+  if (!isFinite(bounds.min.x)) {
+    bounds.min.set(-SCALE * 10, -SCALE * 10, -SCALE * 2);
+    bounds.max.set(SCALE * 10, SCALE * 10, SCALE * 2);
+  }
 
   centerCamera(camera, controls, bounds);
 
@@ -423,7 +363,6 @@ function buildScene(rooms, exits, areaColors, areas) {
       areaGroup.position.copy(nextPosition);
       const offset = nextPosition.clone().divideScalar(SCALE);
       areaOffsets.set(draggedAreaId, offset);
-      updateExitLines(roomById);
     }
   }
 
@@ -465,14 +404,12 @@ async function bootstrap() {
 
     const selectedAreas = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
     const areaColors = pickColors(selectedAreas);
-    buildLegend(areaColors, selectedAreas);
 
     const areaRoomSet = new Set(selectedAreas.map(a => a.uid));
     const filteredRooms = rooms.filter(r => areaRoomSet.has(r.area));
     const roomById = new Map(filteredRooms.map(r => [r.uid, r]));
     const filteredExits = exits.filter(exit => roomById.has(exit.fromuid) && roomById.has(exit.touid));
 
-    renderRoomList(selectedAreas, filteredRooms, areaColors);
     setProgress(0.55, 'Computing room layout...');
 
     const computedPositions = computeRoomPositionsByArea(filteredRooms, filteredExits);
@@ -487,9 +424,8 @@ async function bootstrap() {
     setProgress(0.7, 'Building scene...');
 
     areaGroups.clear();
-    exitLines.length = 0;
 
-    buildScene(filteredRooms, filteredExits, areaColors, selectedAreas);
+    buildScene(filteredRooms, areaColors, selectedAreas);
 
     setProgress(1, 'Ready');
 
