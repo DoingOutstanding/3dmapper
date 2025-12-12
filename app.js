@@ -4,6 +4,18 @@ const DIR_OFFSETS = {
   ne: [1, 1, 0], nw: [-1, 1, 0], se: [1, -1, 0], sw: [-1, -1, 0],
   u: [0, 0, 1], d: [0, 0, -1]
 };
+const DIR_LABELS = {
+  n: 'North',
+  s: 'South',
+  e: 'East',
+  w: 'West',
+  ne: 'Northeast',
+  nw: 'Northwest',
+  se: 'Southeast',
+  sw: 'Southwest',
+  u: 'Up',
+  d: 'Down'
+};
 const SCALE = 6;
 const AREA_GRID_SPACING = 40;
 
@@ -70,6 +82,14 @@ function mergeKnownPositions(rooms) {
 
 function normalizeDir(dir) {
   return (dir || '').toLowerCase();
+}
+
+function formatExitLabel(exit) {
+  const dir = normalizeDir(exit.dir);
+  if (DIR_LABELS[dir]) return DIR_LABELS[dir];
+  if (exit.command) return exit.command;
+  if (exit.dir) return exit.dir;
+  return 'Exit';
 }
 
 function groupRoomsByArea(rooms) {
@@ -237,7 +257,7 @@ function makeAreaLabel(text) {
   return sprite;
 }
 
-function buildScene(rooms, areaColors, areas) {
+function buildScene(rooms, areaColors, areas, areaConnections = []) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#0b1220');
 
@@ -268,6 +288,7 @@ function buildScene(rooms, areaColors, areas) {
   const bounds = { min: new THREE.Vector3(Infinity, Infinity, Infinity), max: new THREE.Vector3(-Infinity, -Infinity, -Infinity) };
   const byArea = groupRoomsByArea(rooms);
   const dragHandles = [];
+  const areaVisuals = new Map();
   let builtAreaCount = 0;
 
   byArea.forEach((areaRooms, areaId) => {
@@ -315,6 +336,8 @@ function buildScene(rooms, areaColors, areas) {
     const label = makeAreaLabel(areaMeta?.name || areaRooms[0]?.area_name || areaRooms[0]?.name || 'Area');
     label.position.set(center.x, center.y, center.z + height / 2 + 6);
     group.add(label);
+
+    areaVisuals.set(areaId, { group, center, height });
 
     const halfSize = new THREE.Vector3(squareSize / 2, squareSize / 2, height / 2);
     const worldCenter = center.clone().add(group.position);
@@ -379,8 +402,118 @@ function buildScene(rooms, areaColors, areas) {
   renderer.domElement.addEventListener('pointermove', onPointerMove);
   renderer.domElement.addEventListener('pointerup', onPointerUp);
 
+  const connectionVisuals = [];
+
+  function areaAnchor(areaId) {
+    const visual = areaVisuals.get(areaId);
+    if (!visual) return null;
+    const worldCenter = visual.center.clone().add(visual.group.position);
+    worldCenter.z = worldCenter.z + visual.height / 2 + 2;
+    return worldCenter;
+  }
+
+  const labelMaterialOptions = { depthTest: false, depthWrite: false };
+
+  function makeLineLabel(text) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#f8fafc';
+    ctx.font = 'bold 32px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    const material = new THREE.SpriteMaterial({ map: texture, ...labelMaterialOptions });
+    const sprite = new THREE.Sprite(material);
+    sprite.scale.set(24, 8, 1);
+    return sprite;
+  }
+
+  areaConnections.forEach(connection => {
+    const start = areaAnchor(connection.fromArea);
+    const end = areaAnchor(connection.toArea);
+    if (!start || !end) return;
+
+    const positions = new Float32Array(6);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const material = new THREE.LineBasicMaterial({ color: '#facc15', linewidth: 2 });
+    const line = new THREE.Line(geometry, material);
+    scene.add(line);
+
+    const label = makeLineLabel(connection.label);
+    scene.add(label);
+
+    connectionVisuals.push({ connection, line, label });
+  });
+
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2();
+
+  function updatePointer(event) {
+    pointer.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    pointer.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+  }
+
+  function onPointerDown(event) {
+    updatePointer(event);
+    raycaster.setFromCamera(pointer, camera);
+    const intersects = raycaster.intersectObjects(dragHandles, false);
+    if (intersects.length === 0) return;
+    const hit = intersects[0];
+    draggedAreaId = hit.object.userData.areaId;
+    const normal = camera.getWorldDirection(new THREE.Vector3()).negate();
+    dragPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(normal, hit.point);
+    const areaGroup = areaGroups.get(draggedAreaId);
+    dragOffset = hit.point.clone().sub(areaGroup.position);
+    controls.enabled = false;
+  }
+
+  function onPointerMove(event) {
+    if (!draggedAreaId || !dragPlane) return;
+    updatePointer(event);
+    raycaster.setFromCamera(pointer, camera);
+    const target = new THREE.Vector3();
+    if (raycaster.ray.intersectPlane(dragPlane, target)) {
+      const areaGroup = areaGroups.get(draggedAreaId);
+      const nextPosition = target.clone().sub(dragOffset);
+      areaGroup.position.copy(nextPosition);
+      const offset = nextPosition.clone().divideScalar(SCALE);
+      areaOffsets.set(draggedAreaId, offset);
+    }
+  }
+
+  function onPointerUp() {
+    draggedAreaId = null;
+    dragPlane = null;
+    dragOffset = null;
+    controls.enabled = true;
+  }
+
+  renderer.domElement.addEventListener('pointerdown', onPointerDown);
+  renderer.domElement.addEventListener('pointermove', onPointerMove);
+  renderer.domElement.addEventListener('pointerup', onPointerUp);
+
   function animate() {
     requestAnimationFrame(animate);
+    connectionVisuals.forEach(item => {
+      const start = areaAnchor(item.connection.fromArea);
+      const end = areaAnchor(item.connection.toArea);
+      if (!start || !end) return;
+      const positionAttr = item.line.geometry.getAttribute('position');
+      positionAttr.setXYZ(0, start.x, start.y, start.z);
+      positionAttr.setXYZ(1, end.x, end.y, end.z);
+      positionAttr.needsUpdate = true;
+
+      const mid = start.clone().add(end).multiplyScalar(0.5);
+      item.label.position.copy(mid.add(new THREE.Vector3(0, 0, 2)));
+    });
     controls.update();
     renderer.render(scene, camera);
   }
@@ -416,6 +549,19 @@ async function bootstrap() {
     const roomById = new Map(filteredRooms.map(r => [r.uid, r]));
     const filteredExits = exits.filter(exit => roomById.has(exit.fromuid) && roomById.has(exit.touid));
 
+    const connectionSet = new Set();
+    const areaConnections = [];
+    filteredExits.forEach(exit => {
+      const fromRoom = roomById.get(exit.fromuid);
+      const toRoom = roomById.get(exit.touid);
+      if (!fromRoom || !toRoom) return;
+      if (fromRoom.area === toRoom.area) return;
+      const key = `${fromRoom.area}->${toRoom.area}->${normalizeDir(exit.dir)}-${exit.command || ''}`;
+      if (connectionSet.has(key)) return;
+      connectionSet.add(key);
+      areaConnections.push({ fromArea: fromRoom.area, toArea: toRoom.area, label: formatExitLabel(exit) });
+    });
+
     setProgress(0.55, 'Computing room layout...');
 
     const computedPositions = computeRoomPositionsByArea(filteredRooms, filteredExits);
@@ -431,7 +577,7 @@ async function bootstrap() {
 
     areaGroups.clear();
 
-    buildScene(filteredRooms, areaColors, selectedAreas);
+    buildScene(filteredRooms, areaColors, selectedAreas, areaConnections);
 
     setProgress(1, 'Ready');
 
