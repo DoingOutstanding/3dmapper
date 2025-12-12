@@ -606,11 +606,15 @@ async function bootstrap() {
     setProgress(0.45, 'Loading saved layout...');
     const savedOffsets = await loadOptionalJson('Database/mega-coordinates.json');
 
-    const selectedAreas = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
-    const areaById = new Map(selectedAreas.map(a => [a.uid, a]));
-    appendLog('Areas selected', { total: areas.length, selected: selectedAreas.length });
+    const areaById = new Map(areas.map(a => [a.uid, a]));
+    const continentAreaIds = new Set(areas.filter(a => normalizeContinentName(a.name)).map(a => a.uid));
+
+    const baseSelection = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
+    const selectedAreas = baseSelection.filter(a => !continentAreaIds.has(a.uid));
+    appendLog('Areas selected', { total: areas.length, selected: selectedAreas.length, continentsHidden: continentAreaIds.size });
     const areaColors = pickColors(selectedAreas);
 
+    const roomByIdAll = new Map(rooms.map(r => [r.uid, r]));
     const areaRoomSet = new Set(selectedAreas.map(a => a.uid));
     const filteredRooms = rooms.filter(r => areaRoomSet.has(r.area));
     appendLog('Rooms filtered by area', { totalRooms: rooms.length, kept: filteredRooms.length });
@@ -621,15 +625,11 @@ async function bootstrap() {
     const connectionSet = new Set();
     const areaConnections = [];
     const continentAreas = new Map();
-    filteredExits.forEach(exit => {
+    exits.forEach(exit => {
       const fromRoom = roomById.get(exit.fromuid);
-      const toRoom = roomById.get(exit.touid);
-      if (!fromRoom || !toRoom) return;
-      if (fromRoom.area === toRoom.area) return;
-      const key = `${fromRoom.area}->${toRoom.area}->${normalizeDir(exit.dir)}-${exit.command || ''}`;
-      if (connectionSet.has(key)) return;
-      connectionSet.add(key);
-      areaConnections.push({ fromArea: fromRoom.area, toArea: toRoom.area, label: formatExitLabel(exit) });
+      if (!fromRoom) return;
+      const toRoom = roomByIdAll.get(exit.touid);
+      if (!toRoom) return;
 
       const toAreaName = areaById.get(toRoom.area)?.name;
       const continent = toAreaName ? normalizeContinentName(toAreaName) : null;
@@ -637,7 +637,16 @@ async function bootstrap() {
         const set = continentAreas.get(continent) || new Set();
         set.add(fromRoom.area);
         continentAreas.set(continent, set);
+        return; // continent membership implies the connection; no line needed
       }
+
+      if (!roomById.has(toRoom.uid)) return;
+      if (fromRoom.area === toRoom.area) return;
+
+      const key = `${fromRoom.area}->${toRoom.area}->${normalizeDir(exit.dir)}-${exit.command || ''}`;
+      if (connectionSet.has(key)) return;
+      connectionSet.add(key);
+      areaConnections.push({ fromArea: fromRoom.area, toArea: toRoom.area, label: formatExitLabel(exit) });
     });
     appendLog('Cross-area exits collected', { connections: areaConnections.length });
     appendLog('Continent borders resolved', { continents: continentAreas.size });
