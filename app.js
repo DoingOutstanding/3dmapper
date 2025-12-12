@@ -453,6 +453,53 @@ function buildScene(rooms, areaColors, areas, areaConnections = []) {
     connectionVisuals.push({ connection, line, label });
   });
 
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2();
+
+  function updatePointer(event) {
+    pointer.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    pointer.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+  }
+
+  function onPointerDown(event) {
+    updatePointer(event);
+    raycaster.setFromCamera(pointer, camera);
+    const intersects = raycaster.intersectObjects(dragHandles, false);
+    if (intersects.length === 0) return;
+    const hit = intersects[0];
+    draggedAreaId = hit.object.userData.areaId;
+    const normal = camera.getWorldDirection(new THREE.Vector3()).negate();
+    dragPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(normal, hit.point);
+    const areaGroup = areaGroups.get(draggedAreaId);
+    dragOffset = hit.point.clone().sub(areaGroup.position);
+    controls.enabled = false;
+  }
+
+  function onPointerMove(event) {
+    if (!draggedAreaId || !dragPlane) return;
+    updatePointer(event);
+    raycaster.setFromCamera(pointer, camera);
+    const target = new THREE.Vector3();
+    if (raycaster.ray.intersectPlane(dragPlane, target)) {
+      const areaGroup = areaGroups.get(draggedAreaId);
+      const nextPosition = target.clone().sub(dragOffset);
+      areaGroup.position.copy(nextPosition);
+      const offset = nextPosition.clone().divideScalar(SCALE);
+      areaOffsets.set(draggedAreaId, offset);
+    }
+  }
+
+  function onPointerUp() {
+    draggedAreaId = null;
+    dragPlane = null;
+    dragOffset = null;
+    controls.enabled = true;
+  }
+
+  renderer.domElement.addEventListener('pointerdown', onPointerDown);
+  renderer.domElement.addEventListener('pointermove', onPointerMove);
+  renderer.domElement.addEventListener('pointerup', onPointerUp);
+
   function animate() {
     requestAnimationFrame(animate);
     connectionVisuals.forEach(item => {
