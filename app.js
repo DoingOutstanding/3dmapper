@@ -140,8 +140,8 @@ function centerCamera(camera, controls, bounds) {
     (bounds.min.z + bounds.max.z) / 2
   );
   controls.target.copy(center);
-  const span = Math.max(bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y, 60);
-  camera.position.set(center.x, center.y, bounds.max.z + span);
+  const span = Math.max(bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y, 200);
+  camera.position.set(center.x, center.y, bounds.max.z + span * 0.6);
   controls.screenSpacePanning = true;
   controls.enableRotate = false;
   camera.lookAt(center);
@@ -241,7 +241,7 @@ function buildScene(rooms, areaColors, areas) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#0b1220');
 
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 5000);
+  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 50000);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -258,7 +258,7 @@ function buildScene(rooms, areaColors, areas) {
   directional.position.set(30, 40, 50);
   scene.add(directional);
 
-  const gridHelper = new THREE.GridHelper(800, 80, '#334155', '#1e293b');
+  const gridHelper = new THREE.GridHelper(8000, 160, '#334155', '#1e293b');
   gridHelper.rotation.x = Math.PI / 2;
   scene.add(gridHelper);
   const axesHelper = new THREE.AxesHelper(20);
@@ -268,6 +268,7 @@ function buildScene(rooms, areaColors, areas) {
   const bounds = { min: new THREE.Vector3(Infinity, Infinity, Infinity), max: new THREE.Vector3(-Infinity, -Infinity, -Infinity) };
   const byArea = groupRoomsByArea(rooms);
   const dragHandles = [];
+  let builtAreaCount = 0;
 
   byArea.forEach((areaRooms, areaId) => {
     const group = new THREE.Group();
@@ -321,6 +322,7 @@ function buildScene(rooms, areaColors, areas) {
     bounds.max.max(worldCenter.clone().add(halfSize));
 
     scene.add(group);
+    builtAreaCount += 1;
   });
 
   if (!isFinite(bounds.min.x)) {
@@ -383,6 +385,10 @@ function buildScene(rooms, areaColors, areas) {
     renderer.render(scene, camera);
   }
   animate();
+
+  if (builtAreaCount === 0) {
+    showError('No areas could be rendered. Please verify Database/areas.json and Database/rooms.json contain matching area IDs.');
+  }
 
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
