@@ -1,7 +1,6 @@
 const AREA_FILTER = null;
 const DIR_OFFSETS = {
   n: [0, 1, 0], s: [0, -1, 0], e: [1, 0, 0], w: [-1, 0, 0],
-  ne: [1, 1, 0], nw: [-1, 1, 0], se: [1, -1, 0], sw: [-1, -1, 0],
   u: [0, 0, 1], d: [0, 0, -1]
 };
 const DIR_LABELS = {
@@ -12,6 +11,7 @@ const DIR_LABELS = {
   u: 'Up',
   d: 'Down'
 };
+const ALLOWED_DIRS = new Set(Object.keys(DIR_LABELS));
 const CONTINENT_NAMES = ['southern ocean', 'uncharted ocean', 'gelidus', 'alagh', 'abend', 'mesolar'];
 const CONTINENT_COLORS = {
   'southern ocean': '#38bdf8',
@@ -20,6 +20,16 @@ const CONTINENT_COLORS = {
   alagh: '#ef4444',
   abend: '#f97316',
   mesolar: '#22c55e'
+};
+const CONNECTION_COLORS = {
+  n: '#38bdf8',
+  s: '#f97316',
+  e: '#22c55e',
+  w: '#a855f7',
+  u: '#facc15',
+  d: '#ef4444',
+  fallback: '#f472b6',
+  unknown: '#cbd5e1'
 };
 const SCALE = 6;
 const AREA_GRID_SPACING = 40;
@@ -153,6 +163,14 @@ function formatExitLabel(exit) {
   if (exit.command) return humanizeLabel(exit.command);
   if (exit.dir) return humanizeLabel(exit.dir);
   return 'Exit';
+}
+
+function colorForExit(exit) {
+  const dir = normalizeDir(exit.dir);
+  if (ALLOWED_DIRS.has(dir)) return CONNECTION_COLORS[dir] || CONNECTION_COLORS.fallback;
+  if (dir) return CONNECTION_COLORS.fallback;
+  if (exit.command) return CONNECTION_COLORS.fallback;
+  return CONNECTION_COLORS.unknown;
 }
 
 function groupRoomsByArea(rooms) {
@@ -508,7 +526,7 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     const positions = new Float32Array(6);
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const material = new THREE.LineBasicMaterial({ color: '#facc15', linewidth: 2 });
+    const material = new THREE.LineBasicMaterial({ color: connection.color || '#facc15', linewidth: 2 });
     const line = new THREE.Line(geometry, material);
     scene.add(line);
 
@@ -624,6 +642,7 @@ async function bootstrap() {
 
     const connectionSet = new Set();
     const areaConnections = [];
+    const unexpectedDirs = new Set();
     const continentAreas = new Map();
     exits.forEach(exit => {
       const fromRoom = roomById.get(exit.fromuid);
@@ -643,12 +662,25 @@ async function bootstrap() {
       if (!roomById.has(toRoom.uid)) return;
       if (fromRoom.area === toRoom.area) return;
 
-      const key = `${fromRoom.area}->${toRoom.area}->${normalizeDir(exit.dir)}-${exit.command || ''}`;
+      const normalizedDir = normalizeDir(exit.dir);
+      if (normalizedDir && !ALLOWED_DIRS.has(normalizedDir)) {
+        unexpectedDirs.add(normalizedDir);
+      }
+
+      const key = `${fromRoom.area}->${toRoom.area}->${normalizedDir}-${exit.command || ''}`;
       if (connectionSet.has(key)) return;
       connectionSet.add(key);
-      areaConnections.push({ fromArea: fromRoom.area, toArea: toRoom.area, label: formatExitLabel(exit) });
+      areaConnections.push({
+        fromArea: fromRoom.area,
+        toArea: toRoom.area,
+        label: formatExitLabel(exit),
+        color: colorForExit(exit)
+      });
     });
     appendLog('Cross-area exits collected', { connections: areaConnections.length });
+    if (unexpectedDirs.size) {
+      appendLog('Unexpected directions encountered', { directions: Array.from(unexpectedDirs).sort() });
+    }
     appendLog('Continent borders resolved', { continents: continentAreas.size });
 
     setProgress(0.55, 'Computing room layout...');
