@@ -95,6 +95,17 @@ async function loadOptionalJson(path) {
   }
 }
 
+async function loadOptionalJson(path) {
+  try {
+    const response = await fetch(path);
+    if (!response.ok) return null;
+    return response.json();
+  } catch (error) {
+    console.warn(`Optional load failed for ${path}:`, error);
+    return null;
+  }
+}
+
 function pickColors(areas) {
   const palette = ['#4cc3ff', '#f472b6', '#a3e635', '#f97316', '#c084fc', '#38bdf8'];
   const colorMap = new Map();
