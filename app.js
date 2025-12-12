@@ -23,6 +23,7 @@ const CONTINENT_COLORS = {
 };
 const SCALE = 6;
 const AREA_GRID_SPACING = 40;
+const CONTINENT_PADDING = SCALE * 14;
 
 const areaOffsets = new Map();
 const roomPositionsByArea = new Map();
@@ -320,7 +321,7 @@ function makeAreaLabel(text) {
   return sprite;
 }
 
-function buildScene(rooms, areaColors, areas, areaConnections = [], continentTouches = new Map()) {
+function buildScene(rooms, areaColors, areas, areaConnections = [], continentAreas = new Map()) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#0b1220');
 
@@ -395,25 +396,12 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentTou
     group.add(areaMesh);
     dragHandles.push(areaMesh);
 
-    const continents = continentTouches.get(areaId);
-    if (continents && continents.size) {
-      const borderGeom = new THREE.EdgesGeometry(new THREE.BoxGeometry(squareSize * 1.05, squareSize * 1.05, height * 1.05));
-      let step = 0;
-      continents.forEach(continent => {
-        const borderMaterial = new THREE.LineBasicMaterial({ color: CONTINENT_COLORS[continent] || '#fcd34d', linewidth: 2, transparent: true, opacity: 0.9 });
-        const border = new THREE.LineSegments(borderGeom, borderMaterial);
-        border.position.copy(center.clone().add(new THREE.Vector3(0, 0, step)));
-        group.add(border);
-        step += 1.25;
-      });
-    }
-
     const areaMeta = areas.find(a => a.uid === areaId);
     const label = makeAreaLabel(areaMeta?.name || areaRooms[0]?.area_name || areaRooms[0]?.name || 'Area');
     label.position.set(center.x, center.y, center.z + height / 2 + 6);
     group.add(label);
 
-    areaVisuals.set(areaId, { group, center, height });
+    areaVisuals.set(areaId, { group, center, height, squareSize });
 
     const halfSize = new THREE.Vector3(squareSize / 2, squareSize / 2, height / 2);
     const worldCenter = center.clone().add(group.position);
@@ -479,6 +467,7 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentTou
   renderer.domElement.addEventListener('pointerup', onPointerUp);
 
   const connectionVisuals = [];
+  const continentVisuals = new Map();
 
   function areaAnchor(areaId) {
     const visual = areaVisuals.get(areaId);
@@ -529,6 +518,34 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentTou
     connectionVisuals.push({ connection, line, label });
   });
 
+  function areaWorldBounds(areaId) {
+    const visual = areaVisuals.get(areaId);
+    if (!visual) return null;
+    const worldCenter = visual.center.clone().add(visual.group.position);
+    const half = new THREE.Vector3(visual.squareSize / 2, visual.squareSize / 2, visual.height / 2);
+    return { min: worldCenter.clone().sub(half), max: worldCenter.clone().add(half) };
+  }
+
+  continentAreas.forEach((areasInContinent, continent) => {
+    if (!areasInContinent.size) return;
+    const min = new THREE.Vector3(Infinity, Infinity, Infinity);
+    const max = new THREE.Vector3(-Infinity, -Infinity, -Infinity);
+    areasInContinent.forEach(areaId => {
+      const bounds = areaWorldBounds(areaId);
+      if (!bounds) return;
+      min.min(bounds.min);
+      max.max(bounds.max);
+    });
+    if (!isFinite(min.x)) return;
+    min.subScalar(CONTINENT_PADDING);
+    max.addScalar(CONTINENT_PADDING);
+    const box = new THREE.Box3(min, max);
+    const helper = new THREE.Box3Helper(box, CONTINENT_COLORS[continent] || '#fcd34d');
+    helper.name = `continent-${continent}`;
+    scene.add(helper);
+    continentVisuals.set(continent, { helper, areas: areasInContinent });
+  });
+
   function animate() {
     requestAnimationFrame(animate);
     connectionVisuals.forEach(item => {
@@ -542,6 +559,22 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentTou
 
       const mid = start.clone().add(end).multiplyScalar(0.5);
       item.label.position.copy(mid.add(new THREE.Vector3(0, 0, 2)));
+    });
+
+    continentVisuals.forEach((visual, continent) => {
+      const min = new THREE.Vector3(Infinity, Infinity, Infinity);
+      const max = new THREE.Vector3(-Infinity, -Infinity, -Infinity);
+      visual.areas.forEach(areaId => {
+        const bounds = areaWorldBounds(areaId);
+        if (!bounds) return;
+        min.min(bounds.min);
+        max.max(bounds.max);
+      });
+      if (!isFinite(min.x)) return;
+      min.subScalar(CONTINENT_PADDING);
+      max.addScalar(CONTINENT_PADDING);
+      visual.helper.box.set(min, max);
+      visual.helper.updateMatrixWorld(true);
     });
     controls.update();
     renderer.render(scene, camera);
@@ -587,7 +620,7 @@ async function bootstrap() {
 
     const connectionSet = new Set();
     const areaConnections = [];
-    const continentTouches = new Map();
+    const continentAreas = new Map();
     filteredExits.forEach(exit => {
       const fromRoom = roomById.get(exit.fromuid);
       const toRoom = roomById.get(exit.touid);
@@ -601,13 +634,13 @@ async function bootstrap() {
       const toAreaName = areaById.get(toRoom.area)?.name;
       const continent = toAreaName ? normalizeContinentName(toAreaName) : null;
       if (continent) {
-        const set = continentTouches.get(fromRoom.area) || new Set();
-        set.add(continent);
-        continentTouches.set(fromRoom.area, set);
+        const set = continentAreas.get(continent) || new Set();
+        set.add(fromRoom.area);
+        continentAreas.set(continent, set);
       }
     });
     appendLog('Cross-area exits collected', { connections: areaConnections.length });
-    appendLog('Continent borders resolved', { areas: continentTouches.size });
+    appendLog('Continent borders resolved', { continents: continentAreas.size });
 
     setProgress(0.55, 'Computing room layout...');
 
@@ -625,7 +658,7 @@ async function bootstrap() {
 
     areaGroups.clear();
 
-    buildScene(filteredRooms, areaColors, selectedAreas, areaConnections, continentTouches);
+    buildScene(filteredRooms, areaColors, selectedAreas, areaConnections, continentAreas);
 
     setProgress(1, 'Ready');
 
