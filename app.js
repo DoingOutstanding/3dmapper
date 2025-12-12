@@ -9,12 +9,17 @@ const DIR_LABELS = {
   s: 'South',
   e: 'East',
   w: 'West',
-  ne: 'Northeast',
-  nw: 'Northwest',
-  se: 'Southeast',
-  sw: 'Southwest',
   u: 'Up',
   d: 'Down'
+};
+const CONTINENT_NAMES = ['southern ocean', 'uncharted ocean', 'gelidus', 'alagh', 'abend', 'mesolar'];
+const CONTINENT_COLORS = {
+  'southern ocean': '#38bdf8',
+  'uncharted ocean': '#facc15',
+  gelidus: '#a5b4fc',
+  alagh: '#ef4444',
+  abend: '#f97316',
+  mesolar: '#22c55e'
 };
 const SCALE = 6;
 const AREA_GRID_SPACING = 40;
@@ -95,17 +100,6 @@ async function loadOptionalJson(path) {
   }
 }
 
-async function loadOptionalJson(path) {
-  try {
-    const response = await fetch(path);
-    if (!response.ok) return null;
-    return response.json();
-  } catch (error) {
-    console.warn(`Optional load failed for ${path}:`, error);
-    return null;
-  }
-}
-
 function pickColors(areas) {
   const palette = ['#4cc3ff', '#f472b6', '#a3e635', '#f97316', '#c084fc', '#38bdf8'];
   const colorMap = new Map();
@@ -129,11 +123,34 @@ function normalizeDir(dir) {
   return (dir || '').toLowerCase();
 }
 
+function normalizeContinentName(name = '') {
+  const lowered = name.toLowerCase();
+  return CONTINENT_NAMES.find(cont => lowered.includes(cont)) || null;
+}
+
+function formatDirection(dir) {
+  const normalized = normalizeDir(dir);
+  if (!normalized) return null;
+  if (DIR_LABELS[normalized]) return DIR_LABELS[normalized];
+
+  const tokens = normalized.split(/[^a-z]+/).filter(Boolean);
+  const fallback = tokens.find(token => DIR_LABELS[token]);
+  if (fallback) return DIR_LABELS[fallback];
+
+  return null;
+}
+
+function humanizeLabel(text = '') {
+  const clean = text.replace(/_/g, ' ').trim();
+  if (!clean) return '';
+  return clean.charAt(0).toUpperCase() + clean.slice(1);
+}
+
 function formatExitLabel(exit) {
-  const dir = normalizeDir(exit.dir);
-  if (DIR_LABELS[dir]) return DIR_LABELS[dir];
-  if (exit.command) return exit.command;
-  if (exit.dir) return exit.dir;
+  const dirLabel = formatDirection(exit.dir);
+  if (dirLabel) return dirLabel;
+  if (exit.command) return humanizeLabel(exit.command);
+  if (exit.dir) return humanizeLabel(exit.dir);
   return 'Exit';
 }
 
@@ -303,7 +320,7 @@ function makeAreaLabel(text) {
   return sprite;
 }
 
-function buildScene(rooms, areaColors, areas, areaConnections = []) {
+function buildScene(rooms, areaColors, areas, areaConnections = [], continentTouches = new Map()) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#0b1220');
 
@@ -377,6 +394,19 @@ function buildScene(rooms, areaColors, areas, areaConnections = []) {
     areaMesh.name = `area-${areaId}`;
     group.add(areaMesh);
     dragHandles.push(areaMesh);
+
+    const continents = continentTouches.get(areaId);
+    if (continents && continents.size) {
+      const borderGeom = new THREE.EdgesGeometry(new THREE.BoxGeometry(squareSize * 1.05, squareSize * 1.05, height * 1.05));
+      let step = 0;
+      continents.forEach(continent => {
+        const borderMaterial = new THREE.LineBasicMaterial({ color: CONTINENT_COLORS[continent] || '#fcd34d', linewidth: 2, transparent: true, opacity: 0.9 });
+        const border = new THREE.LineSegments(borderGeom, borderMaterial);
+        border.position.copy(center.clone().add(new THREE.Vector3(0, 0, step)));
+        group.add(border);
+        step += 1.25;
+      });
+    }
 
     const areaMeta = areas.find(a => a.uid === areaId);
     const label = makeAreaLabel(areaMeta?.name || areaRooms[0]?.area_name || areaRooms[0]?.name || 'Area');
@@ -544,6 +574,7 @@ async function bootstrap() {
     const savedOffsets = await loadOptionalJson('Database/mega-coordinates.json');
 
     const selectedAreas = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
+    const areaById = new Map(selectedAreas.map(a => [a.uid, a]));
     appendLog('Areas selected', { total: areas.length, selected: selectedAreas.length });
     const areaColors = pickColors(selectedAreas);
 
@@ -556,6 +587,7 @@ async function bootstrap() {
 
     const connectionSet = new Set();
     const areaConnections = [];
+    const continentTouches = new Map();
     filteredExits.forEach(exit => {
       const fromRoom = roomById.get(exit.fromuid);
       const toRoom = roomById.get(exit.touid);
@@ -565,8 +597,17 @@ async function bootstrap() {
       if (connectionSet.has(key)) return;
       connectionSet.add(key);
       areaConnections.push({ fromArea: fromRoom.area, toArea: toRoom.area, label: formatExitLabel(exit) });
+
+      const toAreaName = areaById.get(toRoom.area)?.name;
+      const continent = toAreaName ? normalizeContinentName(toAreaName) : null;
+      if (continent) {
+        const set = continentTouches.get(fromRoom.area) || new Set();
+        set.add(continent);
+        continentTouches.set(fromRoom.area, set);
+      }
     });
     appendLog('Cross-area exits collected', { connections: areaConnections.length });
+    appendLog('Continent borders resolved', { areas: continentTouches.size });
 
     setProgress(0.55, 'Computing room layout...');
 
@@ -584,7 +625,7 @@ async function bootstrap() {
 
     areaGroups.clear();
 
-    buildScene(filteredRooms, areaColors, selectedAreas, areaConnections);
+    buildScene(filteredRooms, areaColors, selectedAreas, areaConnections, continentTouches);
 
     setProgress(1, 'Ready');
 
