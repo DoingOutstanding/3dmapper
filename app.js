@@ -45,6 +45,11 @@ let dragOffset = null;
 let dragStartPositions = null;
 let dragStartAnchor = null;
 const selectedAreaIds = new Set();
+const selectionBox = document.getElementById('selectionBox');
+
+let selectionActive = false;
+let selectionStart = null;
+let selectionEnd = null;
 
 const errorBanner = document.getElementById('error');
 const sceneHost = document.getElementById('scene');
@@ -488,7 +493,71 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     pointer.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
   }
 
+  function projectToScreen(worldPosition) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    const projected = worldPosition.clone().project(camera);
+    return {
+      x: ((projected.x + 1) / 2) * rect.width + rect.left,
+      y: (-(projected.y - 1) / 2) * rect.height + rect.top
+    };
+  }
+
+  function updateSelectionBox() {
+    if (!selectionActive || !selectionStart || !selectionEnd || !selectionBox) return;
+    const minX = Math.min(selectionStart.x, selectionEnd.x);
+    const minY = Math.min(selectionStart.y, selectionEnd.y);
+    const width = Math.abs(selectionStart.x - selectionEnd.x);
+    const height = Math.abs(selectionStart.y - selectionEnd.y);
+    selectionBox.style.display = 'block';
+    selectionBox.style.left = `${minX}px`;
+    selectionBox.style.top = `${minY}px`;
+    selectionBox.style.width = `${width}px`;
+    selectionBox.style.height = `${height}px`;
+  }
+
+  function finalizeSelection() {
+    if (!selectionActive) return;
+    const minX = Math.min(selectionStart.x, selectionEnd.x);
+    const maxX = Math.max(selectionStart.x, selectionEnd.x);
+    const minY = Math.min(selectionStart.y, selectionEnd.y);
+    const maxY = Math.max(selectionStart.y, selectionEnd.y);
+
+    const newlySelected = [];
+    areaVisuals.forEach((visual, areaId) => {
+      const worldCenter = visual.center.clone().add(visual.group.position);
+      const screen = projectToScreen(worldCenter);
+      if (screen.x >= minX && screen.x <= maxX && screen.y >= minY && screen.y <= maxY) {
+        newlySelected.push(areaId);
+      }
+    });
+
+    selectedAreaIds.clear();
+    newlySelected.forEach(id => selectedAreaIds.add(id));
+    refreshSelectionVisuals();
+
+    if (selectionBox) {
+      selectionBox.style.display = 'none';
+      selectionBox.style.width = '0px';
+      selectionBox.style.height = '0px';
+    }
+
+    selectionActive = false;
+    selectionStart = null;
+    selectionEnd = null;
+    controls.enabled = true;
+  }
+
   function onPointerDown(event) {
+    if (event.shiftKey) {
+      selectionActive = true;
+      selectionStart = { x: event.clientX, y: event.clientY };
+      selectionEnd = { ...selectionStart };
+      updateSelectionBox();
+      controls.enabled = false;
+      draggedAreaId = null;
+      return;
+    }
+
     updatePointer(event);
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObjects(dragHandles, false);
@@ -510,6 +579,12 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
   }
 
   function onPointerMove(event) {
+    if (selectionActive) {
+      selectionEnd = { x: event.clientX, y: event.clientY };
+      updateSelectionBox();
+      return;
+    }
+
     if (!draggedAreaId || !dragPlane) return;
     updatePointer(event);
     raycaster.setFromCamera(pointer, camera);
@@ -529,7 +604,13 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     }
   }
 
-  function onPointerUp() {
+  function onPointerUp(event) {
+    if (selectionActive) {
+      selectionEnd = { x: event.clientX, y: event.clientY };
+      finalizeSelection();
+      return;
+    }
+
     draggedAreaId = null;
     dragPlane = null;
     dragOffset = null;
