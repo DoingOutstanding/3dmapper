@@ -19,6 +19,7 @@
     #progress { position: relative; height: 8px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; min-width: 180px; }
     #progressBar { position: absolute; top: 0; left: 0; bottom: 0; width: 0%; background: #22d3ee; transition: width 0.2s ease; }
     #progressLabel { font-size: 12px; color: #9ca3af; }
+    #hint { font-size: 12px; color: #cbd5e1; line-height: 1.5; max-width: 260px; }
   </style>
 </head>
 <body>
@@ -32,6 +33,7 @@
         </div>
         <div id="progress"><div id="progressBar"></div></div>
         <div id="progressLabel">Starting...</div>
+        <div id="hint">Click an area to select and drag. Hold Shift or Ctrl/Cmd to select multiple areas and move them together.</div>
       </div>
       <div id="scene"></div>
       <div id="error"></div>

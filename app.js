@@ -42,6 +42,9 @@ const areaGroups = new Map();
 let draggedAreaId = null;
 let dragPlane = null;
 let dragOffset = null;
+let dragStartPositions = null;
+let dragStartAnchor = null;
+const selectedAreaIds = new Set();
 
 const errorBanner = document.getElementById('error');
 const sceneHost = document.getElementById('scene');
@@ -373,6 +376,37 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
   const areaVisuals = new Map();
   let builtAreaCount = 0;
 
+  selectedAreaIds.clear();
+
+  function refreshSelectionVisuals() {
+    areaVisuals.forEach((visual, areaId) => {
+      if (!visual.mesh) return;
+      const material = visual.mesh.material;
+      const selected = selectedAreaIds.has(areaId);
+      material.emissive.set(selected ? '#fbbf24' : '#000000');
+      material.emissiveIntensity = selected ? 0.75 : 0.3;
+    });
+  }
+
+  function updateSelection(areaId, event) {
+    if (!areaId) return;
+    const multi = event?.shiftKey || event?.metaKey || event?.ctrlKey;
+    if (multi) {
+      if (selectedAreaIds.has(areaId)) {
+        selectedAreaIds.delete(areaId);
+      } else {
+        selectedAreaIds.add(areaId);
+      }
+    } else {
+      selectedAreaIds.clear();
+      selectedAreaIds.add(areaId);
+    }
+    if (selectedAreaIds.size === 0) {
+      selectedAreaIds.add(areaId);
+    }
+    refreshSelectionVisuals();
+  }
+
   byArea.forEach((areaRooms, areaId) => {
     const group = new THREE.Group();
     areaGroups.set(areaId, group);
@@ -405,7 +439,14 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
       ((min.z + max.z) / 2) * SCALE
     );
 
-    const material = new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0.05, transparent: false });
+    const material = new THREE.MeshStandardMaterial({
+      color,
+      roughness: 0.5,
+      metalness: 0.05,
+      transparent: false,
+      emissive: '#000000',
+      emissiveIntensity: 0.3
+    });
     const boxGeom = new THREE.BoxGeometry(squareSize, squareSize, height);
     const areaMesh = new THREE.Mesh(boxGeom, material);
     areaMesh.position.copy(center);
@@ -419,7 +460,7 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     label.position.set(center.x, center.y, center.z + height / 2 + 6);
     group.add(label);
 
-    areaVisuals.set(areaId, { group, center, height, squareSize });
+    areaVisuals.set(areaId, { group, center, height, squareSize, mesh: areaMesh, baseColor: color });
 
     const halfSize = new THREE.Vector3(squareSize / 2, squareSize / 2, height / 2);
     const worldCenter = center.clone().add(group.position);
@@ -429,6 +470,8 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     scene.add(group);
     builtAreaCount += 1;
   });
+
+  refreshSelectionVisuals();
 
   if (!isFinite(bounds.min.x)) {
     bounds.min.set(-SCALE * 10, -SCALE * 10, -SCALE * 2);
@@ -452,10 +495,17 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     if (intersects.length === 0) return;
     const hit = intersects[0];
     draggedAreaId = hit.object.userData.areaId;
+    updateSelection(draggedAreaId, event);
     const normal = camera.getWorldDirection(new THREE.Vector3()).negate();
     dragPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(normal, hit.point);
     const areaGroup = areaGroups.get(draggedAreaId);
     dragOffset = hit.point.clone().sub(areaGroup.position);
+    dragStartPositions = new Map();
+    selectedAreaIds.forEach(id => {
+      const group = areaGroups.get(id);
+      if (group) dragStartPositions.set(id, group.position.clone());
+    });
+    dragStartAnchor = dragStartPositions.get(draggedAreaId) || areaGroup.position.clone();
     controls.enabled = false;
   }
 
@@ -465,11 +515,17 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     raycaster.setFromCamera(pointer, camera);
     const target = new THREE.Vector3();
     if (raycaster.ray.intersectPlane(dragPlane, target)) {
-      const areaGroup = areaGroups.get(draggedAreaId);
-      const nextPosition = target.clone().sub(dragOffset);
-      areaGroup.position.copy(nextPosition);
-      const offset = nextPosition.clone().divideScalar(SCALE);
-      areaOffsets.set(draggedAreaId, offset);
+      const anchorNext = target.clone().sub(dragOffset);
+      const delta = anchorNext.clone().sub(dragStartAnchor);
+      selectedAreaIds.forEach(areaId => {
+        const start = dragStartPositions?.get(areaId);
+        const group = areaGroups.get(areaId);
+        if (!start || !group) return;
+        const nextPosition = start.clone().add(delta);
+        group.position.copy(nextPosition);
+        const offset = nextPosition.clone().divideScalar(SCALE);
+        areaOffsets.set(areaId, offset);
+      });
     }
   }
 
@@ -477,6 +533,8 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     draggedAreaId = null;
     dragPlane = null;
     dragOffset = null;
+    dragStartPositions = null;
+    dragStartAnchor = null;
     controls.enabled = true;
   }
 
