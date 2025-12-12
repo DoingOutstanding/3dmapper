@@ -30,24 +30,69 @@ let dragOffset = null;
 const errorBanner = document.getElementById('error');
 const sceneHost = document.getElementById('scene');
 const saveButton = document.getElementById('saveLayout');
+const downloadLogButton = document.getElementById('downloadLog');
 const progressBar = document.getElementById('progressBar');
 const progressLabel = document.getElementById('progressLabel');
+
+const logBuffer = [];
+
+function appendLog(message, details = null) {
+  const timestamp = new Date().toISOString();
+  const suffix = details ? ` :: ${JSON.stringify(details)}` : '';
+  const entry = `[${timestamp}] ${message}${suffix}`;
+  logBuffer.push(entry);
+  console.log(entry);
+}
+
+function downloadLog(filenamePrefix = 'mapper-log', auto = false) {
+  const name = `${filenamePrefix}-${new Date().toISOString().replace(/[:.]/g, '-')}.txt`;
+  const blob = new Blob([logBuffer.join('\n') || 'No log entries'], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(url);
+  if (!auto) appendLog('Manual log download triggered', { name });
+}
 
 function setProgress(percent, label) {
   const clamped = Math.max(0, Math.min(1, percent));
   progressBar.style.width = `${Math.round(clamped * 100)}%`;
   progressLabel.textContent = label;
+  appendLog('Progress update', { percent: Math.round(clamped * 100), label });
 }
 
 function showError(message) {
   errorBanner.textContent = message;
   errorBanner.style.display = 'block';
+  appendLog('Error banner shown', { message });
 }
 
 async function loadJson(path) {
+  appendLog('Fetching JSON', { path });
   const response = await fetch(path);
   if (!response.ok) throw new Error(`Failed to load ${path}: ${response.status}`);
-  return response.json();
+  const payload = await response.json();
+  const count = Array.isArray(payload) ? payload.length : Object.keys(payload || {}).length;
+  appendLog('Loaded JSON', { path, status: response.status, entries: count });
+  return payload;
+}
+
+async function loadOptionalJson(path) {
+  try {
+    appendLog('Fetching optional JSON', { path });
+    const response = await fetch(path);
+    if (!response.ok) return null;
+    const payload = await response.json();
+    const count = Array.isArray(payload) ? payload.length : Object.keys(payload || {}).length;
+    appendLog('Loaded optional JSON', { path, status: response.status, entries: count });
+    return payload;
+  } catch (error) {
+    console.warn(`Optional load failed for ${path}:`, error);
+    appendLog('Optional JSON load failed', { path, error: error.message });
+    return null;
+  }
 }
 
 async function loadOptionalJson(path) {
@@ -234,6 +279,7 @@ function saveMegaCoordinates(areas) {
   link.download = 'mega-coordinates.json';
   link.click();
   URL.revokeObjectURL(url);
+  appendLog('Mega coordinates saved', { areas: areas.length });
 }
 
 function makeAreaLabel(text) {
@@ -453,53 +499,6 @@ function buildScene(rooms, areaColors, areas, areaConnections = []) {
     connectionVisuals.push({ connection, line, label });
   });
 
-  const raycaster = new THREE.Raycaster();
-  const pointer = new THREE.Vector2();
-
-  function updatePointer(event) {
-    pointer.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    pointer.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-  }
-
-  function onPointerDown(event) {
-    updatePointer(event);
-    raycaster.setFromCamera(pointer, camera);
-    const intersects = raycaster.intersectObjects(dragHandles, false);
-    if (intersects.length === 0) return;
-    const hit = intersects[0];
-    draggedAreaId = hit.object.userData.areaId;
-    const normal = camera.getWorldDirection(new THREE.Vector3()).negate();
-    dragPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(normal, hit.point);
-    const areaGroup = areaGroups.get(draggedAreaId);
-    dragOffset = hit.point.clone().sub(areaGroup.position);
-    controls.enabled = false;
-  }
-
-  function onPointerMove(event) {
-    if (!draggedAreaId || !dragPlane) return;
-    updatePointer(event);
-    raycaster.setFromCamera(pointer, camera);
-    const target = new THREE.Vector3();
-    if (raycaster.ray.intersectPlane(dragPlane, target)) {
-      const areaGroup = areaGroups.get(draggedAreaId);
-      const nextPosition = target.clone().sub(dragOffset);
-      areaGroup.position.copy(nextPosition);
-      const offset = nextPosition.clone().divideScalar(SCALE);
-      areaOffsets.set(draggedAreaId, offset);
-    }
-  }
-
-  function onPointerUp() {
-    draggedAreaId = null;
-    dragPlane = null;
-    dragOffset = null;
-    controls.enabled = true;
-  }
-
-  renderer.domElement.addEventListener('pointerdown', onPointerDown);
-  renderer.domElement.addEventListener('pointermove', onPointerMove);
-  renderer.domElement.addEventListener('pointerup', onPointerUp);
-
   function animate() {
     requestAnimationFrame(animate);
     connectionVisuals.forEach(item => {
@@ -519,6 +518,8 @@ function buildScene(rooms, areaColors, areas, areaConnections = []) {
   }
   animate();
 
+  appendLog('Scene built', { areas: builtAreaCount, connections: connectionVisuals.length });
+
   if (builtAreaCount === 0) {
     showError('No areas could be rendered. Please verify Database/areas.json and Database/rooms.json contain matching area IDs.');
   }
@@ -532,6 +533,7 @@ function buildScene(rooms, areaColors, areas, areaConnections = []) {
 
 async function bootstrap() {
   try {
+    appendLog('Bootstrap starting');
     setProgress(0.05, 'Loading areas...');
     const areas = await loadJson('Database/areas.json');
     setProgress(0.2, 'Loading rooms...');
@@ -542,12 +544,15 @@ async function bootstrap() {
     const savedOffsets = await loadOptionalJson('Database/mega-coordinates.json');
 
     const selectedAreas = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
+    appendLog('Areas selected', { total: areas.length, selected: selectedAreas.length });
     const areaColors = pickColors(selectedAreas);
 
     const areaRoomSet = new Set(selectedAreas.map(a => a.uid));
     const filteredRooms = rooms.filter(r => areaRoomSet.has(r.area));
+    appendLog('Rooms filtered by area', { totalRooms: rooms.length, kept: filteredRooms.length });
     const roomById = new Map(filteredRooms.map(r => [r.uid, r]));
     const filteredExits = exits.filter(exit => roomById.has(exit.fromuid) && roomById.has(exit.touid));
+    appendLog('Exits filtered by visible rooms', { totalExits: exits.length, kept: filteredExits.length });
 
     const connectionSet = new Set();
     const areaConnections = [];
@@ -561,6 +566,7 @@ async function bootstrap() {
       connectionSet.add(key);
       areaConnections.push({ fromArea: fromRoom.area, toArea: toRoom.area, label: formatExitLabel(exit) });
     });
+    appendLog('Cross-area exits collected', { connections: areaConnections.length });
 
     setProgress(0.55, 'Computing room layout...');
 
@@ -572,6 +578,7 @@ async function bootstrap() {
     const mergedOffsets = applySavedOffsets(savedOffsets, defaults);
     areaOffsets.clear();
     mergedOffsets.forEach((value, key) => areaOffsets.set(key, value));
+    appendLog('Area offsets resolved', { defaults: defaults.size, merged: mergedOffsets.size, savedProvided: Boolean(savedOffsets) });
 
     setProgress(0.7, 'Building scene...');
 
@@ -581,10 +588,15 @@ async function bootstrap() {
 
     setProgress(1, 'Ready');
 
-    saveButton.addEventListener('click', () => saveMegaCoordinates(selectedAreas));
+    if (saveButton) saveButton.addEventListener('click', () => saveMegaCoordinates(selectedAreas));
+    if (downloadLogButton) downloadLogButton.addEventListener('click', () => downloadLog());
+    appendLog('Bootstrap complete');
   } catch (error) {
     console.error(error);
+    appendLog('Bootstrap failed', { error: error.message, stack: error.stack });
+    setProgress(1, 'Failed to load');
     showError(error.message);
+    downloadLog('mapper-error-log', true);
   }
 }
 
