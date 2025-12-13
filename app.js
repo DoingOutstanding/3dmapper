@@ -53,12 +53,14 @@ let selectionStart = null;
 let selectionEnd = null;
 
 const errorBanner = document.getElementById('error');
+const sceneContainer = document.getElementById('sceneContainer');
 const sceneHost = document.getElementById('scene');
 const saveButton = document.getElementById('saveLayout');
 const downloadLogButton = document.getElementById('downloadLog');
 const progressBar = document.getElementById('progressBar');
 const progressLabel = document.getElementById('progressLabel');
-const continentFilters = document.getElementById('continentFilters');
+let sidebar = document.getElementById('sidebar');
+let continentFilters = document.getElementById('continentFilters');
 
 const logBuffer = [];
 
@@ -90,6 +92,7 @@ function setProgress(percent, label) {
 }
 
 function renderContinentFilters(continentAreas, onChange) {
+  ensureSidebar();
   if (!continentFilters) return new Set();
   const entries = Array.from(continentAreas.entries()).sort((a, b) => a[0].localeCompare(b[0]));
   const visibleContinents = new Set(entries.map(([continent]) => continent));
@@ -129,6 +132,30 @@ function renderContinentFilters(continentAreas, onChange) {
   });
 
   return visibleContinents;
+}
+
+function ensureSidebar() {
+  if (continentFilters) return;
+
+  const targetParent = sceneContainer || document.body;
+  sidebar = document.createElement('div');
+  sidebar.id = 'sidebar';
+
+  const title = document.createElement('h2');
+  title.textContent = 'Continents';
+
+  continentFilters = document.createElement('div');
+  continentFilters.id = 'continentFilters';
+
+  const hint = document.createElement('div');
+  hint.id = 'filterHint';
+  hint.textContent = 'Toggle continents to focus on a subset of the world. Hidden continents and their inter-area connections are not rendered.';
+
+  sidebar.appendChild(title);
+  sidebar.appendChild(continentFilters);
+  sidebar.appendChild(hint);
+  targetParent.appendChild(sidebar);
+  appendLog('Sidebar auto-created');
 }
 
 function showError(message) {
