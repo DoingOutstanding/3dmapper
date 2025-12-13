@@ -103,6 +103,13 @@ async function loadJson(path) {
   return payload;
 }
 
+async function loadText(path) {
+  appendLog('Fetching text', { path });
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`Failed to load ${path}: ${response.status}`);
+  return response.text();
+}
+
 async function loadOptionalJson(path) {
   try {
     appendLog('Fetching optional JSON', { path });
@@ -145,6 +152,69 @@ function normalizeDir(dir) {
 function normalizeContinentName(name = '') {
   const lowered = name.toLowerCase();
   return CONTINENT_NAMES.find(cont => lowered.includes(cont)) || null;
+}
+
+function parseCsv(text) {
+  const rows = [];
+  let current = '';
+  let inQuotes = false;
+  const records = [];
+
+  for (let i = 0; i < text.length; i += 1) {
+    const char = text[i];
+    const isQuote = char === '"';
+    const atLineBreak = char === '\n' || char === '\r';
+
+    if (isQuote) {
+      if (inQuotes && text[i + 1] === '"') {
+        current += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (!inQuotes && (char === ',' || atLineBreak)) {
+      rows.push(current);
+      current = '';
+
+      if (atLineBreak) {
+        if (rows.length) records.push(rows.splice(0));
+        while (text[i + 1] === '\r' || text[i + 1] === '\n') i += 1;
+      }
+      continue;
+    }
+
+    current += char;
+  }
+
+  if (current.length || text.endsWith(',')) rows.push(current);
+  if (rows.length) records.push(rows);
+
+  const [header = []] = records;
+  const normalizedHeader = header.map(h => h.trim());
+  return records.slice(1).map(record => {
+    const entry = {};
+    normalizedHeader.forEach((key, index) => {
+      entry[key] = (record[index] || '').trim();
+    });
+    return entry;
+  });
+}
+
+async function loadAreaContinents(path) {
+  const text = await loadText(path);
+  const rows = parseCsv(text);
+  const lookup = new Map();
+  rows.forEach(row => {
+    const name = row['Area Name'];
+    const continent = normalizeContinentName(row.Continent || '');
+    if (!name || !continent) return;
+    lookup.set(name.toLowerCase(), continent);
+  });
+  appendLog('Area continent lookup built', { entries: lookup.size });
+  return lookup;
 }
 
 function formatDirection(dir) {
@@ -756,6 +826,8 @@ async function bootstrap() {
     appendLog('Bootstrap starting');
     setProgress(0.05, 'Loading areas...');
     const areas = await loadJson('Database/areas.json');
+    setProgress(0.12, 'Loading area metadata...');
+    const areaContinentsByName = await loadAreaContinents('Database/area-exits.csv');
     setProgress(0.2, 'Loading rooms...');
     const rooms = await loadJson('Database/rooms.json');
     setProgress(0.35, 'Loading exits...');
@@ -764,8 +836,17 @@ async function bootstrap() {
     const savedOffsets = await loadOptionalJson('Database/mega-coordinates.json');
 
     const areaById = new Map(areas.map(a => [a.uid, a]));
-    const continentAreaIds = new Set(areas.filter(a => normalizeContinentName(a.name)).map(a => a.uid));
+    const areaContinentById = new Map();
+    areas.forEach(area => {
+      const fromCsv = areaContinentsByName.get(area.name.toLowerCase());
+      const normalized = fromCsv || normalizeContinentName(area.name);
+      if (normalized) areaContinentById.set(area.uid, normalized);
+    });
 
+    const continentAreaIds = new Set(
+      areas.filter(a => normalizeContinentName(a.name)).map(a => a.uid)
+    );
+    
     const baseSelection = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
     const selectedAreas = baseSelection.filter(a => !continentAreaIds.has(a.uid));
     appendLog('Areas selected', { total: areas.length, selected: selectedAreas.length, continentsHidden: continentAreaIds.size });
@@ -789,15 +870,6 @@ async function bootstrap() {
       const toRoom = roomByIdAll.get(exit.touid);
       if (!toRoom) return;
 
-      const toAreaName = areaById.get(toRoom.area)?.name;
-      const continent = toAreaName ? normalizeContinentName(toAreaName) : null;
-      if (continent) {
-        const set = continentAreas.get(continent) || new Set();
-        set.add(fromRoom.area);
-        continentAreas.set(continent, set);
-        return; // continent membership implies the connection; no line needed
-      }
-
       if (!roomById.has(toRoom.uid)) return;
       if (fromRoom.area === toRoom.area) return;
 
@@ -817,6 +889,11 @@ async function bootstrap() {
       });
     });
     appendLog('Cross-area exits collected', { connections: areaConnections.length });
+    areaContinentById.forEach((continent, areaId) => {
+      const set = continentAreas.get(continent) || new Set();
+      set.add(areaId);
+      continentAreas.set(continent, set);
+    });
     if (unexpectedDirs.size) {
       appendLog('Unexpected directions encountered', { directions: Array.from(unexpectedDirs).sort() });
     }
