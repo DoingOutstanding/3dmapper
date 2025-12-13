@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Generate a pipe-delimited table of area-to-area/continent exits."""
+"""Generate a CSV table of area-to-area/continent exits."""
+import csv
 import json
 import pathlib
 from collections import defaultdict
@@ -56,20 +57,23 @@ def format_exit_label(area_id: str, area_names: dict[str, str], area_continents:
 
 
 def write_table(area_names, area_continents, connections):
-    lines = ["Area Name | Continent | Exits"]
-    for area_id, area_name in sorted(area_names.items(), key=lambda item: item[1]):
-        exit_labels = [
-            format_exit_label(target_id, area_names, area_continents)
-            for target_id in sorted(connections.get(area_id, set()), key=lambda aid: area_names.get(aid, aid))
-        ]
-        continent_label = area_continents.get(area_id) or "-"
-        if exit_labels:
-            row = " | ".join([area_name, continent_label, " | ".join(exit_labels)])
-        else:
-            row = " | ".join([area_name, continent_label, "(no exits to other areas)"])
-        lines.append(row)
-    output = DATABASE / "area-exits.txt"
-    output.write_text("\n".join(lines) + "\n")
+    output = DATABASE / "area-exits.csv"
+    with output.open("w", newline="", encoding="utf-8") as fp:
+        writer = csv.writer(fp)
+        writer.writerow(["Area Name", "Continent", "Exits"])
+        for area_id, area_name in sorted(area_names.items(), key=lambda item: item[1]):
+            exit_labels = [
+                format_exit_label(target_id, area_names, area_continents)
+                for target_id in sorted(
+                    connections.get(area_id, set()), key=lambda aid: area_names.get(aid, aid)
+                )
+            ]
+            continent_label = area_continents.get(area_id) or "-"
+            if exit_labels:
+                exits = "; ".join(exit_labels)
+            else:
+                exits = "(no exits to other areas)"
+            writer.writerow([area_name, continent_label, exits])
     return output
 
 
