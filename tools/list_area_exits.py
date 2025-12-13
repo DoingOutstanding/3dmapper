@@ -40,6 +40,7 @@ CONTINENT_OVERRIDES = {
     "the onslaught of chaos": "The Continent of Mesolar",
     "the port": "The Continent of Mesolar",
     "the river of despair": "The Continent of Mesolar",
+    "the grand city of aylor": "The Continent of Mesolar",
     "ultima": "The Continent of Mesolar",
     "white claw cavern": "The Continent of Mesolar",
 }
@@ -115,14 +116,14 @@ def write_table(area_names, area_continents, connections, adjacency):
     output = DATABASE / "area-exits.csv"
     continent_ids = {area_id for area_id, label in area_continents.items() if label}
 
-    def reachable_continents(area_id: str, cache: dict[str, set[str]]):
+    def reachable_continent(area_id: str, cache: dict[str, str | None]):
         if area_id in cache:
             return cache[area_id]
 
-        found: set[str] = set()
         visited = {area_id}
         queue = deque((target, 1) for target in adjacency.get(area_id, set()))
         shortest_depth: int | None = None
+        found: set[str] = set()
 
         while queue:
             target, depth = queue.popleft()
@@ -141,10 +142,15 @@ def write_table(area_names, area_continents, connections, adjacency):
 
             queue.extend((next_target, depth + 1) for next_target in adjacency.get(target, set()))
 
-        cache[area_id] = found
-        return found
+        prioritized = None
+        if shortest_depth is not None:
+            continent_priority = {name: idx for idx, (name, _) in enumerate(CONTINENTS)}
+            prioritized = sorted(found, key=lambda name: continent_priority.get(name, 99))[0]
 
-    continent_cache: dict[str, set[str]] = {}
+        cache[area_id] = prioritized
+        return prioritized
+
+    continent_cache: dict[str, str | None] = {}
     with output.open("w", newline="", encoding="utf-8") as fp:
         writer = csv.writer(fp)
         writer.writerow(["Area Name", "Continent", "Exits"])
@@ -160,11 +166,11 @@ def write_table(area_names, area_continents, connections, adjacency):
                 for target_id in sorted_targets
             ]
 
-            continent_exits = reachable_continents(area_id, continent_cache)
-            if continent_exits:
-                continent_label = "; ".join(sorted(continent_exits))
-            else:
-                continent_label = CONTINENT_OVERRIDES.get(area_name.lower(), "-")
+            continent_label = CONTINENT_OVERRIDES.get(area_name.lower())
+            if not continent_label:
+                continent_label = reachable_continent(area_id, continent_cache)
+            if not continent_label:
+                continent_label = "-"
 
             non_continent_exits = [
                 label for target_id, label in zip(sorted_targets, exit_labels)
