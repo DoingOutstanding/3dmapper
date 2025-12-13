@@ -6,12 +6,33 @@ Run ``python serve.py`` to start a local HTTP server that exposes ``index.html``
 from __future__ import annotations
 
 import argparse
+import functools
 import http.server
-import os
 import pathlib
 import socketserver
 import sys
 import webbrowser
+
+
+class NoCacheRequestHandler(http.server.SimpleHTTPRequestHandler):
+    """HTTP handler that serves files from a fixed directory without caching."""
+
+    # Ensure CSV files get a sensible content-type for fetch().
+    extensions_map = {
+        **http.server.SimpleHTTPRequestHandler.extensions_map,
+        ".csv": "text/csv; charset=utf-8",
+    }
+
+    def __init__(self, *args, directory: str | None = None, **kwargs):
+        # Explicitly pass directory so we do not rely on global cwd changes.
+        super().__init__(*args, directory=directory, **kwargs)
+
+    def end_headers(self) -> None:
+        # Disable caching so UI updates (like new menus) are always picked up.
+        self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        super().end_headers()
 
 
 def parse_args() -> argparse.Namespace:
@@ -25,9 +46,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     root = pathlib.Path(__file__).resolve().parent
-    os.chdir(root)
-
-    handler = http.server.SimpleHTTPRequestHandler
+    handler = functools.partial(NoCacheRequestHandler, directory=str(root))
     with socketserver.TCPServer((args.host, args.port), handler) as httpd:
         url = f"http://{args.host}:{args.port}/"
         print(f"Serving {root} at {url}")
