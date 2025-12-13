@@ -9,7 +9,7 @@
     body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background: #0d1117; color: #e6edf3; }
     #app { position: relative; height: 100vh; width: 100vw; }
     #sceneContainer { position: relative; width: 100%; height: 100%; }
-    #overlay { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; pointer-events: auto; z-index: 2; }
+    #overlay { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; pointer-events: auto; z-index: 2; max-width: 320px; }
     #overlay h1 { margin: 0; font-size: 16px; font-weight: 600; }
     #scene { width: 100%; height: 100%; }
     #error { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: rgba(255, 85, 85, 0.15); color: #ff9797; font-size: 13px; display: none; z-index: 2; }
@@ -21,6 +21,14 @@
     #progressLabel { font-size: 12px; color: #9ca3af; }
     #hint { font-size: 12px; color: #cbd5e1; line-height: 1.5; max-width: 260px; }
     #selectionBox { position: absolute; border: 1px dashed #38bdf8; background: rgba(56, 189, 248, 0.15); pointer-events: none; display: none; z-index: 3; }
+    #sidebar { position: absolute; top: 12px; right: 12px; width: var(--sidebar-width); max-width: 380px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; pointer-events: auto; z-index: 2; box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+    #sidebar h2 { margin: 0 0 8px 0; font-size: 15px; font-weight: 600; }
+    #continentFilters { display: grid; grid-template-columns: 1fr; gap: 6px; max-height: 240px; overflow-y: auto; margin-bottom: 6px; }
+    .continent-toggle { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; }
+    .continent-toggle input { width: 16px; height: 16px; accent-color: #22c55e; }
+    .continent-toggle .label { font-size: 13px; flex: 1; }
+    .continent-toggle .count { font-size: 12px; color: #9ca3af; }
+    #filterHint { font-size: 12px; color: #9ca3af; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -35,6 +43,11 @@
         <div id="progress"><div id="progressBar"></div></div>
         <div id="progressLabel">Starting...</div>
         <div id="hint">Click an area to select and drag. Hold Shift and drag to box-select many areas, or use Ctrl/Cmd for additive clicks. Drag any selected area to move the whole selection.</div>
+      </div>
+      <div id="sidebar">
+        <h2>Continents</h2>
+        <div id="continentFilters"></div>
+        <div id="filterHint">Toggle continents to focus on a subset of the world. Hidden continents and their inter-area connections are not rendered.</div>
       </div>
       <div id="scene"></div>
       <div id="selectionBox"></div>

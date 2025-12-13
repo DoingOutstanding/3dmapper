@@ -13,6 +13,7 @@ const DIR_LABELS = {
 };
 const ALLOWED_DIRS = new Set(Object.keys(DIR_LABELS));
 const CONTINENT_NAMES = ['southern ocean', 'uncharted ocean', 'gelidus', 'alagh', 'abend', 'mesolar'];
+const UNASSIGNED_CONTINENT = 'unassigned';
 const CONTINENT_COLORS = {
   'southern ocean': '#38bdf8',
   'uncharted ocean': '#facc15',
@@ -52,11 +53,14 @@ let selectionStart = null;
 let selectionEnd = null;
 
 const errorBanner = document.getElementById('error');
+const sceneContainer = document.getElementById('sceneContainer');
 const sceneHost = document.getElementById('scene');
 const saveButton = document.getElementById('saveLayout');
 const downloadLogButton = document.getElementById('downloadLog');
 const progressBar = document.getElementById('progressBar');
 const progressLabel = document.getElementById('progressLabel');
+let sidebar = document.getElementById('sidebar');
+let continentFilters = document.getElementById('continentFilters');
 
 const logBuffer = [];
 
@@ -87,6 +91,73 @@ function setProgress(percent, label) {
   appendLog('Progress update', { percent: Math.round(clamped * 100), label });
 }
 
+function renderContinentFilters(continentAreas, onChange) {
+  ensureSidebar();
+  if (!continentFilters) return new Set();
+  const entries = Array.from(continentAreas.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+  const visibleContinents = new Set(entries.map(([continent]) => continent));
+
+  continentFilters.innerHTML = '';
+  entries.forEach(([continent, areas]) => {
+    const wrapper = document.createElement('label');
+    wrapper.className = 'continent-toggle';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = true;
+    checkbox.dataset.continent = continent;
+    const label = document.createElement('span');
+    label.className = 'label';
+    label.textContent = formatContinentLabel(continent);
+    const count = document.createElement('span');
+    count.className = 'count';
+    count.textContent = `${areas.size} areas`;
+
+    wrapper.appendChild(checkbox);
+    wrapper.appendChild(label);
+    wrapper.appendChild(count);
+    continentFilters.appendChild(wrapper);
+
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        visibleContinents.add(continent);
+      } else {
+        visibleContinents.delete(continent);
+      }
+      if (visibleContinents.size === 0) {
+        visibleContinents.add(continent);
+        checkbox.checked = true;
+      }
+      if (typeof onChange === 'function') onChange(new Set(visibleContinents));
+    });
+  });
+
+  return visibleContinents;
+}
+
+function ensureSidebar() {
+  if (continentFilters) return;
+
+  const targetParent = sceneContainer || document.body;
+  sidebar = document.createElement('div');
+  sidebar.id = 'sidebar';
+
+  const title = document.createElement('h2');
+  title.textContent = 'Continents';
+
+  continentFilters = document.createElement('div');
+  continentFilters.id = 'continentFilters';
+
+  const hint = document.createElement('div');
+  hint.id = 'filterHint';
+  hint.textContent = 'Toggle continents to focus on a subset of the world. Hidden continents and their inter-area connections are not rendered.';
+
+  sidebar.appendChild(title);
+  sidebar.appendChild(continentFilters);
+  sidebar.appendChild(hint);
+  targetParent.appendChild(sidebar);
+  appendLog('Sidebar auto-created');
+}
+
 function showError(message) {
   errorBanner.textContent = message;
   errorBanner.style.display = 'block';
@@ -101,6 +172,13 @@ async function loadJson(path) {
   const count = Array.isArray(payload) ? payload.length : Object.keys(payload || {}).length;
   appendLog('Loaded JSON', { path, status: response.status, entries: count });
   return payload;
+}
+
+async function loadText(path) {
+  appendLog('Fetching text', { path });
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`Failed to load ${path}: ${response.status}`);
+  return response.text();
 }
 
 async function loadOptionalJson(path) {
@@ -147,6 +225,69 @@ function normalizeContinentName(name = '') {
   return CONTINENT_NAMES.find(cont => lowered.includes(cont)) || null;
 }
 
+function parseCsv(text) {
+  const rows = [];
+  let current = '';
+  let inQuotes = false;
+  const records = [];
+
+  for (let i = 0; i < text.length; i += 1) {
+    const char = text[i];
+    const isQuote = char === '"';
+    const atLineBreak = char === '\n' || char === '\r';
+
+    if (isQuote) {
+      if (inQuotes && text[i + 1] === '"') {
+        current += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (!inQuotes && (char === ',' || atLineBreak)) {
+      rows.push(current);
+      current = '';
+
+      if (atLineBreak) {
+        if (rows.length) records.push(rows.splice(0));
+        while (text[i + 1] === '\r' || text[i + 1] === '\n') i += 1;
+      }
+      continue;
+    }
+
+    current += char;
+  }
+
+  if (current.length || text.endsWith(',')) rows.push(current);
+  if (rows.length) records.push(rows);
+
+  const [header = []] = records;
+  const normalizedHeader = header.map(h => h.trim());
+  return records.slice(1).map(record => {
+    const entry = {};
+    normalizedHeader.forEach((key, index) => {
+      entry[key] = (record[index] || '').trim();
+    });
+    return entry;
+  });
+}
+
+async function loadAreaContinents(path) {
+  const text = await loadText(path);
+  const rows = parseCsv(text);
+  const lookup = new Map();
+  rows.forEach(row => {
+    const name = row['Area Name'];
+    const continent = normalizeContinentName(row.Continent || '');
+    if (!name || !continent) return;
+    lookup.set(name.toLowerCase(), continent);
+  });
+  appendLog('Area continent lookup built', { entries: lookup.size });
+  return lookup;
+}
+
 function formatDirection(dir) {
   const normalized = normalizeDir(dir);
   if (!normalized) return null;
@@ -163,6 +304,11 @@ function humanizeLabel(text = '') {
   const clean = text.replace(/_/g, ' ').trim();
   if (!clean) return '';
   return clean.charAt(0).toUpperCase() + clean.slice(1);
+}
+
+function formatContinentLabel(name = '') {
+  if (name === UNASSIGNED_CONTINENT) return 'Unassigned';
+  return humanizeLabel(name.toLowerCase());
 }
 
 function formatExitLabel(exit) {
@@ -253,6 +399,11 @@ function centerCamera(camera, controls, bounds) {
   camera.position.set(center.x, center.y, bounds.max.z + span * 0.6);
   controls.screenSpacePanning = true;
   controls.enableRotate = false;
+  controls.enablePan = true;
+  controls.enableZoom = true;
+  controls.minPolarAngle = Math.PI / 2;
+  controls.maxPolarAngle = Math.PI / 2;
+  controls.update();
   camera.lookAt(center);
 }
 
@@ -274,15 +425,15 @@ function calculateAreaBounds(areaId, areaRooms) {
   return bounds;
 }
 
-function computeDefaultAreaOffsets(areas, rooms) {
-  const byArea = groupRoomsByArea(rooms);
+function layoutAreasInGrid(areas, rooms, byArea = null) {
+  const roomsByArea = byArea || groupRoomsByArea(rooms);
   const layout = new Map();
-  const gridWidth = Math.ceil(Math.sqrt(areas.length));
+  const gridWidth = Math.max(1, Math.ceil(Math.sqrt(areas.length || 1)));
   let cursorX = 0;
   let cursorY = 0;
 
-  areas.forEach((area, index) => {
-    const areaRooms = byArea.get(area.uid) || [];
+  areas.forEach(area => {
+    const areaRooms = roomsByArea.get(area.uid) || [];
     const bounds = calculateAreaBounds(area.uid, areaRooms);
     const width = (bounds.max.x - bounds.min.x) + AREA_GRID_SPACING;
     const height = (bounds.max.y - bounds.min.y) + AREA_GRID_SPACING;
@@ -296,7 +447,69 @@ function computeDefaultAreaOffsets(areas, rooms) {
     }
   });
 
-  return layout;
+  const footprint = { min: new THREE.Vector3(Infinity, Infinity, Infinity), max: new THREE.Vector3(-Infinity, -Infinity, -Infinity) };
+  areas.forEach(area => {
+    const offset = layout.get(area.uid) || new THREE.Vector3();
+    const areaRooms = roomsByArea.get(area.uid) || [];
+    const bounds = calculateAreaBounds(area.uid, areaRooms);
+    const areaMin = bounds.min.clone().add(offset);
+    const areaMax = bounds.max.clone().add(offset);
+    footprint.min.min(areaMin);
+    footprint.max.max(areaMax);
+  });
+
+  if (!isFinite(footprint.min.x)) {
+    footprint.min.set(-AREA_GRID_SPACING, -AREA_GRID_SPACING, -1);
+    footprint.max.set(AREA_GRID_SPACING, AREA_GRID_SPACING, 1);
+  }
+
+  footprint.width = footprint.max.x - footprint.min.x;
+  footprint.height = footprint.max.y - footprint.min.y;
+
+  return { layout, footprint };
+}
+
+function computeDefaultAreaOffsets(areas, rooms, areaContinentById) {
+  const byArea = groupRoomsByArea(rooms);
+  const areasByContinent = new Map();
+
+  areas.forEach(area => {
+    const continent = areaContinentById.get(area.uid) || UNASSIGNED_CONTINENT;
+    const list = areasByContinent.get(continent) || [];
+    list.push(area);
+    areasByContinent.set(continent, list);
+  });
+
+  const areaOffsets = new Map();
+  const continentFootprints = new Map();
+  const continentEntries = Array.from(areasByContinent.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+
+  continentEntries.forEach(([continent, areaList]) => {
+    const { layout, footprint } = layoutAreasInGrid(areaList, rooms, byArea);
+    layout.forEach((value, key) => areaOffsets.set(key, value));
+    continentFootprints.set(continent, footprint);
+  });
+
+  let maxSpan = AREA_GRID_SPACING * 4;
+  continentFootprints.forEach(footprint => {
+    if (!footprint) return;
+    maxSpan = Math.max(maxSpan, footprint.width + CONTINENT_PADDING * 2, footprint.height + CONTINENT_PADDING * 2);
+  });
+
+  const cellSize = maxSpan + CONTINENT_PADDING;
+  const gridWidth = Math.max(1, Math.ceil(Math.sqrt(continentEntries.length || 1)));
+
+  continentEntries.forEach(([continent, areaList], index) => {
+    const col = index % gridWidth;
+    const row = Math.floor(index / gridWidth);
+    const base = new THREE.Vector3(col * cellSize, row * cellSize, 0);
+    areaList.forEach(area => {
+      const localOffset = areaOffsets.get(area.uid) || new THREE.Vector3();
+      areaOffsets.set(area.uid, localOffset.clone().add(base));
+    });
+  });
+
+  return areaOffsets;
 }
 
 function applySavedOffsets(savedOffsets, defaultOffsets) {
@@ -347,7 +560,7 @@ function makeAreaLabel(text) {
   return sprite;
 }
 
-function buildScene(rooms, areaColors, areas, areaConnections = [], continentAreas = new Map()) {
+function buildScene(rooms, areaColors, areas, areaConnections = [], continentAreas = new Map(), areaContinentById = new Map()) {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#0b1220');
 
@@ -625,6 +838,8 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
 
   const connectionVisuals = [];
   const continentVisuals = new Map();
+  const visibleContinents = new Set(continentAreas.keys());
+  if (visibleContinents.size === 0) visibleContinents.add(UNASSIGNED_CONTINENT);
 
   function areaAnchor(areaId) {
     const visual = areaVisuals.get(areaId);
@@ -635,6 +850,33 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
   }
 
   const labelMaterialOptions = { depthTest: false, depthWrite: false };
+
+  function updateContinentVisibility(nextVisibleContinents = visibleContinents) {
+    const normalized = (nextVisibleContinents && nextVisibleContinents.size)
+      ? nextVisibleContinents
+      : new Set(areaContinentById.size ? Array.from(areaContinentById.values()) : [UNASSIGNED_CONTINENT]);
+
+    visibleContinents.clear();
+    normalized.forEach(item => visibleContinents.add(item));
+
+    areaVisuals.forEach((visual, areaId) => {
+      const continent = areaContinentById.get(areaId) || UNASSIGNED_CONTINENT;
+      const visible = visibleContinents.has(continent);
+      visual.group.visible = visible;
+    });
+
+    connectionVisuals.forEach(item => {
+      const fromContinent = areaContinentById.get(item.connection.fromArea) || UNASSIGNED_CONTINENT;
+      const toContinent = areaContinentById.get(item.connection.toArea) || UNASSIGNED_CONTINENT;
+      const visible = visibleContinents.has(fromContinent) && visibleContinents.has(toContinent);
+      item.line.visible = visible;
+      item.label.visible = visible;
+    });
+
+    continentVisuals.forEach((visual, continent) => {
+      visual.helper.visible = visibleContinents.has(continent);
+    });
+  }
 
   function makeLineLabel(text) {
     const canvas = document.createElement('canvas');
@@ -684,7 +926,7 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
   }
 
   continentAreas.forEach((areasInContinent, continent) => {
-    if (!areasInContinent.size) return;
+    if (!areasInContinent.size || continent === UNASSIGNED_CONTINENT) return;
     const min = new THREE.Vector3(Infinity, Infinity, Infinity);
     const max = new THREE.Vector3(-Infinity, -Infinity, -Infinity);
     areasInContinent.forEach(areaId => {
@@ -699,9 +941,12 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     const box = new THREE.Box3(min, max);
     const helper = new THREE.Box3Helper(box, CONTINENT_COLORS[continent] || '#fcd34d');
     helper.name = `continent-${continent}`;
+    helper.visible = visibleContinents.has(continent);
     scene.add(helper);
     continentVisuals.set(continent, { helper, areas: areasInContinent });
   });
+
+  updateContinentVisibility(visibleContinents);
 
   function animate() {
     requestAnimationFrame(animate);
@@ -749,6 +994,8 @@ function buildScene(rooms, areaColors, areas, areaConnections = [], continentAre
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
+
+  return { updateContinentVisibility };
 }
 
 async function bootstrap() {
@@ -756,6 +1003,8 @@ async function bootstrap() {
     appendLog('Bootstrap starting');
     setProgress(0.05, 'Loading areas...');
     const areas = await loadJson('Database/areas.json');
+    setProgress(0.12, 'Loading area metadata...');
+    const areaContinentsByName = await loadAreaContinents('Database/area-exits.csv');
     setProgress(0.2, 'Loading rooms...');
     const rooms = await loadJson('Database/rooms.json');
     setProgress(0.35, 'Loading exits...');
@@ -764,8 +1013,17 @@ async function bootstrap() {
     const savedOffsets = await loadOptionalJson('Database/mega-coordinates.json');
 
     const areaById = new Map(areas.map(a => [a.uid, a]));
-    const continentAreaIds = new Set(areas.filter(a => normalizeContinentName(a.name)).map(a => a.uid));
+    const areaContinentById = new Map();
+    areas.forEach(area => {
+      const fromCsv = areaContinentsByName.get(area.name.toLowerCase());
+      const normalized = fromCsv || normalizeContinentName(area.name);
+      if (normalized) areaContinentById.set(area.uid, normalized);
+    });
 
+    const continentAreaIds = new Set(
+      areas.filter(a => normalizeContinentName(a.name)).map(a => a.uid)
+    );
+    
     const baseSelection = AREA_FILTER ? areas.filter(a => AREA_FILTER.has(a.uid)) : areas;
     const selectedAreas = baseSelection.filter(a => !continentAreaIds.has(a.uid));
     appendLog('Areas selected', { total: areas.length, selected: selectedAreas.length, continentsHidden: continentAreaIds.size });
@@ -789,15 +1047,6 @@ async function bootstrap() {
       const toRoom = roomByIdAll.get(exit.touid);
       if (!toRoom) return;
 
-      const toAreaName = areaById.get(toRoom.area)?.name;
-      const continent = toAreaName ? normalizeContinentName(toAreaName) : null;
-      if (continent) {
-        const set = continentAreas.get(continent) || new Set();
-        set.add(fromRoom.area);
-        continentAreas.set(continent, set);
-        return; // continent membership implies the connection; no line needed
-      }
-
       if (!roomById.has(toRoom.uid)) return;
       if (fromRoom.area === toRoom.area) return;
 
@@ -817,6 +1066,12 @@ async function bootstrap() {
       });
     });
     appendLog('Cross-area exits collected', { connections: areaConnections.length });
+    selectedAreas.forEach(area => {
+      const continent = areaContinentById.get(area.uid) || UNASSIGNED_CONTINENT;
+      const set = continentAreas.get(continent) || new Set();
+      set.add(area.uid);
+      continentAreas.set(continent, set);
+    });
     if (unexpectedDirs.size) {
       appendLog('Unexpected directions encountered', { directions: Array.from(unexpectedDirs).sort() });
     }
@@ -828,7 +1083,7 @@ async function bootstrap() {
     roomPositionsByArea.clear();
     computedPositions.forEach((value, key) => roomPositionsByArea.set(key, value));
 
-    const defaults = computeDefaultAreaOffsets(selectedAreas, filteredRooms);
+    const defaults = computeDefaultAreaOffsets(selectedAreas, filteredRooms, areaContinentById);
     const mergedOffsets = applySavedOffsets(savedOffsets, defaults);
     areaOffsets.clear();
     mergedOffsets.forEach((value, key) => areaOffsets.set(key, value));
@@ -838,7 +1093,12 @@ async function bootstrap() {
 
     areaGroups.clear();
 
-    buildScene(filteredRooms, areaColors, selectedAreas, areaConnections, continentAreas);
+    const sceneApi = buildScene(filteredRooms, areaColors, selectedAreas, areaConnections, continentAreas, areaContinentById);
+
+    const visibleContinents = renderContinentFilters(continentAreas, next => sceneApi?.updateContinentVisibility(next));
+    if (sceneApi?.updateContinentVisibility) {
+      sceneApi.updateContinentVisibility(visibleContinents);
+    }
 
     setProgress(1, 'Ready');
 
