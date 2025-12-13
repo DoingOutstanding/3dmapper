@@ -66,21 +66,37 @@ def format_exit_label(area_id: str, area_names: dict[str, str], area_continents:
 
 def write_table(area_names, area_continents, connections):
     output = DATABASE / "area-exits.csv"
+    continent_ids = {area_id for area_id, label in area_continents.items() if label}
     with output.open("w", newline="", encoding="utf-8") as fp:
         writer = csv.writer(fp)
         writer.writerow(["Area Name", "Continent", "Exits"])
         for area_id, area_name in sorted(area_names.items(), key=lambda item: item[1]):
+            if area_id in continent_ids:
+                continue
+
+            sorted_targets = sorted(
+                connections.get(area_id, set()), key=lambda aid: area_names.get(aid, aid)
+            )
             exit_labels = [
                 format_exit_label(target_id, area_names, area_continents)
-                for target_id in sorted(
-                    connections.get(area_id, set()), key=lambda aid: area_names.get(aid, aid)
-                )
+                for target_id in sorted_targets
             ]
-            continent_label = area_continents.get(area_id) or "-"
-            if exit_labels:
-                exits = "; ".join(exit_labels)
+
+            continent_exits = [
+                label for target_id, label in zip(sorted_targets, exit_labels)
+                if target_id in continent_ids
+            ]
+            continent_label = "; ".join(continent_exits) if continent_exits else "-"
+
+            non_continent_exits = [
+                label for target_id, label in zip(sorted_targets, exit_labels)
+                if target_id not in continent_ids
+            ]
+            if non_continent_exits:
+                exits = "; ".join(non_continent_exits)
             else:
                 exits = "(no exits to other areas)"
+
             writer.writerow([area_name, continent_label, exits])
     return output
 
