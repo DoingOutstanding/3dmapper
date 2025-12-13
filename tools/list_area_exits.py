@@ -7,14 +7,22 @@ from collections import defaultdict
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATABASE = ROOT / "Database"
-CONTINENT_NAMES = ["southern ocean", "uncharted ocean", "gelidus", "alagh", "abend", "mesolar"]
+# Canonical continent names with matching keywords used for detection in area names.
+CONTINENTS: list[tuple[str, tuple[str, ...]]] = [
+    ("The Dark Continent, Abend", ("dark continent", "abend")),
+    ("Alagh, the Blood Lands", ("alagh", "blood lands")),
+    ("Gelidus", ("gelidus",)),
+    ("The Continent of Mesolar", ("mesolar",)),
+    ("The Southern Ocean", ("southern ocean",)),
+    ("The Uncharted Oceans", ("uncharted ocean", "uncharted oceans")),
+]
 
 
 def normalize_continent(name: str) -> str | None:
     lowered = (name or "").lower()
-    for continent in CONTINENT_NAMES:
-        if continent in lowered:
-            return continent
+    for canonical, keywords in CONTINENTS:
+        if any(keyword in lowered for keyword in keywords):
+            return canonical
     return None
 
 
