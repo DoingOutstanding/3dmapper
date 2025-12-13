@@ -9,6 +9,40 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATABASE = ROOT / "Database"
 # Areas to exclude from the generated table (and from providing connections).
 EXCLUDED_AREAS = {"immortal homes", "a bad trip"}
+# Areas with known continent placement even when no graph connection exists.
+CONTINENT_OVERRIDES = {
+    "aardwolf winter festival 2008": "The Continent of Mesolar",
+    "arboria": "The Continent of Mesolar",
+    "black claw crag": "The Continent of Mesolar",
+    "castle reinhold": "The Continent of Mesolar",
+    "dune: the desert planet": "Alagh, the Blood Lands",
+    "limbo": "The Continent of Mesolar",
+    "midgaard": "The Continent of Mesolar",
+    "mossflower wood": "The Continent of Mesolar",
+    "nowhere": "The Continent of Mesolar",
+    "old clan holding area 1": "The Continent of Mesolar",
+    "old clan holding area 2": "The Continent of Mesolar",
+    "old clan holding area 3": "The Continent of Mesolar",
+    "old clan holding area 4": "The Continent of Mesolar",
+    "raiding school": "The Continent of Mesolar",
+    "ranger heaven": "Alagh, the Blood Lands",
+    "sea king's dominion": "The Southern Ocean",
+    "st:tng": "The Continent of Mesolar",
+    "secret imm project #69": "The Continent of Mesolar",
+    "stonekeep": "The Continent of Mesolar",
+    "the adventurers' wayhouse": "The Continent of Mesolar",
+    "the casino": "The Continent of Mesolar",
+    "the dwarven kingdom": "The Continent of Mesolar",
+    "the fortress of angband": "The Continent of Mesolar",
+    "the island of stardock": "The Southern Ocean",
+    "the laser zone": "The Continent of Mesolar",
+    "the mirror realm": "The Continent of Mesolar",
+    "the onslaught of chaos": "The Continent of Mesolar",
+    "the port": "The Continent of Mesolar",
+    "the river of despair": "The Continent of Mesolar",
+    "ultima": "The Continent of Mesolar",
+    "white claw cavern": "The Continent of Mesolar",
+}
 # Canonical continent names with matching keywords used for detection in area names.
 CONTINENTS: list[tuple[str, tuple[str, ...]]] = [
     ("The Dark Continent, Abend", ("dark continent", "abend")),
@@ -51,6 +85,7 @@ def build_area_lookup(areas):
 
 def collect_area_connections(exits, room_index, allowed_areas: set[str]):
     connections: dict[str, set[str]] = defaultdict(set)
+    adjacency: dict[str, set[str]] = defaultdict(set)
     for exit_ in exits:
         from_area = room_index.get(exit_.get("fromuid"))
         to_area = room_index.get(exit_.get("touid"))
@@ -63,7 +98,9 @@ def collect_area_connections(exits, room_index, allowed_areas: set[str]):
         ):
             continue
         connections[from_area].add(to_area)
-    return connections
+        adjacency[from_area].add(to_area)
+        adjacency[to_area].add(from_area)
+    return connections, adjacency
 
 
 def format_exit_label(area_id: str, area_names: dict[str, str], area_continents: dict[str, str | None]):
@@ -74,7 +111,7 @@ def format_exit_label(area_id: str, area_names: dict[str, str], area_continents:
     return name
 
 
-def write_table(area_names, area_continents, connections):
+def write_table(area_names, area_continents, connections, adjacency):
     output = DATABASE / "area-exits.csv"
     continent_ids = {area_id for area_id, label in area_continents.items() if label}
 
@@ -84,7 +121,7 @@ def write_table(area_names, area_continents, connections):
 
         found: set[str] = set()
         visited = {area_id}
-        queue = deque((target, 1) for target in connections.get(area_id, set()))
+        queue = deque((target, 1) for target in adjacency.get(area_id, set()))
         shortest_depth: int | None = None
 
         while queue:
@@ -102,7 +139,7 @@ def write_table(area_names, area_continents, connections):
                 shortest_depth = depth if shortest_depth is None else shortest_depth
                 continue
 
-            queue.extend((next_target, depth + 1) for next_target in connections.get(target, set()))
+            queue.extend((next_target, depth + 1) for next_target in adjacency.get(target, set()))
 
         cache[area_id] = found
         return found
@@ -124,7 +161,10 @@ def write_table(area_names, area_continents, connections):
             ]
 
             continent_exits = reachable_continents(area_id, continent_cache)
-            continent_label = "; ".join(sorted(continent_exits)) if continent_exits else "-"
+            if continent_exits:
+                continent_label = "; ".join(sorted(continent_exits))
+            else:
+                continent_label = CONTINENT_OVERRIDES.get(area_name.lower(), "-")
 
             non_continent_exits = [
                 label for target_id, label in zip(sorted_targets, exit_labels)
@@ -146,8 +186,8 @@ def main():
 
     area_names, area_continents = build_area_lookup(areas)
     room_index = build_room_index(rooms)
-    connections = collect_area_connections(exits, room_index, set(area_names))
-    output = write_table(area_names, area_continents, connections)
+    connections, adjacency = collect_area_connections(exits, room_index, set(area_names))
+    output = write_table(area_names, area_continents, connections, adjacency)
     print(f"Wrote {output.relative_to(ROOT)} with {len(area_names)} areas.")
 
 
