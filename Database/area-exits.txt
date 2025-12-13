@@ -1,0 +1,340 @@
+Area Name | Continent | Exits
+A Bad Trip | - | Immortal Homes | The Grand City of Aylor
+A Clearing in the Woods | - | Deathtrap Dungeon | Faerie Tales II | Into the Long Night | The Dungeon of Doom | The Grand City of Aylor
+A Genie's Last Wish | - | The Continent of Mesolar (mesolar)
+A Magical Hodgepodge | - | The Infestation
+A Peaceful Giant Village | - | The Mountains of Desolation
+Aardington Estate | - | Hedgehogs' Paradise | The Continent of Mesolar (mesolar)
+Aardwolf Birthday Area | - | The Grand City of Aylor
+Aardwolf Estates 2000 | - | Crossroads of Fortune | Faerie Tales | Mountain View Estates | Prairie Village Estates | Realm of the Sacred Flame | Seaside Height Estates | Shady Acres Estates | Tanra'vea | The Continent of Mesolar (mesolar) | The Grand City of Aylor | The Nyne Woods | The Realm of Infamy
+Aardwolf Winter Festival 2008 | - | (no exits to other areas)
+Aardwolf Zoological Park | - | Giant's Pet Store | The Continent of Mesolar (mesolar)
+Adventures in Sendhia | - | Vidblain, the Ever Dark
+Aerial City of Cineko | - | The Continent of Mesolar (mesolar)
+Afterglow | - | Alagh, the Blood Lands (alagh)
+Alagh, the Blood Lands | alagh | Afterglow | All in a Fayke Day | Ascension Bluff Nursing Home | Bloodlust Dungeon | Castle Vlad-Shamir | Chakra Spire | Descent to Hell | Dunes in Gold | Dusk Valley | Jungles of Verume | Living Mines of Dak'Tai | Nebulous Horizon | Nenukon and the Far Country | Northstar | Nottingham | Raganatittu | Sagewood Grove | Shadow's End | Shady Acres Estates | Storm Ships of Lem-Dagor | Takeda's Warcamp | The Amazon Nation | The Cataclysm | The Continent of Mesolar (mesolar) | The Covenant of Mistridge | The Dark Continent, Abend (abend) | The Desert Prison | The Dungeon of Doom | The Fabled City of Stone | The Flying Citadel | The Great Salt Flats | The Keep of Kearvek | The Killing Fields | The Southern Ocean (southern ocean) | The Temple of Shouggoth | The Uncharted Oceans (uncharted ocean) | The Were Wood | Tir na nOg
+All in a Fayke Day | - | Alagh, the Blood Lands (alagh)
+Ancient Greece | - | Seven Wonders | The Great City of Knossos | The Southern Ocean (southern ocean)
+Andolor's Ocean Adventure Park | - | The Uncharted Oceans (uncharted ocean)
+Annwn | - | The Southern Ocean (southern ocean)
+Anthrox | - | The Continent of Mesolar (mesolar)
+Arboretum | - | Gelidus (gelidus)
+Arboria | - | (no exits to other areas)
+Arisian Realm | - | The Dark Continent, Abend (abend)
+Art of Melody | - | The Grand City of Aylor
+Artificer's Mayhem | - | The Dark Continent, Abend (abend)
+Ascension Bluff Nursing Home | - | Alagh, the Blood Lands (alagh)
+Atlantis | - | The Southern Ocean (southern ocean)
+Avian Kingdom | - | The Dark Continent, Abend (abend)
+Battlefields of Adaldar | - | The Continent of Mesolar (mesolar)
+Black Claw Crag | - | (no exits to other areas)
+Black Lagoon | - | Gelidus (gelidus)
+Black Rose | - | The Dark Continent, Abend (abend)
+Bloodlust Dungeon | - | Alagh, the Blood Lands (alagh)
+Brightsea and Glimmerdim | - | Rebellion of the Nix | The Continent of Mesolar (mesolar)
+Canyon Memorial Hospital | - | Gelidus (gelidus)
+Castle Reinhold | - | (no exits to other areas)
+Castle Vlad-Shamir | - | Alagh, the Blood Lands (alagh)
+Cathedral of the Elements | - | The Grand City of Aylor
+Chakra Spire | - | Alagh, the Blood Lands (alagh)
+Challenge Area | - | The Grand City of Aylor
+Chaprenula's Laboratory | - | The Continent of Mesolar (mesolar)
+Child's Play | - | The Continent of Mesolar (mesolar)
+Christmas Vacation | - | Gelidus (gelidus)
+Cloud City of Gnomalin | - | The Continent of Mesolar (mesolar)
+Cradlebrook | - | The Continent of Mesolar (mesolar)
+Crossroads of Fortune | - | The Dark Continent, Abend (abend)
+Crynn's Church | - | The Southern Ocean (southern ocean)
+Dark Elf Stronghold | - | Gelidus (gelidus)
+Dark Temple of Zhamet | - | The Grand City of Aylor
+Death's Manor | - | The Continent of Mesolar (mesolar)
+Deathtrap Dungeon | - | The UnderDark
+Den of Thieves | - | The Continent of Mesolar (mesolar)
+Descent to Hell | - | Alagh, the Blood Lands (alagh) | The Council of the Wyrm
+Desert Doom | - | (no exits to other areas)
+Dhal'Gora Outlands | - | The Southern Ocean (southern ocean)
+Diamond Soul Revelation | - | The Continent of Mesolar (mesolar)
+Disciples of Hassan Clan Hall | - | Avian Kingdom | Dortmund | New Thalos | Sanctity of Eternal Damnation | The Cataclysm | The Grand City of Aylor
+Dominion Clan Area | - | The Grand City of Aylor
+Dortmund | - | The Continent of Mesolar (mesolar) | The Monastery | The Old Cathedral
+Dread Tower | - | The Continent of Mesolar (mesolar)
+Dune: The Desert Planet | - | (no exits to other areas)
+Dunes in Gold | - | Alagh, the Blood Lands (alagh)
+Dusk Valley | - | Alagh, the Blood Lands (alagh)
+Earth Plane 4 | - | Gelidus (gelidus)
+Elemental Chaos | - | The Continent of Mesolar (mesolar)
+Empyrean, Streets of Downfall | - | Living Mines of Dak'Tai
+Entrance to Hades | - | The Dark Continent, Abend (abend) | The Grand City of Aylor
+Eternal Autumn | - | Ketu Uplands | The Dark Continent, Abend (abend)
+Faerie Tales | - | Faerie Tales II | The Continent of Mesolar (mesolar)
+Faerie Tales II | - | Faerie Tales
+Fantasy Fields | - | The Grand City of Aylor
+Fellchantry | - | The Continent of Mesolar (mesolar)
+Foolish Promises | - | Gelidus (gelidus)
+Fort Terramire | - | The UnderDark
+Fractals of the Weave | - | The Grand City of Aylor
+Gallows Hill | - | The Continent of Mesolar (mesolar)
+Gelidus | gelidus | Arboretum | Black Lagoon | Canyon Memorial Hospital | Christmas Vacation | Dark Elf Stronghold | Earth Plane 4 | Foolish Promises | Helegear Sea | Kiksaadi Cove | Kobold Siege Camp | Mountain View Estates | Ookushka Garrison | Paradise Lost | Plains of Nulan'Boar | Realm of Deneria | Sanctity of Eternal Damnation | Storm Mountain | Swordbreaker's Hoard | Tairayden Peninsula | The Blighted Tundra of Andarin | The Continent of Mesolar (mesolar) | The Curse of the Midnight Fens | The Empire of Talsa | The Icy Caldera of Mauldoon | The Realm of the Hawklords | The Ruins of Diamond Reach | The Southern Ocean (southern ocean) | The Uncharted Oceans (uncharted ocean) | Unearthly Bonds | Weather Observatory | Wildwood | Winterlands
+Giant's Pet Store | - | Aardwolf Zoological Park
+Gilda And The Dragon | - | The Continent of Mesolar (mesolar)
+Gnoll's Quarry | - | The Continent of Mesolar (mesolar)
+Gold Rush | - | The Continent of Mesolar (mesolar) | The Grand City of Aylor
+Guardian's Spyre of Knowledge | - | The Continent of Mesolar (mesolar)
+Halls of the Damned | - | The Dark Continent, Abend (abend)
+Hatchling Aerie | - | The Continent of Mesolar (mesolar)
+Hedgehogs' Paradise | - | Aardington Estate | The Continent of Mesolar (mesolar)
+Helegear Sea | - | (no exits to other areas)
+Hotel Orlando | - | The Continent of Mesolar (mesolar)
+House of Cards | - | The Dark Continent, Abend (abend)
+Icefall | - | The Uncharted Oceans (uncharted ocean)
+Imagi's Nation | - | The Southern Ocean (southern ocean)
+Immortal Homes | - | A Bad Trip | Alagh, the Blood Lands (alagh) | Gelidus (gelidus) | The Dark Continent, Abend (abend) | The Grand City of Aylor | The Southern Ocean (southern ocean) | The Uncharted Oceans (uncharted ocean)
+Imperial Nation | - | Vidblain, the Ever Dark
+Insanitaria | - | The Continent of Mesolar (mesolar)
+Into the Long Night | - | The Dark Continent, Abend (abend)
+Intrigues of Times Past | - | The Continent of Mesolar (mesolar)
+Island of Lost Time | - | The Dark Continent, Abend (abend)
+Isle of Anglesey | - | The Grand City of Aylor
+Jenny's Tavern | - | Kerofk
+Jotunheim | - | The Grand City of Aylor
+Journey to the Inferno | - | The Uncharted Oceans (uncharted ocean)
+Jungles of Verume | - | Alagh, the Blood Lands (alagh) | Thandeld's Conflict | The Cougarian Queendom
+Keep of the Kobaloi | - | The Chasm and The Catacombs | The Continent of Mesolar (mesolar)
+Kerofk | - | Jenny's Tavern | The Continent of Mesolar (mesolar)
+Ketu Uplands | - | Eternal Autumn | The Dark Continent, Abend (abend)
+Kiksaadi Cove | - | Gelidus (gelidus)
+Kimr's Farm | - | The Continent of Mesolar (mesolar)
+Kingdom of Ahner | - | The Continent of Mesolar (mesolar)
+Kingsholm | - | The Continent of Mesolar (mesolar)
+Kobold Siege Camp | - | Gelidus (gelidus)
+Kul Tiras | - | The Dark Continent, Abend (abend)
+Land of Legend | - | The Grand City of Aylor
+Limbo | - | (no exits to other areas)
+Living Mines of Dak'Tai | - | Alagh, the Blood Lands (alagh) | Empyrean, Streets of Downfall | The Gathering Horde
+Loqui Clan Area | - | The Grand City of Aylor
+Lowlands Paradise '96 | - | The Continent of Mesolar (mesolar)
+Masaki Clan Area | - | The Grand City of Aylor
+Masquerade Island | - | The Uncharted Oceans (uncharted ocean)
+Midgaard | - | (no exits to other areas)
+Midgaardian Publishing House | - | Child's Play | Mount duNoir | The Grand City of Aylor | The Graveyard | The Great Salt Flats | The Realm of the Hawklords
+Mossflower Wood | - | (no exits to other areas)
+Mount duNoir | - | The Dark Continent, Abend (abend)
+Mountain View Estates | - | Aardwolf Estates 2000 | Annwn | Gelidus (gelidus) | Prairie Village Estates | Seaside Height Estates | Shady Acres Estates | The Aardwolf Isle Estates | The Grand City of Aylor | The Tree of Life | Xyl's Mosaic
+Mudwog's Swamp | - | The Continent of Mesolar (mesolar)
+Nanjiki Ruins | - | The Amazon Nation
+Nebulous Horizon | - | Alagh, the Blood Lands (alagh)
+Necromancers' Guild | - | The Graveyard
+Nenukon and the Far Country | - | Alagh, the Blood Lands (alagh)
+New Thalos | - | The Continent of Mesolar (mesolar)
+Northstar | - | Alagh, the Blood Lands (alagh)
+Nottingham | - | Alagh, the Blood Lands (alagh)
+Nowhere | - | (no exits to other areas)
+Old clan holding area 1 | - | (no exits to other areas)
+Old clan holding area 2 | - | (no exits to other areas)
+Old clan holding area 3 | - | (no exits to other areas)
+Old clan holding area 4 | - | (no exits to other areas)
+Olde Worlde Carnivale | - | The Continent of Mesolar (mesolar)
+Onyx Bazaar | - | The UnderDark
+Ookushka Garrison | - | Gelidus (gelidus)
+Oradrin's Chosen | - | The Uncharted Oceans (uncharted ocean)
+Paradise Lost | - | Gelidus (gelidus)
+Perdition Clan Area | - | A Peaceful Giant Village | The Grand City of Aylor | The Ruins of Stormhaven | The Temple of Shouggoth
+Plains of Nulan'Boar | - | Gelidus (gelidus)
+Pompeii | - | The Southern Ocean (southern ocean)
+Prairie Village Estates | - | Aardwolf Estates 2000 | Bloodlust Dungeon | Crossroads of Fortune | Faerie Tales II | Hedgehogs' Paradise | Mountain View Estates | Seaside Height Estates | Shadow's End | Shady Acres Estates | The Continent of Mesolar (mesolar) | The Grand City of Aylor
+Prosper's Island | - | Storm Ships of Lem-Dagor
+Qong | - | The Southern Ocean (southern ocean)
+Radiance Woods | - | (no exits to other areas)
+Raganatittu | - | Alagh, the Blood Lands (alagh)
+Raiding School | - | (no exits to other areas)
+Ranger Heaven | - | (no exits to other areas)
+Realm of Deneria | - | Gelidus (gelidus)
+Realm of the Firebird | - | The Continent of Mesolar (mesolar)
+Realm of the Sacred Flame | - | The Dark Continent, Abend (abend)
+Realm of the Zodiac | - | The Dark Continent, Abend (abend)
+Rebellion of the Nix | - | Brightsea and Glimmerdim
+Rosewood Castle | - | The Dark Continent, Abend (abend)
+ST:TNG | - | (no exits to other areas)
+Sagewood Grove | - | Alagh, the Blood Lands (alagh)
+Sanctity of Eternal Damnation | - | Gelidus (gelidus)
+Sea King's Dominion | - | (no exits to other areas)
+Seaside Height Estates | - | Aardwolf Estates 2000 | Mountain View Estates | Prairie Village Estates | Shady Acres Estates | The Aardwolf Isle Estates | The Dark Continent, Abend (abend) | The Grand City of Aylor
+Secret Imm Project #69 | - | (no exits to other areas)
+Sen'narre Lake | - | The Continent of Mesolar (mesolar) | The Fire Swamp
+Seven Wonders | - | Ancient Greece
+Shadow's End | - | Alagh, the Blood Lands (alagh)
+Shady Acres Estates | - | Aardwolf Estates 2000 | Alagh, the Blood Lands (alagh) | Mountain View Estates | Prairie Village Estates | Seaside Height Estates
+Sheila's Cat Sanctuary | - | The Continent of Mesolar (mesolar)
+Sho'aram, Castle in the Sand | - | (no exits to other areas)
+Siren's Oasis Resort | - | The Continent of Mesolar (mesolar)
+Skeletal Remains | - | The Dark Continent, Abend (abend)
+Snuckles Village | - | The Continent of Mesolar (mesolar)
+Stonekeep | - | (no exits to other areas)
+Storm Mountain | - | Gelidus (gelidus)
+Storm Ships of Lem-Dagor | - | Alagh, the Blood Lands (alagh) | Prosper's Island
+Sundered Vale | - | The Continent of Mesolar (mesolar)
+Svrogan's Logging Camp | - | (no exits to other areas)
+Swordbreaker's Hoard | - | Gelidus (gelidus)
+Tai'rha Laym | - | The Dark Continent, Abend (abend)
+Tairayden Peninsula | - | Gelidus (gelidus) | Tribal Origins
+Takeda's Warcamp | - | Alagh, the Blood Lands (alagh)
+Tanra'vea | - | The Continent of Mesolar (mesolar)
+Thandeld's Conflict | - | Jungles of Verume
+The Aardwolf Isle Estates | - | Mountain View Estates | Seaside Height Estates | The Uncharted Oceans (uncharted ocean)
+The Aardwolf Real Estates | - | The Continent of Mesolar (mesolar)
+The Abyssal Caverns of Sahuagin | - | The Uncharted Oceans (uncharted ocean)
+The Adventurers' Wayhouse | - | (no exits to other areas)
+The Amazon Nation | - | Alagh, the Blood Lands (alagh) | Nanjiki Ruins
+The Amusement Park | - | Realm of the Zodiac | Swordbreaker's Hoard | Thandeld's Conflict | The Continent of Mesolar (mesolar) | The Lower Planes | The Nine Hells | The Upper Planes
+The Archipelago of Entropy | - | The Dark Continent, Abend (abend)
+The Astral Travels | - | The Dark Continent, Abend (abend)
+The Aylorian Academy | - | The Boot Camp | The Grand City of Aylor
+The Bard Clan | - | The Amusement Park | The Blighted Tundra of Andarin | The Coral Kingdom | The Grand City of Aylor | The Town of Solan | Zangar's Demonic Grotto
+The Blighted Tundra of Andarin | - | The Continent of Mesolar (mesolar)
+The Blood Opal of Rauko'ra | - | The Mountains of Desolation
+The Blood Sanctum | - | The Dark Continent, Abend (abend)
+The Boot Camp | - | Hatchling Aerie | House of Cards | Kul Tiras | Sanctity of Eternal Damnation | The Aylorian Academy | The Grand City of Aylor | The Mountains of Desolation
+The Broken Halls of Horath | - | The Dark Continent, Abend (abend)
+The Call of Heroes | - | (no exits to other areas)
+The Casino | - | (no exits to other areas)
+The Cataclysm | - | Alagh, the Blood Lands (alagh) | The Maelstrom
+The Chasm and The Catacombs | - | Keep of the Kobaloi | The UnderDark | Zangar's Demonic Grotto
+The Chessboard | - | The Grand City of Aylor
+The Collective Mind of Tao | - | Brightsea and Glimmerdim | Earth Plane 4 | Foolish Promises | The Grand City of Aylor | The Old Cathedral | Tribal Origins
+The Continent of Mesolar | mesolar | A Genie's Last Wish | Aardington Estate | Aardwolf Estates 2000 | Aardwolf Zoological Park | Aerial City of Cineko | Alagh, the Blood Lands (alagh) | Anthrox | Battlefields of Adaldar | Brightsea and Glimmerdim | Chaprenula's Laboratory | Child's Play | Cloud City of Gnomalin | Cradlebrook | Death's Manor | Den of Thieves | Diamond Soul Revelation | Dortmund | Dread Tower | Elemental Chaos | Faerie Tales | Fantasy Fields | Fellchantry | Gallows Hill | Gelidus (gelidus) | Gilda And The Dragon | Gnoll's Quarry | Gold Rush | Guardian's Spyre of Knowledge | Hatchling Aerie | Hedgehogs' Paradise | Hotel Orlando | Insanitaria | Intrigues of Times Past | Island of Lost Time | Keep of the Kobaloi | Kerofk | Kimr's Farm | Kingdom of Ahner | Kingsholm | Lowlands Paradise '96 | Mudwog's Swamp | New Thalos | Olde Worlde Carnivale | Prairie Village Estates | Radiance Woods | Realm of the Firebird | Sen'narre Lake | Sheila's Cat Sanctuary | Sho'aram, Castle in the Sand | Siren's Oasis Resort | Snuckles Village | Sundered Vale | Tanra'vea | The Aardwolf Real Estates | The Amusement Park | The Blighted Tundra of Andarin | The Dark Continent, Abend (abend) | The Forest of Li'Dnesh | The Fractured Lands | The Gauntlet | The Grand City of Aylor | The Graveyard | The Imperial City of Reme | The Infestation | The Labyrinth | The Land of Oz | The Land of the Beer Goblins | The Marshlands of Agroth | The Palace of Song | The Path of the Believer | The Shadows of Minos | The Southern Ocean (southern ocean) | The Temple of Shal'indrael | The Three Pillars of Diatz | The Town of Solan | The Tree of Life | The Trouble with Gwillimberry | The UnderDark | The Wobbly Woes of Woobleville | The Wood Elves of Nalondir | Tilule Rehabilitation Clinic | Tournament Camps | Tumari's Diner | War of the Wizards | Warrior's Training Camp | Wayfarer's Caravan | Wedded Bliss
+The Coral Kingdom | - | The Southern Ocean (southern ocean)
+The Cougarian Queendom | - | Jungles of Verume
+The Council of the Wyrm | - | Descent to Hell | The Grand City of Aylor
+The Covenant of Mistridge | - | Alagh, the Blood Lands (alagh)
+The Cracks of Terra | - | The Uncharted Oceans (uncharted ocean)
+The Crimson Horde Clan Hall | - | The Grand City of Aylor
+The Crusader Clan | - | Diamond Soul Revelation | Jungles of Verume | Storm Mountain | The Grand City of Aylor | The UnderDark | War of the Wizards
+The Curse of the Midnight Fens | - | Gelidus (gelidus)
+The Dark Continent, Abend | abend | Alagh, the Blood Lands (alagh) | Arisian Realm | Artificer's Mayhem | Avian Kingdom | Black Rose | Crossroads of Fortune | Entrance to Hades | Eternal Autumn | Halls of the Damned | House of Cards | Into the Long Night | Island of Lost Time | Ketu Uplands | Kul Tiras | Mount duNoir | Realm of the Sacred Flame | Realm of the Zodiac | Rosewood Castle | Seaside Height Estates | Skeletal Remains | Tai'rha Laym | The Archipelago of Entropy | The Astral Travels | The Blood Sanctum | The Broken Halls of Horath | The Continent of Mesolar (mesolar) | The Dark Temple of Zyian | The Drageran Empire | The Earth Lords | The Glamdursil | The Goblin Fortress | The Maelstrom | The Mountains of Desolation | The Relinquished Tombs | The Ruins of Stormhaven | The Scarred Lands | The School of Horror | The Silver Volcano | The Slaughter House | The Tournament of Illoria | The Uncharted Oceans (uncharted ocean) | The Yurgach Domain | Wayward Alehouse | Winds of Fate | Xyl's Mosaic
+The Dark Temple of Zyian | - | The Dark Continent, Abend (abend)
+The DarkLight | - | Vidblain, the Ever Dark
+The Darkside of the Fractured Lands | - | The Fractured Lands
+The Deadlights | - | The Grand City of Aylor | The Mountains of Desolation
+The Desert Prison | - | Alagh, the Blood Lands (alagh)
+The Drageran Empire | - | The Dark Continent, Abend (abend)
+The Dungeon of Doom | - | Alagh, the Blood Lands (alagh)
+The Dwarven Kingdom | - | (no exits to other areas)
+The Earth Lords | - | The Dark Continent, Abend (abend)
+The Eighteenth Dynasty | - | The Gauntlet
+The Emerald Clan HQ | - | The Grand City of Aylor
+The Empire of Aiighialla | - | The Uncharted Oceans (uncharted ocean)
+The Empire of Talsa | - | Gelidus (gelidus)
+The Fabled City of Stone | - | Alagh, the Blood Lands (alagh)
+The Fire Swamp | - | Sen'narre Lake
+The First Ascent | - | (no exits to other areas)
+The Flying Citadel | - | Alagh, the Blood Lands (alagh)
+The Forest of Li'Dnesh | - | The Continent of Mesolar (mesolar)
+The Fortress of Angband | - | (no exits to other areas)
+The Fortress of Knowledge | - | Deathtrap Dungeon | Descent to Hell | The Grand City of Aylor | The Ruins of Stormhaven | The Scarred Lands | The Yurgach Domain
+The Fractured Lands | - | The Continent of Mesolar (mesolar) | The Darkside of the Fractured Lands
+The Gathering Horde | - | Living Mines of Dak'Tai
+The Gauntlet | - | The Continent of Mesolar (mesolar) | The Eighteenth Dynasty
+The Gladiator's Arena | - | The Uncharted Oceans (uncharted ocean)
+The Glamdursil | - | The Dark Continent, Abend (abend)
+The Goblin Fortress | - | The Dark Continent, Abend (abend)
+The Grand City of Aylor | - | A Bad Trip | A Clearing in the Woods | Alagh, the Blood Lands (alagh) | Art of Melody | Cathedral of the Elements | Dark Temple of Zhamet | Disciples of Hassan Clan Hall | Dominion Clan Area | Fractals of the Weave | Gelidus (gelidus) | Isle of Anglesey | Jotunheim | Land of Legend | Loqui Clan Area | Masaki Clan Area | Midgaardian Publishing House | Perdition Clan Area | The Aylorian Academy | The Bard Clan | The Call of Heroes | The Chessboard | The Collective Mind of Tao | The Continent of Mesolar (mesolar) | The Crimson Horde Clan Hall | The Crusader Clan | The Dark Continent, Abend (abend) | The Emerald Clan HQ | The First Ascent | The Fortress of Knowledge | The Halls of Vanir | The Ivory City | The Legendary City of Tanelorn | The Order of Light | The Realm of Chaos | The Sanguine Tavern | The Shadokil Guildhouse | The Stronghold of the Imperium Clan | The Twinlobe Clan HQ | The Uncharted Oceans (uncharted ocean) | The Underground Hall | The Warzone | The White Dragon Clan | The World of the Watchmen | Touchstone Cavern | Twilight Hall | Vidblain, the Ever Dark
+The Graveyard | - | Necromancers' Guild | The Continent of Mesolar (mesolar)
+The Great City of Knossos | - | Ancient Greece | The Stuff of Shadows
+The Great Salt Flats | - | Alagh, the Blood Lands (alagh) | Desert Doom
+The Halls of Vanir | - | Deathtrap Dungeon | Faerie Tales | Seven Wonders | The Council of the Wyrm | The Gathering Horde | The Grand City of Aylor
+The Icy Caldera of Mauldoon | - | Gelidus (gelidus)
+The Imperial City of Reme | - | The Continent of Mesolar (mesolar) | The Reman Conspiracy
+The Infestation | - | A Magical Hodgepodge | The Continent of Mesolar (mesolar)
+The Island of Stardock | - | (no exits to other areas)
+The Ivory City | - | Battlefields of Adaldar | Northstar | Nottingham | The Council of the Wyrm | The Grand City of Aylor
+The Keep of Kearvek | - | Alagh, the Blood Lands (alagh)
+The Keep of the Asherodan | - | Vidblain, the Ever Dark
+The Killing Fields | - | Alagh, the Blood Lands (alagh)
+The Labyrinth | - | The Continent of Mesolar (mesolar)
+The Land of Oz | - | The Continent of Mesolar (mesolar)
+The Land of the Beer Goblins | - | The Continent of Mesolar (mesolar)
+The Laser Zone | - | (no exits to other areas)
+The Legendary City of Tanelorn | - | Faerie Tales II | Realm of the Firebird | Rosewood Castle | The Covenant of Mistridge | The Grand City of Aylor | The Partroxis
+The Lower Planes | - | (no exits to other areas)
+The Maelstrom | - | The Cataclysm | The Dark Continent, Abend (abend)
+The Marshlands of Agroth | - | The Continent of Mesolar (mesolar)
+The Mirror Realm | - | (no exits to other areas)
+The Misty Shores of Yarr | - | The Southern Ocean (southern ocean)
+The Monastery | - | Dortmund
+The Mountains of Desolation | - | A Peaceful Giant Village | The Blood Opal of Rauko'ra | The Dark Continent, Abend (abend) | The Deadlights | Umari's Castle
+The Nine Hells | - | The Grand City of Aylor
+The Nyne Woods | - | The Grand City of Aylor | The Uncharted Oceans (uncharted ocean)
+The Old Cathedral | - | Dortmund
+The Onslaught of Chaos | - | (no exits to other areas)
+The Order of Light | - | The Grand City of Aylor
+The Palace of Song | - | The Continent of Mesolar (mesolar)
+The Partroxis | - | The School of Horror
+The Path of the Believer | - | The Continent of Mesolar (mesolar)
+The Port | - | (no exits to other areas)
+The Realm of Chaos | - | The Grand City of Aylor
+The Realm of Infamy | - | (no exits to other areas)
+The Realm of the Hawklords | - | Gelidus (gelidus)
+The Relinquished Tombs | - | The Dark Continent, Abend (abend)
+The Reman Conspiracy | - | The Imperial City of Reme | The Realm of Infamy
+The River of Despair | - | (no exits to other areas)
+The Ruins of Diamond Reach | - | Gelidus (gelidus) | The Grand City of Aylor
+The Ruins of Stormhaven | - | The Dark Continent, Abend (abend)
+The Sanguine Tavern | - | The Grand City of Aylor
+The Scarred Lands | - | The Dark Continent, Abend (abend)
+The School of Horror | - | The School of Horror
+The School of Horror | - | The Dark Continent, Abend (abend) | The Partroxis | The School of Horror
+The Shadokil Guildhouse | - | The Covenant of Mistridge | The Grand City of Aylor | The Icy Caldera of Mauldoon | The Ruins of Stormhaven
+The Shadows of Minos | - | The Continent of Mesolar (mesolar)
+The Silver Volcano | - | The Dark Continent, Abend (abend)
+The Slaughter House | - | The Dark Continent, Abend (abend)
+The Southern Ocean | southern ocean | Alagh, the Blood Lands (alagh) | Ancient Greece | Annwn | Atlantis | Crynn's Church | Dhal'Gora Outlands | Gelidus (gelidus) | Imagi's Nation | Pompeii | Qong | The Continent of Mesolar (mesolar) | The Coral Kingdom | The Misty Shores of Yarr | The Uncharted Oceans (uncharted ocean) | Yggdrasil: The World Tree
+The Stronghold of the Imperium Clan | - | The Grand City of Aylor
+The Stuff of Shadows | - | The Great City of Knossos
+The Temple of Shal'indrael | - | The Continent of Mesolar (mesolar)
+The Temple of Shouggoth | - | Alagh, the Blood Lands (alagh)
+The Three Pillars of Diatz | - | The Continent of Mesolar (mesolar)
+The Titans' Keep | - | The Uncharted Oceans (uncharted ocean) | Transcendence
+The Tournament of Illoria | - | The Dark Continent, Abend (abend)
+The Town of Solan | - | The Continent of Mesolar (mesolar)
+The Tree of Life | - | The Continent of Mesolar (mesolar)
+The Trouble with Gwillimberry | - | The Continent of Mesolar (mesolar)
+The Twinlobe Clan HQ | - | The Grand City of Aylor
+The Uncharted Oceans | uncharted ocean | Alagh, the Blood Lands (alagh) | Andolor's Ocean Adventure Park | Earth Plane 4 | Gelidus (gelidus) | Icefall | Journey to the Inferno | Masquerade Island | Oradrin's Chosen | Svrogan's Logging Camp | The Aardwolf Isle Estates | The Abyssal Caverns of Sahuagin | The Cracks of Terra | The Dark Continent, Abend (abend) | The Empire of Aiighialla | The Gladiator's Arena | The Grand City of Aylor | The Nyne Woods | The Southern Ocean (southern ocean) | The Titans' Keep
+The UnderDark | - | Deathtrap Dungeon | Fort Terramire | Onyx Bazaar | The Chasm and The Catacombs | The Continent of Mesolar (mesolar) | The Uprising
+The Underground Hall | - | Onyx Bazaar | Rosewood Castle | The Gathering Horde | The Grand City of Aylor | The Nyne Woods | The Stuff of Shadows
+The Upper Planes | - | (no exits to other areas)
+The Uprising | - | The UnderDark
+The Warzone | - | The Grand City of Aylor
+The Were Wood | - | Alagh, the Blood Lands (alagh)
+The White Dragon Clan | - | The Grand City of Aylor
+The Witches of Omen Tor | - | Vidblain, the Ever Dark
+The Wobbly Woes of Woobleville | - | The Continent of Mesolar (mesolar)
+The Wood Elves of Nalondir | - | The Continent of Mesolar (mesolar)
+The World of the Watchmen | - | Faerie Tales | The Grand City of Aylor | The Mountains of Desolation | The Wobbly Woes of Woobleville | Unearthly Bonds | Winterlands
+The Yurgach Domain | - | The Dark Continent, Abend (abend) | The Drageran Empire
+Tilule Rehabilitation Clinic | - | The Continent of Mesolar (mesolar)
+Tir na nOg | - | Alagh, the Blood Lands (alagh) | The Grand City of Aylor
+Touchstone Cavern | - | Foolish Promises | Hedgehogs' Paradise | Realm of the Zodiac | The Grand City of Aylor | The Land of Oz | Weather Observatory
+Tournament Camps | - | The Continent of Mesolar (mesolar)
+Transcendence | - | (no exits to other areas)
+Tribal Origins | - | (no exits to other areas)
+Tumari's Diner | - | The Continent of Mesolar (mesolar)
+Twilight Hall | - | The Grand City of Aylor
+Ultima | - | (no exits to other areas)
+Umari's Castle | - | The Mountains of Desolation
+Unearthly Bonds | - | Gelidus (gelidus)
+Verdure Estate | - | Wayward Alehouse
+Vidblain, the Ever Dark | - | Adventures in Sendhia | Imperial Nation | The DarkLight | The Keep of the Asherodan | The Witches of Omen Tor
+War of the Wizards | - | The Continent of Mesolar (mesolar)
+Warrior's Training Camp | - | The Continent of Mesolar (mesolar)
+Wayfarer's Caravan | - | The Continent of Mesolar (mesolar)
+Wayward Alehouse | - | The Dark Continent, Abend (abend) | Verdure Estate
+Weather Observatory | - | Gelidus (gelidus)
+Wedded Bliss | - | The Continent of Mesolar (mesolar)
+White Claw Cavern | - | (no exits to other areas)
+Wildwood | - | Gelidus (gelidus)
+Winds of Fate | - | (no exits to other areas)
+Winterlands | - | Gelidus (gelidus)
+Xyl's Mosaic | - | The Dark Continent, Abend (abend)
+Yggdrasil: The World Tree | - | The Southern Ocean (southern ocean)
+Zangar's Demonic Grotto | - | The Chasm and The Catacombs
